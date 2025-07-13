@@ -16,7 +16,6 @@ export const hero: Field = {
     {
       name: 'type',
       type: 'select',
-      defaultValue: 'lowImpact',
       label: 'Type',
       options: [
         {
@@ -24,16 +23,8 @@ export const hero: Field = {
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
-        },
-        {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
+          label: 'Default',
+          value: 'default',
         },
       ],
       required: true,
@@ -51,18 +42,24 @@ export const hero: Field = {
           ]
         },
       }),
+      admin: {
+        condition: (_, { type } = {}) => ['default'].includes(type),
+      },
       label: false,
     },
     linkGroup({
       overrides: {
-        maxRows: 2,
+        admin: {
+          condition: (_, { type } = {}) => ['default'].includes(type),
+        },
+        maxRows: 1,
       },
     }),
     {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => ['default'].includes(type),
       },
       relationTo: 'media',
       required: true,

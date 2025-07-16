@@ -1,7 +1,5 @@
 import type { Block } from 'payload'
 
-import { link } from '@/fields/link'
-
 export const MapInfoBlock: Block = {
   slug: 'mapInfoBlock',
   interfaceName: 'MapInfoBlock',

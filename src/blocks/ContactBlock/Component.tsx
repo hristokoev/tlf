@@ -1,5 +1,3 @@
-import type { Form as PluginForm } from '@payloadcms/plugin-form-builder/types'
-
 import type { ContactBlock as ContactBlockProps } from '@/payload-types'
 import { FormBlock } from '../Form/Component'
 import { Media } from '@/components/Media'
@@ -16,7 +14,7 @@ export const ContactBlock: React.FC<ContactBlockProps> = (props) => {
             <h2 className="text-5xl font-bold uppercase text-white">{title}</h2>
             <p className="text-xl mt-4 text-white">{description}</p>
           </div>
-          {/* @ts-expect-error */}
+          {/* @ts-expect-error lets use of FormBlock */}
           <FormBlock enableIntro={false} form={form} />
         </div>
         <div className="mr-16">

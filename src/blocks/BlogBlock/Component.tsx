@@ -4,11 +4,10 @@ import { getPayload } from 'payload'
 import type { BlogBlock as BlogBlockProps } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
-import { CMSLink } from '@/components/Link'
 import { Button } from '@/components/ui/button'
 
 export const BlogBlock: React.FC<BlogBlockProps> = async (props) => {
-  const { type, heading, title, description, media, link } = props
+  const { type, heading, title, description, media } = props
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
     collection: 'posts',

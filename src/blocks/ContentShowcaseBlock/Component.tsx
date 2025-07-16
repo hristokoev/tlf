@@ -4,7 +4,7 @@ import type { ContentShowcaseBlock as ContentShowcaseBlockProps } from '@/payloa
 import { cn } from '@/utilities/ui'
 import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
 export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props) => {
   const {
@@ -15,7 +15,6 @@ export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props)
     description,
     media,
     mediaPosition,
-    type,
     cards,
     mediaItems,
   } = props

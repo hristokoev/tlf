@@ -1,6 +1,5 @@
 import type { Block } from 'payload'
 
-import { linkGroup } from '@/fields/linkGroup'
 import { link } from '@/fields/link'
 
 export const TwoInOneBlock: Block = {

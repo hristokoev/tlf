@@ -1,21 +1,19 @@
-import type { Metadata, Viewport } from 'next'
+import type { Metadata } from 'next'
 
-import { cn } from '@/utilities/ui'
-import { Lexend_Mega } from 'next/font/google'
 import React from 'react'
 
-import { AdminBar } from '@/components/AdminBar'
+// import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
+// import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { LexendMegaFont } from './fonts'
 import { getServerSideURL } from '@/utilities/getURL'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
+  // const { isEnabled } = await draftMode()
 
   return (
     <html className={LexendMegaFont.className} lang="en" suppressHydrationWarning>

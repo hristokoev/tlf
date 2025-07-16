@@ -73,7 +73,7 @@ export const ContentShowcaseBlock: Block = {
         },
         {
           label: 'Bottom Section',
-          // TO-DO: Turn this back on after fixing the big of conditional when there are many of the same blocks.
+          // TODO: Turn this back on after fixing the big of conditional when there are many of the same blocks.
           // admin: {
           //   condition: (_, { bottomSection } = {}) => bottomSection,
           // },

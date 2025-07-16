@@ -30,13 +30,14 @@ export const generateMeta = async (args: { doc: Partial<Page> | null }): Promise
     description: doc?.meta?.description,
     openGraph: mergeOpenGraph({
       description: doc?.meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
+      // TODO: Meta images
+      // images: ogImage
+      // ? [
+      //     {
+      //       url: ogImage,
+      //     },
+      //   ]
+      // : undefined,
       title,
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),

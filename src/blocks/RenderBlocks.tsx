@@ -2,12 +2,30 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { AboutUsBlock } from './AboutUsBlock/Component'
+import { BlogBlock } from './BlogBlock/Component'
+import { ContactBlock } from './ContactBlock/Component'
+import { MediaBlock } from './MediaBlock/Component'
+import { ScrollBlock } from './ScrollBlock/Component'
+import { TwoInOneBlock } from './TwoInOneBlock/Component'
+import { BannerBlock } from './BannerBlock/Component'
+import { ContentShowcaseBlock } from './ContentShowcaseBlock/Component'
+import { MapInfoBlock } from './MapInfoBlock/Component'
+import { ProductsBlock } from './ProductsBlock/Component'
+import { TeamBlock } from './TeamBlock/Component'
 
 const blockComponents = {
-  formBlock: FormBlock,
+  aboutUsBlock: AboutUsBlock,
+  bannerBlock: BannerBlock,
+  blogBlock: BlogBlock,
+  contactBlock: ContactBlock,
+  contentShowcaseBlock: ContentShowcaseBlock,
+  mapInfoBlock: MapInfoBlock,
   mediaBlock: MediaBlock,
+  productsBlock: ProductsBlock,
+  scrollBlock: ScrollBlock,
+  teamBlock: TeamBlock,
+  twoInOneBlock: TwoInOneBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -28,7 +46,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

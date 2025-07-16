@@ -60,6 +60,21 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
+        {appearance === 'default' && (
+          <svg
+            width="12"
+            height="16"
+            viewBox="0 0 12 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="ml-8"
+          >
+            <path
+              d="M7.33784 9.40002L0.5 2.50002L2.58108 0.400024L11.5 9.40002L2.58108 18.4L0.5 16.3L7.33784 9.40002Z"
+              fill="#E8EAED"
+            />
+          </svg>
+        )}
       </Link>
     </Button>
   )

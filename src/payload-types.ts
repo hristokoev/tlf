@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
+    posts: Post;
+    products: Product;
     media: Media;
     users: User;
     redirects: Redirect;
@@ -81,6 +83,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -159,28 +163,35 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: string | Page;
-            } | null;
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?: {
+        relationTo: 'pages';
+        value: string | Page;
+      } | null;
+      url?: string | null;
+      label: string;
+      /**
+       * Choose how the link should be rendered.
+       */
+      appearance?: ('default' | 'outline') | null;
+    };
     media?: (string | null) | Media;
   };
-  layout: (MediaBlock | FormBlock)[];
+  layout: (
+    | AboutUsBlock
+    | BannerBlock
+    | BlogBlock
+    | ContactBlock
+    | ContentShowcaseBlock
+    | MapInfoBlock
+    | MediaBlock
+    | ProductsBlock
+    | ScrollBlock
+    | TeamBlock
+    | TwoInOneBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -290,39 +301,77 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
+ * via the `definition` "AboutUsBlock".
  */
-export interface MediaBlock {
-  media: string | Media;
+export interface AboutUsBlock {
+  heading: string;
+  description: string;
+  counters: {
+    number: number;
+    overflow?: boolean | null;
+    label: string;
+    id?: string | null;
+  }[];
+  mediaItems: (string | Media)[];
   id?: string | null;
   blockName?: string | null;
-  blockType: 'mediaBlock';
+  blockType: 'aboutUsBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock".
+ * via the `definition` "BannerBlock".
  */
-export interface FormBlock {
-  form: string | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+export interface BannerBlock {
+  subtitle: string;
+  title: string;
+  description: string;
+  backgroundImage: string | Media;
+  textPosition: 'left' | 'right';
   id?: string | null;
   blockName?: string | null;
-  blockType: 'formBlock';
+  blockType: 'bannerBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock".
+ */
+export interface BlogBlock {
+  type: 'compact' | 'advanced';
+  heading: string;
+  title?: string | null;
+  description?: string | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  media?: (string | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  heading: string;
+  title: string;
+  description: string;
+  media: string | Media;
+  form: string | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -500,6 +549,163 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentShowcaseBlock".
+ */
+export interface ContentShowcaseBlock {
+  backgroundColor: 'white' | 'darkGray';
+  bottomSection?: boolean | null;
+  heading?: string | null;
+  subtitle?: string | null;
+  title?: string | null;
+  description?: string | null;
+  media: string | Media;
+  mediaPosition: 'left' | 'right';
+  type?: ('cards' | 'mediaItems') | null;
+  cards?:
+    | {
+        title: string;
+        description: string;
+        icon: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  mediaItems?: (string | Media)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentShowcaseBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapInfoBlock".
+ */
+export interface MapInfoBlock {
+  heading: string;
+  map: string;
+  title: string;
+  description: string;
+  infoItems: {
+    icon: string | Media;
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mapInfoBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductsBlock".
+ */
+export interface ProductsBlock {
+  heading: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScrollBlock".
+ */
+export interface ScrollBlock {
+  heading: string;
+  title: string;
+  text: string;
+  media: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scrollBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock".
+ */
+export interface TeamBlock {
+  members: {
+    media: string | Media;
+    name: string;
+    phoneWork: string;
+    phoneMobile: string;
+    email: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoInOneBlock".
+ */
+export interface TwoInOneBlock {
+  heading: string;
+  title: string;
+  description: string;
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  mediaItems: (string | Media)[];
+  certificationTitle: string;
+  certification: string;
+  cards: {
+    title: string;
+    icon: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'twoInOneBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  media: string | Media;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  media: string | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -665,6 +871,14 @@ export interface PayloadLockedDocument {
         value: string | Page;
       } | null)
     | ({
+        relationTo: 'posts';
+        value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -741,28 +955,32 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
-        links?:
+        link?:
           | T
           | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-              id?: T;
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
             };
         media?: T;
       };
   layout?:
     | T
     | {
+        aboutUsBlock?: T | AboutUsBlockSelect<T>;
+        bannerBlock?: T | BannerBlockSelect<T>;
+        blogBlock?: T | BlogBlockSelect<T>;
+        contactBlock?: T | ContactBlockSelect<T>;
+        contentShowcaseBlock?: T | ContentShowcaseBlockSelect<T>;
+        mapInfoBlock?: T | MapInfoBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
-        formBlock?: T | FormBlockSelect<T>;
+        productsBlock?: T | ProductsBlockSelect<T>;
+        scrollBlock?: T | ScrollBlockSelect<T>;
+        teamBlock?: T | TeamBlockSelect<T>;
+        twoInOneBlock?: T | TwoInOneBlockSelect<T>;
       };
   meta?:
     | T
@@ -780,6 +998,120 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutUsBlock_select".
+ */
+export interface AboutUsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  counters?:
+    | T
+    | {
+        number?: T;
+        overflow?: T;
+        label?: T;
+        id?: T;
+      };
+  mediaItems?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock_select".
+ */
+export interface BannerBlockSelect<T extends boolean = true> {
+  subtitle?: T;
+  title?: T;
+  description?: T;
+  backgroundImage?: T;
+  textPosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock_select".
+ */
+export interface BlogBlockSelect<T extends boolean = true> {
+  type?: T;
+  heading?: T;
+  title?: T;
+  description?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  heading?: T;
+  title?: T;
+  description?: T;
+  media?: T;
+  form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentShowcaseBlock_select".
+ */
+export interface ContentShowcaseBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  bottomSection?: T;
+  heading?: T;
+  subtitle?: T;
+  title?: T;
+  description?: T;
+  media?: T;
+  mediaPosition?: T;
+  type?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  mediaItems?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapInfoBlock_select".
+ */
+export interface MapInfoBlockSelect<T extends boolean = true> {
+  heading?: T;
+  map?: T;
+  title?: T;
+  description?: T;
+  infoItems?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
@@ -789,14 +1121,98 @@ export interface MediaBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
+ * via the `definition` "ProductsBlock_select".
  */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  enableIntro?: T;
-  introContent?: T;
+export interface ProductsBlockSelect<T extends boolean = true> {
+  heading?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScrollBlock_select".
+ */
+export interface ScrollBlockSelect<T extends boolean = true> {
+  heading?: T;
+  title?: T;
+  text?: T;
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock_select".
+ */
+export interface TeamBlockSelect<T extends boolean = true> {
+  members?:
+    | T
+    | {
+        media?: T;
+        name?: T;
+        phoneWork?: T;
+        phoneMobile?: T;
+        email?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoInOneBlock_select".
+ */
+export interface TwoInOneBlockSelect<T extends boolean = true> {
+  heading?: T;
+  title?: T;
+  description?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  mediaItems?: T;
+  certificationTitle?: T;
+  certification?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  media?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  media?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

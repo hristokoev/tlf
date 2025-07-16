@@ -1,13 +1,15 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { FormBlock } from '../../blocks/Form/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { AboutUsBlock } from '@/blocks/AboutUsBlock/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { ScrollBlock } from '@/blocks/ScrollBlock/config'
+import { TwoInOneBlock } from '@/blocks/TwoInOneBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
-import { populatePublishedAt } from '../../hooks/populatePublishedAt'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { populatePublishedAt } from '@/hooks/populatePublishedAt'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import {
@@ -17,6 +19,13 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { BlogBlock } from '@/blocks/BlogBlock/config'
+import { ContactBlock } from '@/blocks/ContactBlock/config'
+import { MapInfoBlock } from '@/blocks/MapInfoBlock/config'
+import { ContentShowcaseBlock } from '@/blocks/ContentShowcaseBlock/config'
+import { BannerBlock } from '@/blocks/BannerBlock/config'
+import { ProductsBlock } from '@/blocks/ProductsBlock/config'
+import { TeamBlock } from '@/blocks/TeamBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -72,7 +81,19 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [MediaBlock, FormBlock],
+              blocks: [
+                AboutUsBlock,
+                BannerBlock,
+                BlogBlock,
+                ContactBlock,
+                ContentShowcaseBlock,
+                MapInfoBlock,
+                MediaBlock,
+                ProductsBlock,
+                ScrollBlock,
+                TeamBlock,
+                TwoInOneBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

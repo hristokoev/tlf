@@ -1,6 +1,8 @@
 import clsx from 'clsx'
 import React from 'react'
 
+import logoImg from '../../../public/logo.png'
+
 interface Props {
   className?: string
   loading?: 'lazy' | 'eager'
@@ -16,14 +18,14 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="TLF Logo"
+      width={328}
+      height={276}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+      className={clsx('w-full h-[64px]', className)}
+      src={logoImg.src}
     />
   )
 }

@@ -7,7 +7,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { linkGroup } from '@/fields/linkGroup'
+import { link } from '@/fields/link'
 
 export const hero: Field = {
   name: 'hero',
@@ -45,14 +45,14 @@ export const hero: Field = {
       admin: {
         condition: (_, { type } = {}) => ['default'].includes(type),
       },
-      label: false,
+      required: true,
     },
-    linkGroup({
+    link({
       overrides: {
         admin: {
           condition: (_, { type } = {}) => ['default'].includes(type),
         },
-        maxRows: 1,
+        required: true,
       },
     }),
     {

@@ -16,24 +16,25 @@ export const Textarea: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
   return (
-    <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
+    <Width width={width} className="border">
+      <div className="px-4 py-4 flex flex-col gap-2 w-full">
+        <Label htmlFor={name}>
+          {label}
 
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-
-      <TextAreaComponent
-        defaultValue={defaultValue}
-        id={name}
-        rows={rows}
-        {...register(name, { required: required })}
-      />
-
+          {required && (
+            <span className="required">
+              {' '}
+              * <span className="sr-only">(required)</span>
+            </span>
+          )}
+        </Label>
+        <TextAreaComponent
+          defaultValue={defaultValue}
+          id={name}
+          rows={rows}
+          {...register(name, { required: required })}
+        />
+      </div>
       {errors[name] && <Error name={name} />}
     </Width>
   )

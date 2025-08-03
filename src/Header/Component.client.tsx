@@ -44,15 +44,20 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className={`fixed container z-20 transition-all duration-300 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 ease-in-out ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${isScrolled ? 'backdrop-blur-md bg-black/30' : 'bg-transparent'}`}
     >
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" />
-        </Link>
-        <HeaderNav data={data} />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-4 sm:py-6 lg:py-8 flex justify-between items-center gap-4">
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0 relative">
+            <Logo loading="eager" priority="high" />
+          </Link>
+
+          {/* Navigation */}
+          <HeaderNav data={data} />
+        </div>
       </div>
     </header>
   )

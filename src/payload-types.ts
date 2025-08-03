@@ -647,9 +647,9 @@ export interface TeamBlock {
   members: {
     media: string | Media;
     name: string;
-    phoneWork: string;
-    phoneMobile: string;
-    email: string;
+    phoneWork?: string | null;
+    phoneMobile?: string | null;
+    email?: string | null;
     id?: string | null;
   }[];
   id?: string | null;

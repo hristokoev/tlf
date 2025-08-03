@@ -130,10 +130,14 @@ export default async function Product({ params: paramsPromise }: Args) {
 
       <article
         className="pt-32 min-h-screen bg-white"
-        style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'contain' }}
+        style={{
+          backgroundImage: 'url(/hero-bg.png)',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+        }}
       >
         {/* Hero Section */}
-        <section className="relative py-16 md:py-24">
+        <section className="relative container py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16">
               {/* Left Column - Content */}
@@ -196,8 +200,8 @@ export default async function Product({ params: paramsPromise }: Args) {
         </section>
 
         {/* Accordion Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="container py-16">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               {/* Left - Accordion */}
               <Accordion

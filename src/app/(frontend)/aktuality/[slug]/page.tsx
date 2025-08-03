@@ -58,7 +58,11 @@ export default async function Post({ params: paramsPromise }: Args) {
     <Fragment>
       <article
         className="pt-32 min-h-screen bg-white"
-        style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'cover' }}
+        style={{
+          backgroundImage: 'url(/hero-bg.png)',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+        }}
       >
         {/* Allows redirects for valid pages too */}
         <PayloadRedirects disableNotFound url={url} />
@@ -66,8 +70,8 @@ export default async function Post({ params: paramsPromise }: Args) {
         {draft && <LivePreviewListener />}
 
         {/* Hero Section */}
-        <section className="relative pt-20 sm:pt-24 md:pt-32">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="container relative pt-20 sm:pt-24 md:pt-32">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
               {/* Content Column */}
               <div className="order-2 lg:order-1 space-y-8">
@@ -114,8 +118,8 @@ export default async function Post({ params: paramsPromise }: Args) {
         </section>
 
         {/* Content Section */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="container py-16 md:py-24">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               {/* Content Card */}
               <div className="bg-white/80 backdrop-blur-sm shadow-xl border border-white/20 overflow-hidden">

@@ -57,7 +57,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
   return (
     <nav className="flex items-center relative">
       {/* Desktop Navigation - Responsive gaps */}
-      <div className="hidden md:flex flex-wrap justify-end items-center gap-4 lg:gap-6 xl:gap-8 2xl:gap-10">
+      <div className="hidden md:flex flex-wrap justify-end items-center gap-4 lg:gap-6 xl:gap-8">
         {navItems.map(({ link }, i) => {
           return (
             <div key={i} className="whitespace-nowrap">

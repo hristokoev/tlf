@@ -26,18 +26,15 @@ export const TeamBlock: Block = {
               name: 'phoneWork',
               label: 'Work Phone',
               type: 'text',
-              required: true,
             },
             {
               name: 'phoneMobile',
               label: 'Mobile Phone',
               type: 'text',
-              required: true,
             },
             {
               name: 'email',
               type: 'email',
-              required: true,
             },
           ],
         },

@@ -75,7 +75,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${getHeaderClasses()}`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container">
         <div className="py-4 sm:py-6 lg:py-8 flex justify-between items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 relative">

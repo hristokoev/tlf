@@ -93,11 +93,13 @@ export const BlogBlock: React.FC<BlogBlockProps> = async (props) => {
             </div>
 
             {/* Show More Button */}
-            <div className="flex justify-center lg:justify-end mt-4 md:mt-8">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                Ukazat více
-              </Button>
-            </div>
+            {type == 'compact' && (
+              <div className="flex justify-center lg:justify-end mt-4 md:mt-8">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                  Ukazat více
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

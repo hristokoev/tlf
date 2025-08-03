@@ -130,11 +130,15 @@ export default async function Job({ params: paramsPromise }: Args) {
 
       <article
         className="pt-32 min-h-screen bg-white"
-        style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'contain' }}
+        style={{
+          backgroundImage: 'url(/hero-bg.png)',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+        }}
       >
         {/* Hero Section */}
-        <section className="relative py-16 md:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="container relative py-16 md:py-24">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16">
               {/* Left Column - Content */}
               <div className="space-y-8">
@@ -144,7 +148,7 @@ export default async function Job({ params: paramsPromise }: Args) {
                 </p>
 
                 {/* Title */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight uppercase">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl text-wrap font-bold text-gray-900 leading-tight tracking-tight uppercase">
                   {job.title}
                 </h1>
 
@@ -196,8 +200,8 @@ export default async function Job({ params: paramsPromise }: Args) {
         </section>
 
         {/* Accordion Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="container py-16">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               {/* Left - Accordion */}
               <Accordion

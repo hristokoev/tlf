@@ -65,17 +65,6 @@ export const JobsBlock: React.FC<JobsBlockProps> = async (props) => {
               </a>
             ))}
           </div>
-
-          {/* Show more button */}
-          <div className="flex justify-center sm:justify-end">
-            <Button
-              variant="secondary"
-              size="lg"
-              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 text-sm md:text-base"
-            >
-              Ukazát více
-            </Button>
-          </div>
         </div>
       </div>
     </section>

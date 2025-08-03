@@ -5,8 +5,12 @@ import React, { useState, useEffect } from 'react'
 import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
+import { cn } from '@/utilities/ui'
 
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
+export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: boolean }> = ({
+  data,
+  isWhiteBackgroundPage,
+}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navItems = data?.navItems || []
 
@@ -57,7 +61,11 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         {navItems.map(({ link }, i) => {
           return (
             <div key={i} className="whitespace-nowrap">
-              <CMSLink {...link} appearance="link" />
+              <CMSLink
+                {...link}
+                appearance="link"
+                className={`${isWhiteBackgroundPage && 'text-black'}`}
+              />
             </div>
           )
         })}
@@ -66,7 +74,10 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       {/* Mobile Menu Button */}
       <button
         onClick={toggleMobileMenu}
-        className="text-white md:hidden relative z-50 flex flex-col gap-1 p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+        className={cn(
+          'md:hidden relative z-50 flex flex-col gap-1 p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded',
+          isWhiteBackgroundPage ? 'text-black' : 'text-white',
+        )}
         aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isMobileMenuOpen}
       >

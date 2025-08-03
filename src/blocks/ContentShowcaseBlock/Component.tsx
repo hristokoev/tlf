@@ -226,12 +226,12 @@ export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props)
 
   return (
     <section
-      className={cn('container py-12 md:py-16 lg:py-24 px-4 md:px-6 lg:px-8', {
+      className={cn('py-12 md:py-16 lg:py-24 px-4 md:px-6 lg:px-8', {
         'bg-white text-black': backgroundColor === 'white',
         'bg-background text-white': backgroundColor === 'darkGray',
       })}
     >
-      <div>
+      <div className="container">
         {/* Media Left Layout */}
         {mediaPosition === 'left' && (
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 xl:gap-32">

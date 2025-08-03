@@ -2,18 +2,26 @@ import clsx from 'clsx'
 import React from 'react'
 
 import logoImg from '../../../public/logo.png'
+import logoImgBlack from '../../../public/logo-black.png'
 
 interface Props {
   className?: string
   loading?: 'lazy' | 'eager'
   priority?: 'auto' | 'high' | 'low'
+  isWhiteBackgroundPage?: boolean
 }
 
 export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+  const {
+    loading: loadingFromProps,
+    priority: priorityFromProps,
+    className,
+    isWhiteBackgroundPage,
+  } = props
 
   const loading = loadingFromProps || 'lazy'
   const priority = priorityFromProps || 'low'
+  const logoSrc = isWhiteBackgroundPage ? logoImgBlack : logoImg
 
   return (
     /* eslint-disable @next/next/no-img-element */
@@ -25,7 +33,7 @@ export const Logo = (props: Props) => {
       fetchPriority={priority}
       decoding="async"
       className={clsx('w-full h-[64px]', className)}
-      src={logoImg.src}
+      src={logoSrc.src}
     />
   )
 }

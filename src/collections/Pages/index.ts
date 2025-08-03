@@ -19,11 +19,12 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { BannerBlock } from '@/blocks/BannerBlock/config'
 import { BlogBlock } from '@/blocks/BlogBlock/config'
 import { ContactBlock } from '@/blocks/ContactBlock/config'
-import { MapInfoBlock } from '@/blocks/MapInfoBlock/config'
 import { ContentShowcaseBlock } from '@/blocks/ContentShowcaseBlock/config'
-import { BannerBlock } from '@/blocks/BannerBlock/config'
+import { JobsBlock } from '@/blocks/JobsBlock/config'
+import { MapInfoBlock } from '@/blocks/MapInfoBlock/config'
 import { ProductsBlock } from '@/blocks/ProductsBlock/config'
 import { TeamBlock } from '@/blocks/TeamBlock/config'
 
@@ -87,6 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 BlogBlock,
                 ContactBlock,
                 ContentShowcaseBlock,
+                JobsBlock,
                 MapInfoBlock,
                 MediaBlock,
                 ProductsBlock,

@@ -53,7 +53,7 @@ export const DefaultHero: React.FC<Page['hero']> = ({ link, media, richText }) =
       <div className="hidden lg:flex absolute right-6 xl:right-12 top-0 h-full w-4 py-16 flex-col items-center justify-center space-y-6 z-30">
         <div className="bg-white w-[0.5px] h-32 xl:h-full"></div>
         <div className="-rotate-90 text-white text-xs whitespace-nowrap">
-          <a href="#scroll-down-tag">Dolů</a>
+          <a href="#scroll-down">Dolů</a>
         </div>
         <svg
           width="7"
@@ -71,7 +71,7 @@ export const DefaultHero: React.FC<Page['hero']> = ({ link, media, richText }) =
       </div>
 
       {/* {/* Scroll Down Tag } */}
-      <div id="scroll-down-tag" />
+      <div id="scroll-down" />
     </section>
   )
 }

@@ -3,16 +3,17 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { AboutUsBlock } from './AboutUsBlock/Component'
+import { BannerBlock } from './BannerBlock/Component'
 import { BlogBlock } from './BlogBlock/Component'
 import { ContactBlock } from './ContactBlock/Component'
-import { MediaBlock } from './MediaBlock/Component'
-import { ScrollBlock } from './ScrollBlock/Component'
-import { TwoInOneBlock } from './TwoInOneBlock/Component'
-import { BannerBlock } from './BannerBlock/Component'
 import { ContentShowcaseBlock } from './ContentShowcaseBlock/Component'
+import { JobsBlock } from './JobsBlock/Component'
 import { MapInfoBlock } from './MapInfoBlock/Component'
+import { MediaBlock } from './MediaBlock/Component'
 import { ProductsBlock } from './ProductsBlock/Component'
+import { ScrollBlock } from './ScrollBlock/Component'
 import { TeamBlock } from './TeamBlock/Component'
+import { TwoInOneBlock } from './TwoInOneBlock/Component'
 
 const blockComponents = {
   aboutUsBlock: AboutUsBlock,
@@ -20,6 +21,7 @@ const blockComponents = {
   blogBlock: BlogBlock,
   contactBlock: ContactBlock,
   contentShowcaseBlock: ContentShowcaseBlock,
+  jobsBlock: JobsBlock,
   mapInfoBlock: MapInfoBlock,
   mediaBlock: MediaBlock,
   productsBlock: ProductsBlock,

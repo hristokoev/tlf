@@ -7,19 +7,15 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { slugField } from '@/fields/slug'
 
-export const Posts: CollectionConfig = {
-  slug: 'posts',
+export const Jobs: CollectionConfig = {
+  slug: 'jobs',
   access: {
     read: () => true,
   },
   admin: {
     defaultColumns: ['title', 'updatedAt'],
-  },
-  hooks: {
-    beforeChange: [populatePublishedAt],
   },
   fields: [
     {
@@ -36,19 +32,46 @@ export const Posts: CollectionConfig = {
           fields: [
             {
               name: 'description',
-              type: 'text',
+              type: 'textarea',
               required: true,
+            },
+            {
+              type: 'array',
+              name: 'benefits',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'icon',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+              ],
+              minRows: 1,
+              required: true,
+            },
+            {
+              name: 'responsibilities',
+              type: 'textarea',
+            },
+            {
+              name: 'requirements',
+              type: 'textarea',
+            },
+            {
+              name: 'offer',
+              type: 'textarea',
             },
             {
               name: 'media',
               type: 'upload',
               relationTo: 'media',
-              hasMany: false,
-              required: true,
-            },
-            {
-              name: 'content',
-              type: 'richText',
+              hasMany: true,
+              maxRows: 3,
               required: true,
             },
           ],
@@ -81,13 +104,6 @@ export const Posts: CollectionConfig = {
           ],
         },
       ],
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
     },
     ...slugField(),
   ],

@@ -10,7 +10,7 @@ import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | TLF` : 'TLF'
+  return doc?.title ? doc.title : 'TLF'
 }
 
 const generateURL: GenerateURL<Page> = ({ doc }) => {

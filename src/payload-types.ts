@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     products: Product;
+    jobs: Job;
     media: Media;
     users: User;
     redirects: Redirect;
@@ -85,6 +86,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -185,6 +187,7 @@ export interface Page {
     | BlogBlock
     | ContactBlock
     | ContentShowcaseBlock
+    | JobsBlock
     | MapInfoBlock
     | MediaBlock
     | ProductsBlock
@@ -576,6 +579,16 @@ export interface ContentShowcaseBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobsBlock".
+ */
+export interface JobsBlock {
+  heading: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'jobsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MapInfoBlock".
  */
 export interface MapInfoBlock {
@@ -684,7 +697,33 @@ export interface TwoInOneBlock {
 export interface Post {
   id: string;
   title: string;
-  media: string | Media;
+  content: {
+    description: string;
+    media: string | Media;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -698,7 +737,58 @@ export interface Post {
 export interface Product {
   id: string;
   title: string;
-  media: string | Media;
+  content: {
+    description: string;
+    parameters: {
+      title: string;
+      icon: string | Media;
+      id?: string | null;
+    }[];
+    variants?: string | null;
+    materials?: string | null;
+    technicalData?: string | null;
+    media: (string | Media)[];
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: string;
+  title: string;
+  content: {
+    description: string;
+    benefits: {
+      title: string;
+      icon: string | Media;
+      id?: string | null;
+    }[];
+    responsibilities?: string | null;
+    requirements?: string | null;
+    offer?: string | null;
+    media: (string | Media)[];
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -879,6 +969,10 @@ export interface PayloadLockedDocument {
         value: string | Product;
       } | null)
     | ({
+        relationTo: 'jobs';
+        value: string | Job;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -975,6 +1069,7 @@ export interface PagesSelect<T extends boolean = true> {
         blogBlock?: T | BlogBlockSelect<T>;
         contactBlock?: T | ContactBlockSelect<T>;
         contentShowcaseBlock?: T | ContentShowcaseBlockSelect<T>;
+        jobsBlock?: T | JobsBlockSelect<T>;
         mapInfoBlock?: T | MapInfoBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         productsBlock?: T | ProductsBlockSelect<T>;
@@ -1092,6 +1187,15 @@ export interface ContentShowcaseBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobsBlock_select".
+ */
+export interface JobsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MapInfoBlock_select".
  */
 export interface MapInfoBlockSelect<T extends boolean = true> {
@@ -1195,7 +1299,20 @@ export interface TwoInOneBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  media?: T;
+  content?:
+    | T
+    | {
+        description?: T;
+        media?: T;
+        content?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
@@ -1208,7 +1325,63 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  media?: T;
+  content?:
+    | T
+    | {
+        description?: T;
+        parameters?:
+          | T
+          | {
+              title?: T;
+              icon?: T;
+              id?: T;
+            };
+        variants?: T;
+        materials?: T;
+        technicalData?: T;
+        media?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  content?:
+    | T
+    | {
+        description?: T;
+        benefits?:
+          | T
+          | {
+              title?: T;
+              icon?: T;
+              id?: T;
+            };
+        responsibilities?: T;
+        requirements?: T;
+        offer?: T;
+        media?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

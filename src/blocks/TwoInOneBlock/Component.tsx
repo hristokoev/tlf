@@ -2,9 +2,8 @@
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import { Button } from '@/components/ui/button'
 import type { TwoInOneBlock as TwoInOneBlockProps } from '@/payload-types'
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 
 export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
   const {
@@ -20,6 +19,14 @@ export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [slideWidth, setSlideWidth] = useState(383)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState(0)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isDragRef = useRef(false)
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null)
 
   // Update slide width based on screen size
   useEffect(() => {
@@ -38,15 +45,147 @@ export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
     return () => window.removeEventListener('resize', updateSlideWidth)
   }, [])
 
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1))
-  }
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1))
-  }
-
   const gap = 32 // Gap between slides
+
+  // Autoplay functionality
+  const startAutoplay = () => {
+    if (autoplayRef.current) clearInterval(autoplayRef.current)
+
+    autoplayRef.current = setInterval(() => {
+      if (!isDragging && !isHovered && mediaItems?.length > 1) {
+        setCurrentIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1))
+      }
+    }, 4000) // Change slide every 4 seconds
+  }
+
+  const stopAutoplay = () => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current)
+      autoplayRef.current = null
+    }
+  }
+
+  // Start autoplay when component mounts and conditions are met
+  useEffect(() => {
+    if (mediaItems?.length > 1) {
+      startAutoplay()
+    }
+
+    return () => stopAutoplay()
+  }, [mediaItems?.length, isDragging, isHovered])
+
+  // Restart autoplay after user interaction
+  useEffect(() => {
+    if (!isDragging && !isHovered && mediaItems?.length > 1) {
+      const timer = setTimeout(() => {
+        startAutoplay()
+      }, 3000) // Wait 3 seconds after interaction before restarting
+
+      return () => clearTimeout(timer)
+    } else {
+      stopAutoplay()
+    }
+  }, [isDragging, isHovered, mediaItems?.length])
+
+  // Handle drag start (mouse and touch)
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true)
+    setDragStart(clientX)
+    setDragOffset(0)
+    isDragRef.current = true
+  }
+
+  // Handle drag move
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging) return
+
+    const diff = clientX - dragStart
+    setDragOffset(diff)
+  }
+
+  // Handle drag end
+  const handleDragEnd = () => {
+    if (!isDragging) return
+
+    const threshold = slideWidth * 0.3 // 30% of slide width to trigger slide
+
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        // Dragged right, go to previous (with wrap around)
+        setCurrentIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1))
+      } else {
+        // Dragged left, go to next (with wrap around)
+        setCurrentIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1))
+      }
+    }
+
+    setIsDragging(false)
+    setDragOffset(0)
+    isDragRef.current = false
+  }
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    handleDragStart(e.clientX)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    handleDragMove(e.clientX)
+  }
+
+  const handleMouseUp = () => {
+    handleDragEnd()
+  }
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleDragMove(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    handleDragEnd()
+  }
+
+  // Add global mouse move and up listeners
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDragRef.current) {
+        handleDragMove(e.clientX)
+      }
+    }
+
+    const handleGlobalMouseUp = () => {
+      if (isDragRef.current) {
+        handleDragEnd()
+      }
+    }
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleGlobalMouseMove)
+      document.addEventListener('mouseup', handleGlobalMouseUp)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove)
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [isDragging, dragStart])
+
+  // Calculate transform with drag offset
+  const getTransform = () => {
+    const baseTransform = -currentIndex * (slideWidth + gap)
+
+    if (isDragging) {
+      return `translateX(${baseTransform + dragOffset}px)`
+    }
+
+    return `translateX(${baseTransform}px)`
+  }
 
   return (
     <Fragment>
@@ -58,50 +197,6 @@ export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
             <span className="uppercase text-white text-sm md:text-base">{heading}</span>
 
             <div className="flex flex-col space-y-6 lg:space-y-8">
-              {/* Navigation Buttons */}
-              <div className="flex space-x-4">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-12 md:size-16 p-3 md:p-4"
-                  onClick={goToPrevious}
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 md:w-5 md:h-5"
-                  >
-                    <path
-                      d="M20 11.25L4.78125 11.25L11.7813 18.25L10 20L1.19249e-07 10L10 -1.19249e-07L11.7813 1.75L4.78125 8.75L20 8.75L20 11.25Z"
-                      fill="white"
-                    />
-                  </svg>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-12 md:size-16 p-3 md:p-4"
-                  onClick={goToNext}
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 md:w-5 md:h-5"
-                  >
-                    <path
-                      d="M-3.82475e-07 8.75L15.2187 8.75L8.21875 1.75L10 4.37114e-07L20 10L10 20L8.21875 18.25L15.2187 11.25L-4.91753e-07 11.25L-3.82475e-07 8.75Z"
-                      fill="white"
-                    />
-                  </svg>
-                </Button>
-              </div>
-
               {/* Title and Description */}
               <div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl uppercase font-bold text-white leading-tight">
@@ -118,15 +213,26 @@ export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
           </div>
 
           {/* Carousel Section */}
-          <div className="relative overflow-hidden w-full lg:w-auto">
+          <div
+            ref={containerRef}
+            className="relative overflow-hidden w-full lg:w-auto cursor-grab active:cursor-grabbing select-none"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <div
-              className="flex gap-8 transition-transform duration-500 ease-in-out"
+              className={`flex gap-8 ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
               style={{
-                transform: `translateX(-${currentIndex * (slideWidth + gap)}px)`,
+                transform: getTransform(),
               }}
             >
               {mediaItems.map((mediaItem, index) => (
-                <div key={index} className="flex-shrink-0">
+                <div key={index} className="flex-shrink-0 pointer-events-none">
                   <Media
                     resource={mediaItem}
                     className={`w-[280px] sm:w-[320px] lg:w-[383px] h-[400px] sm:h-[500px] lg:h-[690px]`}
@@ -168,7 +274,7 @@ export const TwoInOneBlock: React.FC<TwoInOneBlockProps> = (props) => {
                     className="w-12 h-12 md:w-16 md:h-16"
                     imgClassName="object-cover h-full w-full"
                   />
-                  <h3 className="text-xl md:text-2xl font-semibold leading-tight">{card.title}</h3>
+                  <h3 className="text-xl font-semibold leading-tight">{card.title}</h3>
                 </div>
               ))}
             </div>

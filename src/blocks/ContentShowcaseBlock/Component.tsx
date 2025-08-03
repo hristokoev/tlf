@@ -2,9 +2,8 @@
 
 import type { ContentShowcaseBlock as ContentShowcaseBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props) => {
   const {
@@ -22,6 +21,14 @@ export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(4)
   const [isClient, setIsClient] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState(0)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isDragRef = useRef(false)
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null)
 
   // Set client flag after hydration
   useEffect(() => {
@@ -52,32 +59,169 @@ export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props)
   const totalItems = cards?.length || mediaItems?.length || 0
   const maxIndex = Math.max(0, totalItems - itemsPerView)
 
-  const goToPrevious = () => {
-    if (totalItems === 0) return
-    setCurrentIndex((prevIndex) => Math.max(0, prevIndex - 1))
+  // Autoplay functionality
+  const startAutoplay = () => {
+    if (autoplayRef.current) clearInterval(autoplayRef.current)
+
+    autoplayRef.current = setInterval(() => {
+      if (!isDragging && !isHovered && totalItems > itemsPerView) {
+        setCurrentIndex((prev) => {
+          if (prev >= maxIndex) {
+            return 0 // Loop back to start
+          }
+          return prev + 1
+        })
+      }
+    }, 3000) // Change slide every 3 seconds
   }
 
-  const goToNext = () => {
-    if (totalItems === 0) return
-    setCurrentIndex((prevIndex) => Math.min(maxIndex, prevIndex + 1))
+  const stopAutoplay = () => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current)
+      autoplayRef.current = null
+    }
   }
 
-  // Calculate transform based on responsive grid
-  const getTransform = () => {
-    // Return default transform during SSR
-    if (!isClient) {
-      return `translateX(-${currentIndex * 25}%)`
+  // Start autoplay when component mounts and conditions are met
+  useEffect(() => {
+    if (isClient && totalItems > itemsPerView) {
+      startAutoplay()
     }
 
-    if (window.innerWidth < 640) {
-      return `translateX(-${currentIndex * 100}%)`
-    } else if (window.innerWidth < 1024) {
-      return `translateX(-${currentIndex * 50}%)`
-    } else if (window.innerWidth < 1280) {
-      return `translateX(-${currentIndex * 33.333}%)`
+    return () => stopAutoplay()
+  }, [isClient, totalItems, itemsPerView, isDragging, isHovered])
+
+  // Restart autoplay after user interaction
+  useEffect(() => {
+    if (!isDragging && !isHovered && totalItems > itemsPerView) {
+      const timer = setTimeout(() => {
+        startAutoplay()
+      }, 2000) // Wait 2 seconds after interaction before restarting
+
+      return () => clearTimeout(timer)
     } else {
-      return `translateX(-${currentIndex * 25}%)`
+      stopAutoplay()
     }
+  }, [isDragging, isHovered, totalItems, itemsPerView])
+
+  // Get the percentage each item takes up
+  const getItemWidth = () => {
+    if (!isClient) return 25
+
+    if (window.innerWidth < 640) return 100
+    if (window.innerWidth < 1024) return 50
+    if (window.innerWidth < 1280) return 33.333
+    return 25
+  }
+
+  // Handle drag start (mouse and touch)
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true)
+    setDragStart(clientX)
+    setDragOffset(0)
+    isDragRef.current = true
+  }
+
+  // Handle drag move
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging || !containerRef.current) return
+
+    const diff = clientX - dragStart
+    const containerWidth = containerRef.current.offsetWidth
+    const itemWidth = getItemWidth()
+    const offsetPercentage = (diff / containerWidth) * 100
+
+    setDragOffset(offsetPercentage)
+  }
+
+  // Handle drag end
+  const handleDragEnd = () => {
+    if (!isDragging) return
+
+    const itemWidth = getItemWidth()
+    const threshold = itemWidth * 0.3 // 30% of item width to trigger slide
+
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0 && currentIndex > 0) {
+        // Dragged right, go to previous
+        setCurrentIndex((prev) => Math.max(0, prev - 1))
+      } else if (dragOffset < 0 && currentIndex < maxIndex) {
+        // Dragged left, go to next
+        setCurrentIndex((prev) => Math.min(maxIndex, prev + 1))
+      }
+    }
+
+    setIsDragging(false)
+    setDragOffset(0)
+    isDragRef.current = false
+  }
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    handleDragStart(e.clientX)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    handleDragMove(e.clientX)
+  }
+
+  const handleMouseUp = () => {
+    handleDragEnd()
+  }
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleDragMove(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    handleDragEnd()
+  }
+
+  // Add global mouse move and up listeners
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDragRef.current) {
+        handleDragMove(e.clientX)
+      }
+    }
+
+    const handleGlobalMouseUp = () => {
+      if (isDragRef.current) {
+        handleDragEnd()
+      }
+    }
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleGlobalMouseMove)
+      document.addEventListener('mouseup', handleGlobalMouseUp)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove)
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [isDragging, dragStart])
+
+  // Calculate transform with drag offset
+  const getTransform = () => {
+    const baseTransform = (() => {
+      if (!isClient) return `translateX(-${currentIndex * 25}%)`
+
+      const itemWidth = getItemWidth()
+      return `translateX(-${currentIndex * itemWidth}%)`
+    })()
+
+    if (isDragging) {
+      return `${baseTransform} translateX(${dragOffset}%)`
+    }
+
+    return baseTransform
   }
 
   return (
@@ -137,149 +281,77 @@ export const ContentShowcaseBlock: React.FC<ContentShowcaseBlockProps> = (props)
         {/* Cards or Media Items Carousel */}
         <div className="mt-16 md:mt-20 lg:mt-32">
           {cards && (
-            <div className="relative">
-              <div className="overflow-hidden">
-                <div
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"
-                  style={{ transform: getTransform() }}
-                >
-                  {cards.map((card, index) => (
-                    <div
-                      key={index}
-                      className="p-4 md:p-6 lg:p-8 flex-shrink-0 border border-black"
-                    >
-                      <Media
-                        resource={card.icon}
-                        className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
-                        imgClassName="object-cover h-full"
-                      />
-                      <h4 className="mt-3 md:mt-4 text-base md:text-lg font-semibold">
-                        {card.title}
-                      </h4>
-                      <p className="mt-2 text-sm md:text-base text-gray-600 whitespace-pre-line leading-relaxed">
-                        {card.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+            <div
+              ref={containerRef}
+              className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div
+                className={cn(
+                  'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8',
+                  isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out',
+                )}
+                style={{ transform: getTransform() }}
+              >
+                {cards.map((card, index) => (
+                  <div
+                    key={index}
+                    className="p-4 md:p-6 lg:p-8 flex-shrink-0 border border-black pointer-events-none"
+                  >
+                    <Media
+                      resource={card.icon}
+                      className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+                      imgClassName="object-cover h-full"
+                    />
+                    <h4 className="mt-3 md:mt-4 text-base md:text-lg font-semibold">
+                      {card.title}
+                    </h4>
+                    <p className="mt-2 text-sm md:text-base text-gray-600 whitespace-pre-line leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+                ))}
               </div>
-
-              {/* Navigation buttons for cards */}
-              {totalItems > itemsPerView && (
-                <div className="mt-4 md:mt-6 flex justify-center space-x-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-12 md:size-14 lg:size-16 p-3 md:p-4"
-                    onClick={goToPrevious}
-                    disabled={currentIndex === 0}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="md:w-5 md:h-5"
-                    >
-                      <path
-                        d="M20 11.25L4.78125 11.25L11.7813 18.25L10 20L1.19249e-07 10L10 -1.19249e-07L11.7813 1.75L4.78125 8.75L20 8.75L20 11.25Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-12 md:size-14 lg:size-16 p-3 md:p-4"
-                    onClick={goToNext}
-                    disabled={currentIndex === maxIndex}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="md:w-5 md:h-5"
-                    >
-                      <path
-                        d="M-3.82475e-07 8.75L15.2187 8.75L8.21875 1.75L10 4.37114e-07L20 10L10 20L8.21875 18.25L15.2187 11.25L-4.91753e-07 11.25L-3.82475e-07 8.75Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </Button>
-                </div>
-              )}
             </div>
           )}
 
           {mediaItems && (
-            <div className="relative">
-              <div className="overflow-hidden">
-                <div
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"
-                  style={{ transform: getTransform() }}
-                >
-                  {mediaItems.map((mediaItem, index) => (
-                    <div key={index} className="flex-shrink-0">
-                      <Media
-                        resource={mediaItem}
-                        className="w-full h-48 sm:h-56 md:h-64 lg:h-72"
-                        imgClassName="object-cover h-full w-full"
-                      />
-                    </div>
-                  ))}
-                </div>
+            <div
+              ref={containerRef}
+              className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div
+                className={cn(
+                  'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8',
+                  isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out',
+                )}
+                style={{ transform: getTransform() }}
+              >
+                {mediaItems.map((mediaItem, index) => (
+                  <div key={index} className="flex-shrink-0 pointer-events-none">
+                    <Media
+                      resource={mediaItem}
+                      className="w-full h-48 sm:h-56 md:h-64 lg:h-72"
+                      imgClassName="object-cover h-full w-full"
+                    />
+                  </div>
+                ))}
               </div>
-
-              {/* Navigation buttons for media items */}
-              {totalItems > itemsPerView && (
-                <div className="mt-4 md:mt-6 flex justify-center space-x-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-12 md:size-14 lg:size-16 p-3 md:p-4"
-                    onClick={goToPrevious}
-                    disabled={currentIndex === 0}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="md:w-5 md:h-5"
-                    >
-                      <path
-                        d="M20 11.25L4.78125 11.25L11.7813 18.25L10 20L1.19249e-07 10L10 -1.19249e-07L11.7813 1.75L4.78125 8.75L20 8.75L20 11.25Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-12 md:size-14 lg:size-16 p-3 md:p-4"
-                    onClick={goToNext}
-                    disabled={currentIndex === maxIndex}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="md:w-5 md:h-5"
-                    >
-                      <path
-                        d="M-3.82475e-07 8.75L15.2187 8.75L8.21875 1.75L10 4.37114e-07L20 10L10 20L8.21875 18.25L15.2187 11.25L-4.91753e-07 11.25L-3.82475e-07 8.75Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </Button>
-                </div>
-              )}
             </div>
           )}
         </div>

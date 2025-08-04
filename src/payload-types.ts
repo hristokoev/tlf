@@ -681,6 +681,7 @@ export interface TwoInOneBlock {
   mediaItems: (string | Media)[];
   certificationTitle: string;
   certification: string;
+  certificationDescription: string;
   cards: {
     title: string;
     icon: string | Media;
@@ -1283,6 +1284,7 @@ export interface TwoInOneBlockSelect<T extends boolean = true> {
   mediaItems?: T;
   certificationTitle?: T;
   certification?: T;
+  certificationDescription?: T;
   cards?:
     | T
     | {
@@ -1761,21 +1763,35 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  columns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?: {
-            relationTo: 'pages';
-            value: string | Page;
-          } | null;
-          url?: string | null;
-          label: string;
-        };
+        title: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | 'tiktok';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  bottomText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1807,20 +1823,34 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  columns?:
     | T
     | {
-        link?:
+        title?: T;
+        links?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  bottomText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

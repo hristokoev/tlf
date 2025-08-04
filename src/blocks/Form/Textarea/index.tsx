@@ -3,7 +3,8 @@ import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-f
 
 import { Label } from '@/components/ui/label'
 import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
-import React from 'react'
+import React, { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -15,6 +16,17 @@ export const Textarea: React.FC<
     rows?: number
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
+  const { watch } = useFormContext()
+  const [charCount, setCharCount] = useState(defaultValue?.length || 0)
+  const maxLength = 500
+
+  // Watch the field value to update character count
+  const fieldValue = watch(name) || ''
+
+  React.useEffect(() => {
+    setCharCount(fieldValue.length)
+  }, [fieldValue])
+
   return (
     <Width width={width} className="border">
       <div className="px-4 py-4 flex flex-col gap-2 w-full">
@@ -28,12 +40,31 @@ export const Textarea: React.FC<
             </span>
           )}
         </Label>
-        <TextAreaComponent
-          defaultValue={defaultValue}
-          id={name}
-          rows={rows}
-          {...register(name, { required: required })}
-        />
+        <div className="relative">
+          <TextAreaComponent
+            defaultValue={defaultValue}
+            id={name}
+            rows={rows}
+            maxLength={maxLength}
+            style={{ resize: 'none' }} // Prevent resizing
+            className="pr-16" // Add padding for character count
+            {...register(name, {
+              required: required ? `${label} je povinné` : false,
+              maxLength: {
+                value: maxLength,
+                message: `${label} nesmí překročit ${maxLength} znaků`,
+              },
+            })}
+          />
+          {/* Character count display */}
+          <div
+            className={`absolute bottom-2 right-2 text-xs ${
+              charCount > maxLength ? 'text-red-500' : 'text-gray-400'
+            }`}
+          >
+            {charCount}/{maxLength}
+          </div>
+        </div>
       </div>
       {errors[name] && <Error name={name} />}
     </Width>

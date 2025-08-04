@@ -57,6 +57,11 @@ export const TwoInOneBlock: Block = {
               required: true,
             },
             {
+              name: 'certificationDescription',
+              type: 'textarea',
+              required: true,
+            },
+            {
               name: 'cards',
               type: 'array',
               minRows: 3,

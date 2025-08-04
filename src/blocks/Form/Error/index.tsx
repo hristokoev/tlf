@@ -7,9 +7,15 @@ export const Error = ({ name }: { name: string }) => {
   const {
     formState: { errors },
   } = useFormContext()
-  return (
-    <div className="p-2 mt-2 text-red-500 text-sm">
-      {(errors[name]?.message as string) || 'This field is required'}
-    </div>
-  )
+
+  const error = errors[name]
+
+  if (!error) return null
+
+  // Get the error message, with fallbacks based on error type
+  const getMessage = () => {
+    if (error.message) return error.message as string
+  }
+
+  return <div className="p-2 mt-2 text-red-500 text-sm">{getMessage()}</div>
 }

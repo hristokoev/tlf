@@ -6,13 +6,14 @@ import { formatDateTime } from '@/utilities/formatDateTime'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
+import { CMSLink } from '@/components/Link'
 
 interface BlogBlockClientProps extends BlogBlockProps {
   postsDocs: any[]
 }
 
 export const BlogBlockClient: React.FC<BlogBlockClientProps> = (props) => {
-  const { type, heading, title, description, media, postsDocs } = props
+  const { type, heading, title, description, media, link, postsDocs } = props
 
   const sectionRef = useRef<HTMLElement>(null)
   const mediaRef = useRef<HTMLDivElement>(null)
@@ -309,9 +310,12 @@ export const BlogBlockClient: React.FC<BlogBlockClientProps> = (props) => {
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                    Ukazat více
-                  </Button>
+                  <CMSLink
+                    {...link}
+                    appearance="secondary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  />
                 </motion.div>
               </motion.div>
             )}

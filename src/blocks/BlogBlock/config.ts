@@ -46,7 +46,7 @@ export const BlogBlock: Block = {
     link({
       overrides: {
         admin: {
-          condition: (_, { type } = {}) => ['advanced'].includes(type),
+          condition: (_, { type } = {}) => ['compact'].includes(type),
         },
         required: true,
       },

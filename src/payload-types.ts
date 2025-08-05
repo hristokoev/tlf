@@ -190,6 +190,7 @@ export interface Page {
     | JobsBlock
     | MapInfoBlock
     | MediaBlock
+    | PartnersBlock
     | ProductsBlock
     | ScrollBlock
     | TeamBlock
@@ -618,6 +619,22 @@ export interface MediaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersBlock".
+ */
+export interface PartnersBlock {
+  heading: string;
+  partners: {
+    logo: string | Media;
+    name: string;
+    url: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'partnersBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsBlock".
  */
 export interface ProductsBlock {
@@ -682,6 +699,7 @@ export interface TwoInOneBlock {
   certificationTitle: string;
   certification: string;
   certificationDescription: string;
+  certificationLink: string | Media;
   cards: {
     title: string;
     icon: string | Media;
@@ -1073,6 +1091,7 @@ export interface PagesSelect<T extends boolean = true> {
         jobsBlock?: T | JobsBlockSelect<T>;
         mapInfoBlock?: T | MapInfoBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
+        partnersBlock?: T | PartnersBlockSelect<T>;
         productsBlock?: T | ProductsBlockSelect<T>;
         scrollBlock?: T | ScrollBlockSelect<T>;
         teamBlock?: T | TeamBlockSelect<T>;
@@ -1226,6 +1245,23 @@ export interface MediaBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersBlock_select".
+ */
+export interface PartnersBlockSelect<T extends boolean = true> {
+  heading?: T;
+  partners?:
+    | T
+    | {
+        logo?: T;
+        name?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsBlock_select".
  */
 export interface ProductsBlockSelect<T extends boolean = true> {
@@ -1285,6 +1321,7 @@ export interface TwoInOneBlockSelect<T extends boolean = true> {
   certificationTitle?: T;
   certification?: T;
   certificationDescription?: T;
+  certificationLink?: T;
   cards?:
     | T
     | {

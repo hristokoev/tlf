@@ -2,81 +2,45 @@
 
 import { Media } from '@/components/Media'
 import type { ScrollBlock as ScrollBlockProps } from '@/payload-types'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { useRef, useEffect, useState } from 'react'
+import { AnimatePresence, motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
 
 export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
   const { heading, media, title, text } = props
 
   const sectionRef = useRef<HTMLDivElement>(null)
+  const headingRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
-  const textContainerRef = useRef<HTMLDivElement>(null)
-  const [words, setWords] = useState<string[]>([])
-  const [wordTypes, setWordTypes] = useState<Array<{ word: string; isLineBreak: boolean }>>([])
 
-  const isInView = useInView(sectionRef, { margin: '-20% 0px -20% 0px' })
+  const isInView = useInView(sectionRef, { once: true, margin: '-10%' })
+  const isHeadingInView = useInView(headingRef, { once: true, margin: '-20%' })
+  const isTitleInView = useInView(titleRef, { once: true, margin: '-20%' })
+  const isTextInView = useInView(textRef, { once: true, margin: '-20%' })
 
-  // Split text into words on mount, preserving line breaks
-  useEffect(() => {
-    if (text) {
-      const lines = text.split('\n')
-      const wordsWithLineBreaks: Array<{ word: string; isLineBreak: boolean }> = []
+  // Split title into characters for gradual spacing effect
+  const titleChars = title.split('')
 
-      lines.forEach((line, lineIndex) => {
-        const lineWords = line.split(/\s+/).filter((word) => word.trim() !== '')
-        lineWords.forEach((word) => {
-          wordsWithLineBreaks.push({ word, isLineBreak: false })
-        })
-        if (lineIndex < lines.length - 1) {
-          wordsWithLineBreaks.push({ word: '', isLineBreak: true })
-        }
-      })
+  // Split text into words while preserving line breaks
+  type TextPart = { type: 'lineBreak' } | { type: 'words'; words: string[] }
 
-      setWords(wordsWithLineBreaks.map((item) => item.word))
-      setWordTypes(wordsWithLineBreaks)
-    }
-  }, [text])
-
-  // Use scroll progress within the section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start 0.3', 'end 0.7'],
-  })
-
-  // Transform scroll to word reveal progress
-  const wordProgress = useTransform(scrollYProgress, [0, 1], [0, words.length])
-
-  // Single transform for word progress, with auto-scroll to follow revealed words
-  const [currentWordIndex, setCurrentWordIndex] = useState(0)
-
-  useEffect(() => {
-    const unsubscribe = wordProgress.on('change', (latest) => {
-      const newIndex = Math.floor(latest)
-      setCurrentWordIndex(newIndex)
-
-      // Auto-scroll the text container to show the currently revealing word
-      if (textContainerRef.current && newIndex > 0) {
-        const container = textContainerRef.current
-        const containerHeight = container.clientHeight
-        const scrollHeight = container.scrollHeight
-
-        // Calculate approximate scroll position based on word progress
-        const scrollPercentage = Math.min(newIndex / words.length, 1)
-        const targetScrollTop = (scrollHeight - containerHeight) * scrollPercentage
-
-        // Smooth scroll to the target position
-        container.scrollTo({
-          top: targetScrollTop,
-          behavior: 'smooth',
-        })
-      }
+  const textParts: TextPart[] = text
+    .split(/(\n)/)
+    .map((part) => {
+      if (part === '\n') return { type: 'lineBreak' } as const
+      return {
+        type: 'words',
+        words: part.split(/\s+/).filter((word) => word.trim() !== ''),
+      } as const
     })
-    return unsubscribe
-  }, [wordProgress, words.length])
+    .filter(
+      (part): part is TextPart =>
+        part.type === 'lineBreak' || (part.type === 'words' && part.words.length > 0),
+    )
 
   return (
-    <section ref={sectionRef} className="relative min-h-[150vh]">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 md:py-24 min-h-[60vh] md:min-h-[80vh]">
+      <div className="container">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Media
@@ -89,99 +53,91 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/60 md:bg-black/50" />
 
-        <div className="container w-full relative z-10">
-          {/* Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center h-full px-4 sm:px-6 lg:px-8">
-            {/* Left Section - Title */}
-            <div className="space-y-6 md:space-y-8 lg:space-y-12">
-              <motion.span
-                className="block uppercase text-white text-sm md:text-base tracking-wider"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                {heading}
-              </motion.span>
-              <motion.h2
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white leading-none"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                {title}
-              </motion.h2>
-            </div>
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-16">
+          {/* Left Section - Title */}
+          <div className="flex flex-col gap-6 md:gap-12 lg:gap-16">
+            {/* Heading Animation */}
+            <motion.span
+              ref={headingRef}
+              className="uppercase text-white text-sm md:text-base tracking-wider"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isHeadingInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {heading}
+            </motion.span>
 
-            {/* Right Section - Text */}
-            <div className="lg:max-w-3xl flex flex-col justify-center h-full py-8">
-              {/* Mobile/Tablet - Scrollable text container */}
-              <div className="lg:hidden">
-                <div className="max-h-[70vh] overflow-y-auto scrollbar-hide py-4 px-2">
-                  <motion.p
-                    className="text-lg sm:text-xl md:text-2xl whitespace-pre-line text-white leading-relaxed"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
+            {/* Title with Gradual Spacing Effect */}
+            <div ref={titleRef} className="flex flex-wrap">
+              <AnimatePresence>
+                {titleChars.map((char, i) => (
+                  <motion.h2
+                    key={i}
+                    initial={{ opacity: 0, x: -18 }}
+                    animate={isTitleInView ? { opacity: 1, x: 0 } : {}}
+                    exit="hidden"
+                    transition={{ duration: 0.3, delay: i * 0.02 }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white leading-none"
                   >
-                    {text}
-                  </motion.p>
-                </div>
-              </div>
-
-              {/* Desktop - Word reveal effect in scrollable container */}
-              <div className="hidden lg:block" ref={textRef}>
-                <div
-                  ref={textContainerRef}
-                  className="max-h-[70vh] overflow-y-auto scrollbar-hide py-6 px-4"
-                >
-                  <div className="text-2xl xl:text-3xl leading-relaxed text-white">
-                    {wordTypes.map((item, index) => {
-                      if (item.isLineBreak) {
-                        return <br key={index} />
-                      }
-
-                      // Find the corresponding word index (excluding line breaks)
-                      const wordIndex = wordTypes
-                        .slice(0, index)
-                        .filter((w) => !w.isLineBreak).length
-
-                      // Calculate opacity based on current progress
-                      const getOpacity = () => {
-                        if (wordIndex < currentWordIndex - 2) return 1
-                        if (wordIndex === currentWordIndex) return 1
-                        if (wordIndex === currentWordIndex - 1) return 1
-                        if (wordIndex === currentWordIndex + 1) return 0.5
-                        if (wordIndex > currentWordIndex) return 0.1
-                        return 1
-                      }
-
-                      return (
-                        <motion.span
-                          key={index}
-                          className="inline-block mr-2"
-                          animate={{
-                            opacity: getOpacity(),
-                          }}
-                          transition={{
-                            duration: 0.2,
-                            ease: 'easeOut',
-                          }}
-                        >
-                          {item.word}
-                        </motion.span>
-                      )
-                    })}
-                  </div>
-                </div>
-              </div>
+                    {char === ' ' ? <span>&nbsp;</span> : char}
+                  </motion.h2>
+                ))}
+              </AnimatePresence>
             </div>
           </div>
 
-          {/* Decorative Line */}
-          <div className="hidden lg:flex absolute right-6 xl:right-12 top-0 h-full w-4 py-16 flex-col items-center justify-center space-y-6 z-10">
-            <div className="bg-white w-[0.5px] h-full opacity-60"></div>
+          {/* Right Section - Text */}
+          <div className="flex-1 lg:max-w-3xl">
+            <div
+              ref={textRef}
+              className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl leading-relaxed text-white"
+            >
+              <AnimatePresence>
+                {textParts.map((part, partIndex) => {
+                  if (part.type === 'lineBreak') {
+                    return <br key={`br-${partIndex}`} />
+                  }
+
+                  return part.words.map((word, wordIndex) => {
+                    // Calculate global word index for staggered delay
+                    let globalIndex = 0
+                    for (let i = 0; i < partIndex; i++) {
+                      const currentPart = textParts[i]
+                      if (currentPart && currentPart.type === 'words') {
+                        globalIndex += currentPart.words.length
+                      }
+                    }
+                    globalIndex += wordIndex
+
+                    return (
+                      <motion.span
+                        key={`${partIndex}-${wordIndex}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={isTextInView ? { opacity: 1, y: 0 } : {}}
+                        exit="hidden"
+                        transition={{ duration: 0.3, delay: globalIndex * 0.03 }}
+                        className="inline-block mr-2"
+                      >
+                        {word}
+                      </motion.span>
+                    )
+                  })
+                })}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
+
+        {/* Decorative Line - Desktop Only */}
+        <motion.div
+          className="hidden lg:flex absolute right-6 xl:right-12 top-0 h-full w-4 py-16 flex-col items-center justify-center space-y-6 z-20"
+          initial={{ opacity: 0, scaleY: 0 }}
+          animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <div className="bg-white w-[0.5px] h-full opacity-60"></div>
+        </motion.div>
       </div>
     </section>
   )

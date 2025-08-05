@@ -16,6 +16,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
     certification,
     certificationTitle,
     certificationDescription,
+    certificationLink,
     link,
     mediaItems,
   } = props
@@ -359,14 +360,14 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
       {/* Second Section - Cards and Certification */}
       <section className="bg-background py-12 md:py-24">
         <div className="container">
-          <div className="flex flex-col xl:flex-row items-stretch gap-8 xl:gap-32">
+          <div className="flex flex-col xl:flex-row items-stretch gap-8 lg:gap-16">
             {/* Cards Grid */}
             <div className="w-full xl:flex-1">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 h-full">
                 {cards?.map((card, index) => (
                   <motion.div
                     key={index}
-                    className="bg-white p-6 md:p-8 flex flex-col space-y-4 w-full max-w-none sm:max-w-[300px] mx-auto"
+                    className="bg-white p-6 md:p-8 flex flex-col space-y-4 w-full mx-auto"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{
@@ -385,7 +386,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                       className="w-12 h-12 md:w-16 md:h-16"
                       imgClassName="object-cover h-full w-full"
                     />
-                    <h3 className="text-xl font-semibold leading-tight">{card.title}</h3>
+                    <h3 className="text-lg font-semibold leading-tight">{card.title}</h3>
                   </motion.div>
                 ))}
               </div>
@@ -561,27 +562,29 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         <p className="text-gray-700 leading-relaxed">{certificationDescription}</p>
                       </div>
 
-                      {/* Call to Action */}
+                      {/* Download Button */}
                       <motion.div
-                        className="bg-blue-50 p-6 border border-blue-200"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3 }}
+                        className="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-md"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
                       >
-                        <h5 className="font-semibold text-blue-900 mb-2">
-                          Chcete se dozvědět více?
-                        </h5>
-                        <p className="text-blue-800 mb-4">
-                          Kontaktujte nás a poraďte se s námi, jak mohou být naše certifikované
-                          procesy přínosné pro váš projekt.
-                        </p>
-                        <Link href="/kontakt">
+                        <h5 className="font-semibold text-gray-900">Stáhnout certifikát</h5>
+                        <Link
+                          href={
+                            typeof certificationLink === 'string'
+                              ? certificationLink
+                              : certificationLink?.url || '#'
+                          }
+                          passHref
+                          target="_blank"
+                        >
                           <motion.button
-                            className="bg-blue-600 text-white px-6 py-2 hover:bg-blue-700 transition-colors"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Kontaktujte nás
+                            Stáhnout
                           </motion.button>
                         </Link>
                       </motion.div>

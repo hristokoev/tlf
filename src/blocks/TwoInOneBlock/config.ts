@@ -62,6 +62,12 @@ export const TwoInOneBlock: Block = {
               required: true,
             },
             {
+              name: 'certificationLink',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+            {
               name: 'cards',
               type: 'array',
               minRows: 3,

@@ -72,3 +72,28 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Override autofill background for webkit browsers */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Alternative approach using background-color transition delay */
+input:-webkit-autofill {
+  background-color: hsl(var(--background)) !important;
+  color: white !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* For other browsers that support autofill styling */
+input:autofill {
+  background-color: hsl(var(--background)) !important;
+  color: white !important;
+}

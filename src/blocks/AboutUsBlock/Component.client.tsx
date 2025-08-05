@@ -26,9 +26,9 @@ export const AboutUsBlockClient: React.FC<AboutUsBlockProps> = (props) => {
   })
 
   // Different parallax speeds for left and right images
-  const leftImageY = useTransform(scrollYProgress, [0, 1], ['33%', '-10%'])
-  const rightImage1Y = useTransform(scrollYProgress, [0, 1], ['-10%', '33%'])
-  const rightImage2Y = useTransform(scrollYProgress, [0, 1], ['-10%', '33%'])
+  const leftImageY = useTransform(scrollYProgress, [0, 1], ['25%', '-10%'])
+  const rightImage1Y = useTransform(scrollYProgress, [0, 1], ['-10%', '25%'])
+  const rightImage2Y = useTransform(scrollYProgress, [0, 1], ['-10%', '25%'])
 
   return (
     <section
@@ -158,7 +158,7 @@ const CounterAnimation: React.FC<{
 
   return (
     <div className="flex flex-col items-center sm:items-start lg:items-center text-center sm:text-left lg:text-center">
-      <div className="text-6xl sm:text-7xl md:text-8xl lg:text-[96px] xl:text-[128px] font-bold leading-none">
+      <div className="text-6xl sm:text-7xl md:text-8xl lg:text-[96px] font-bold leading-none">
         <span ref={counterRef}>0</span>
         {overflow && <span>+</span>}
       </div>

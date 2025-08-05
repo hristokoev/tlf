@@ -10,6 +10,7 @@ import { ContentShowcaseBlock } from './ContentShowcaseBlock/Component'
 import { JobsBlock } from './JobsBlock/Component'
 import { MapInfoBlock } from './MapInfoBlock/Component'
 import { MediaBlock } from './MediaBlock/Component'
+import { PartnersBlock } from './PartnersBlock/Component'
 import { ProductsBlock } from './ProductsBlock/Component'
 import { ScrollBlock } from './ScrollBlock/Component'
 import { TeamBlock } from './TeamBlock/Component'
@@ -24,6 +25,7 @@ const blockComponents = {
   jobsBlock: JobsBlock,
   mapInfoBlock: MapInfoBlock,
   mediaBlock: MediaBlock,
+  partnersBlock: PartnersBlock,
   productsBlock: ProductsBlock,
   scrollBlock: ScrollBlock,
   teamBlock: TeamBlock,

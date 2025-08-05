@@ -25,6 +25,7 @@ import { ContactBlock } from '@/blocks/ContactBlock/config'
 import { ContentShowcaseBlock } from '@/blocks/ContentShowcaseBlock/config'
 import { JobsBlock } from '@/blocks/JobsBlock/config'
 import { MapInfoBlock } from '@/blocks/MapInfoBlock/config'
+import { PartnersBlock } from '@/blocks/PartnersBlock/config'
 import { ProductsBlock } from '@/blocks/ProductsBlock/config'
 import { TeamBlock } from '@/blocks/TeamBlock/config'
 
@@ -91,6 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 JobsBlock,
                 MapInfoBlock,
                 MediaBlock,
+                PartnersBlock,
                 ProductsBlock,
                 ScrollBlock,
                 TeamBlock,

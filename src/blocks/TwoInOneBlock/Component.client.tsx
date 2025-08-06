@@ -543,7 +543,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         </svg>
                       </div>
                       <div>
-                        <h3 className="text-2xl font-semibold text-gray-900">Naše certifikace</h3>
+                        <h3 className="text-xl font-semibold text-gray-900">Naše certifikace</h3>
                         <p className="text-gray-600">Zajištění kvality a normy</p>
                       </div>
                     </motion.div>
@@ -555,11 +555,11 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <div className="p-6">
-                        <h4 className="text-xl font-semibold mb-3 text-gray-900">
-                          {certification}
-                        </h4>
-                        <p className="text-gray-700 leading-relaxed">{certificationDescription}</p>
+                      <div className="p-2">
+                        <h4 className="font-semibold mb-3 text-gray-900">{certification}</h4>
+                        <p className="text-gray-700 leading-relaxed text-sm">
+                          {certificationDescription}
+                        </p>
                       </div>
 
                       {/* Download Button */}
@@ -569,7 +569,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
                       >
-                        <h5 className="font-semibold text-gray-900">Stáhnout certifikát</h5>
+                        <h5 className="font-semibold text-gray-900">Zobrazit certifikát</h5>
                         <Link
                           href={
                             typeof certificationLink === 'string'
@@ -584,7 +584,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Stáhnout
+                            Zobrazit
                           </motion.button>
                         </Link>
                       </motion.div>

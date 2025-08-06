@@ -67,7 +67,7 @@ export const TeamBlockClient: React.FC<TeamBlockProps> = (props) => {
         {members.map((member, index) => (
           <motion.div
             key={member.id}
-            className="flex flex-col gap-6 md:gap-8 group cursor-pointer"
+            className="flex flex-col gap-6 md:gap-8 group"
             variants={memberVariants}
             whileHover={{
               scale: 1.02,

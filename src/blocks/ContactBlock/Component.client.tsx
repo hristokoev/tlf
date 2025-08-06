@@ -32,12 +32,10 @@ export const ContactBlockClient: React.FC<ContactBlockProps> = (props) => {
     hidden: {
       opacity: 0,
       y: 60,
-      filter: 'blur(10px)',
     },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
       transition: {
         duration: 0.8,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
@@ -49,12 +47,10 @@ export const ContactBlockClient: React.FC<ContactBlockProps> = (props) => {
     hidden: {
       opacity: 0,
       x: -100,
-      filter: 'blur(8px)',
     },
     visible: {
       opacity: 1,
       x: 0,
-      filter: 'blur(0px)',
       transition: {
         duration: 1,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
@@ -67,13 +63,11 @@ export const ContactBlockClient: React.FC<ContactBlockProps> = (props) => {
       opacity: 0,
       x: 100,
       scale: 0.95,
-      filter: 'blur(8px)',
     },
     visible: {
       opacity: 1,
       x: 0,
       scale: 1,
-      filter: 'blur(0px)',
       transition: {
         duration: 1.2,
         ease: [0.25, 0.46, 0.45, 0.94] as const,

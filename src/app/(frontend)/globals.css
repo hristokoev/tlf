@@ -16,34 +16,24 @@
   :root {
     --background: 0 0% 8%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 240 5% 96%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 8%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 214 47% 37%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 214 47% 37%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 214 47% 37%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 240 6% 80%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
     --radius: 0.2rem;
-
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
@@ -54,9 +44,18 @@
   * {
     @apply border-border;
   }
+
+  /* Enhanced smooth scrolling for all elements */
   html {
     @apply scroll-smooth;
+    scroll-behavior: smooth;
   }
+
+  /* Apply smooth scrolling to all scrollable containers */
+  * {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
@@ -71,6 +70,12 @@
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* Smooth scrolling for specific containers */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
 }
 
 /* Override autofill background for webkit browsers */

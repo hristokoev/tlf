@@ -70,7 +70,7 @@ export default async function Job({ params: paramsPromise }: Args) {
         <div className="hidden lg:flex justify-center">
           <Media
             resource={availableImages[0]}
-            className="w-full max-w-[400px] h-[600px] shadow-2xl overflow-hidden"
+            className="w-full max-w-[400px] h-[600px] overflow-hidden"
             imgClassName="object-cover h-full w-full"
           />
         </div>
@@ -82,12 +82,12 @@ export default async function Job({ params: paramsPromise }: Args) {
         <div className="hidden lg:grid grid-cols-1 gap-4 max-w-[400px] mx-auto">
           <Media
             resource={availableImages[0]}
-            className="w-full h-[290px] shadow-2xl overflow-hidden"
+            className="w-full h-[290px] overflow-hidden"
             imgClassName="object-cover h-full w-full"
           />
           <Media
             resource={availableImages[1]}
-            className="w-full h-[290px] shadow-2xl overflow-hidden"
+            className="w-full h-[290px] overflow-hidden"
             imgClassName="object-cover h-full w-full"
           />
         </div>
@@ -100,20 +100,20 @@ export default async function Job({ params: paramsPromise }: Args) {
         <div className="flex flex-col justify-start">
           <Media
             resource={availableImages[0]}
-            className="w-full mb-4 max-w-[360px] h-[600px] shadow-2xl overflow-hidden"
+            className="w-full mb-4 max-w-[360px] h-[600px] overflow-hidden"
             imgClassName="object-cover h-full w-full"
           />
         </div>
         <div className="flex flex-col justify-end gap-4">
           <Media
             resource={availableImages[1]}
-            className="w-full max-w-[277px] h-[277px] shadow-2xl overflow-hidden"
+            className="w-full max-w-[277px] h-[277px] overflow-hidden"
             imgClassName="object-cover h-full w-full"
           />
           {availableImages[2] && (
             <Media
               resource={availableImages[2]}
-              className="w-full max-w-[277px] h-[277px] shadow-2xl overflow-hidden"
+              className="w-full max-w-[277px] h-[277px] overflow-hidden"
               imgClassName="object-cover h-full w-full"
             />
           )}
@@ -183,7 +183,7 @@ export default async function Job({ params: paramsPromise }: Args) {
                     <div key={index} className="flex-shrink-0">
                       <Media
                         resource={image}
-                        className="w-72 h-80 shadow-xl overflow-hidden"
+                        className="w-72 h-80 overflow-hidden"
                         imgClassName="object-cover h-full w-full"
                       />
                     </div>

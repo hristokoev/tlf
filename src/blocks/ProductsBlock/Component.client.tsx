@@ -88,7 +88,7 @@ export const ProductsBlockClient: React.FC<ProductsBlockClientProps> = ({ headin
                 className="group"
               >
                 <Link href={`/produkty/${product.slug}`} className="block">
-                  <div className="w-full flex flex-col bg-white border border-black/10 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+                  <div className="w-full flex flex-col bg-white border border-black/10 overflow-hidden transition-all duration-500">
                     {/* Product Image */}
                     <div className="relative overflow-hidden">
                       <motion.div

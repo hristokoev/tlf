@@ -88,7 +88,7 @@ export const JobsBlockClient: React.FC<JobsBlockClientProps> = ({ heading, jobs 
                 className="group"
               >
                 <Link href={`/nabidky/${job.slug}`} className="block">
-                  <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 lg:p-10 border border-black/10 shadow-sm hover:shadow-xl hover:border-neutral-300/60 transition-all duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 lg:p-10 border border-black/10 hover:border-neutral-300/60 transition-all duration-300">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                       {/* Job Info */}
                       <div className="flex-1">
@@ -107,7 +107,7 @@ export const JobsBlockClient: React.FC<JobsBlockClientProps> = ({ heading, jobs 
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center group-hover:from-gray-200 group-hover:to-gray-300 transition-all duration-300 shadow-sm">
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center group-hover:from-gray-200 group-hover:to-gray-300 transition-all duration-300">
                           <motion.svg
                             className="w-5 h-5 md:w-6 md:h-6 text-gray-700"
                             fill="none"

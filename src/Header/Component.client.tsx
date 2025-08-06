@@ -55,7 +55,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     if (isWhiteBackgroundPage) {
       // White background pages
       if (isScrolled) {
-        return 'backdrop-blur-md bg-white/95 text-black shadow-sm'
+        return 'backdrop-blur-md bg-white/95 text-black'
       } else {
         return 'bg-white text-black'
       }

@@ -76,7 +76,7 @@ export default async function Post({ params: paramsPromise }: Args) {
               {/* Content Column */}
               <div className="order-2 lg:order-1 space-y-8">
                 {/* Date Badge */}
-                <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-sm border border-gray-200 shadow-sm">
+                <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-sm border border-gray-200">
                   <time className="text-sm font-medium text-gray-800">
                     {formatDateTime(post.publishedAt as string)}
                   </time>
@@ -99,7 +99,7 @@ export default async function Post({ params: paramsPromise }: Args) {
               <div className="order-1 lg:order-2">
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-gray-400 to-neutral-400 blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-                  <div className="relative bg-white shadow-xl overflow-hidden">
+                  <div className="relative bg-white overflow-hidden">
                     <Media
                       resource={post.content.media}
                       className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] xl:h-[500px]"
@@ -122,7 +122,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               {/* Content Card */}
-              <div className="bg-white/80 backdrop-blur-sm shadow-xl border border-white/20 overflow-hidden">
+              <div className="bg-white/80 backdrop-blur-sm border border-white/20 overflow-hidden">
                 <div className="p-8 sm:p-12 lg:p-16">
                   <div
                     className="prose prose-lg prose-gray max-w-none
@@ -138,8 +138,7 @@ export default async function Post({ params: paramsPromise }: Args) {
                   prose-blockquote:border-l-4 prose-blockquote:border-gray-400  
                   prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600
                   prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded
-                  prose-pre:bg-gray-900 prose-pre:text-gray-100
-                  prose-img:shadow-lg"
+                  prose-pre:bg-gray-900 prose-pre:text-gray-100"
                   >
                     <RichText data={post.content.content} enableGutter={false} />
                   </div>

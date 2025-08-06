@@ -269,7 +269,7 @@ export const ContentShowcaseBlockClient: React.FC<ContentShowcaseBlockProps> = (
             <motion.div className="w-full lg:w-auto lg:flex-shrink-0" variants={mediaVariants}>
               <Media
                 resource={media}
-                className="w-full h-64 sm:h-80 md:h-96 lg:w-[450px] lg:h-[500px] xl:w-[652px] xl:h-[690px] overflow-hidden shadow-2xl"
+                className="w-full h-64 sm:h-80 md:h-96 lg:w-[450px] lg:h-[500px] xl:w-[652px] xl:h-[690px] overflow-hidden"
                 imgClassName="object-cover h-full w-full"
               />
             </motion.div>
@@ -373,7 +373,7 @@ export const ContentShowcaseBlockClient: React.FC<ContentShowcaseBlockProps> = (
             >
               <Media
                 resource={media}
-                className="w-full h-64 sm:h-80 md:h-96 lg:w-[450px] lg:h-[500px] xl:w-[652px] xl:h-[690px] overflow-hidden shadow-2xl"
+                className="w-full h-64 sm:h-80 md:h-96 lg:w-[450px] lg:h-[500px] xl:w-[652px] xl:h-[690px] overflow-hidden"
                 imgClassName="object-cover h-full w-full"
               />
             </motion.div>
@@ -421,7 +421,7 @@ export const ContentShowcaseBlockClient: React.FC<ContentShowcaseBlockProps> = (
                         transition: { duration: 0.3, ease: 'easeOut' },
                       }}
                     >
-                      <div className="flex flex-col space-y-6 h-full p-8 bg-white shadow-lg border border-black/10 hover:shadow-2xl transition-shadow duration-300">
+                      <div className="flex flex-col space-y-6 h-full p-8 bg-white border border-black/10 hover:transition-shadow duration-300">
                         {/* Icon */}
                         <motion.div className="flex-shrink-0">
                           <div className="w-16 h-16 md:w-20 md:h-20 p-4 transition-colors duration-300">
@@ -466,7 +466,7 @@ export const ContentShowcaseBlockClient: React.FC<ContentShowcaseBlockProps> = (
                   >
                     <Media
                       resource={item}
-                      className="w-full aspect-square overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                      className="w-full aspect-square overflow-hidden hover:transition-shadow duration-300"
                       imgClassName="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                     />
                   </motion.div>

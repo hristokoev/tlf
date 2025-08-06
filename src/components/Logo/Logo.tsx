@@ -27,12 +27,12 @@ export const Logo = (props: Props) => {
     /* eslint-disable @next/next/no-img-element */
     <img
       alt="TLF Logo"
-      width={328}
-      height={276}
+      width={76}
+      height={64}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('w-full h-[64px]', className)}
+      className={clsx('h-[64px]', className)}
       src={logoSrc.src}
     />
   )

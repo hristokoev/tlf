@@ -16,7 +16,7 @@ const AnimatedWord: React.FC<{
   const opacity = useTransform(
     scrollProgress,
     [0, Math.min(wordProgress - 0.05, 0.85), Math.min(wordProgress + 0.05, 0.95), 1],
-    [0, 0, 1, 1],
+    [0.2, 0.2, 1, 1],
   )
 
   if (isTitle) {

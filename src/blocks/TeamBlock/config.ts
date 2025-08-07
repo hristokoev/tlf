@@ -20,6 +20,10 @@ export const TeamBlock: Block = {
           required: true,
         },
         {
+          name: 'position',
+          type: 'text',
+        },
+        {
           type: 'row',
           fields: [
             {

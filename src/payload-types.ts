@@ -664,6 +664,7 @@ export interface TeamBlock {
   members: {
     media: string | Media;
     name: string;
+    position?: string | null;
     phoneWork?: string | null;
     phoneMobile?: string | null;
     email?: string | null;
@@ -1291,6 +1292,7 @@ export interface TeamBlockSelect<T extends boolean = true> {
     | {
         media?: T;
         name?: T;
+        position?: T;
         phoneWork?: T;
         phoneMobile?: T;
         email?: T;

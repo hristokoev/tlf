@@ -16,7 +16,7 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
   // Scroll-based progress for the entire section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 1', 'end 0.3'],
+    offset: ['start 0.8', 'end 0.6'],
   })
 
   // View-based triggers for initial animations
@@ -87,22 +87,19 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
             {/* Title with Word-by-word Scroll Highlighting */}
             <div ref={titleRef} className="flex flex-wrap">
               {titleWords.map((word, wordIndex) => {
-                // Calculate when this word should be highlighted based on scroll progress
                 const wordProgress = wordIndex / totalWords
-                const nextWordProgress = (wordIndex + 1) / totalWords
-
-                // Transform scroll progress to word opacity (keep highlighted words at full opacity)
-                const opacity = useTransform(
-                  scrollYProgress,
-                  [0, wordProgress - 0.1, wordProgress + 0.1, 1],
-                  [0, 0, 1, 1],
-                )
 
                 return (
                   <motion.h2
                     key={wordIndex}
-                    style={{ opacity }}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white mr-4 mb-2"
+                    style={{
+                      opacity: useTransform(
+                        scrollYProgress,
+                        [0, wordProgress - 0.05, wordProgress + 0.05, 1],
+                        [0, 0, 1, 1],
+                      ),
+                    }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white leading-none mr-4 mb-2"
                   >
                     {word}
                   </motion.h2>
@@ -117,47 +114,41 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
               ref={textRef}
               className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl leading-relaxed text-white"
             >
-              {textParts.map((part, partIndex) => {
-                if (part.type === 'lineBreak') {
-                  return <br key={`br-${partIndex}`} />
-                }
-
-                return part.words.map((word, wordIndex) => {
-                  // Calculate global word index for text words (after title words)
-                  let globalTextWordIndex = 0
-                  for (let i = 0; i < partIndex; i++) {
-                    const currentPart = textParts[i]
-                    if (currentPart && currentPart.type === 'words') {
-                      globalTextWordIndex += currentPart.words.length
-                    }
+              {(() => {
+                let globalTextWordIndex = 0
+                return textParts.map((part, partIndex) => {
+                  if (part.type === 'lineBreak') {
+                    return <br key={`br-${partIndex}`} />
                   }
-                  globalTextWordIndex += wordIndex
 
-                  // Offset by title words length
-                  const totalWordIndex = titleWords.length + globalTextWordIndex
+                  return part.words.map((word, wordIndex) => {
+                    const totalWordIndex = titleWords.length + globalTextWordIndex
+                    const wordProgress = totalWordIndex / totalWords
+                    globalTextWordIndex++
 
-                  // Calculate when this word should be highlighted
-                  const wordProgress = totalWordIndex / totalWords
-                  const nextWordProgress = (totalWordIndex + 1) / totalWords
-
-                  // Transform scroll progress to word opacity (keep highlighted words visible)
-                  const opacity = useTransform(
-                    scrollYProgress,
-                    [0, wordProgress - 0.05, wordProgress + 0.05, 1],
-                    [0, 0, 1, 1],
-                  )
-
-                  return (
-                    <motion.span
-                      key={`${partIndex}-${wordIndex}`}
-                      style={{ opacity }}
-                      className="inline-block mr-2 transition-all duration-100"
-                    >
-                      {word}
-                    </motion.span>
-                  )
+                    return (
+                      <motion.span
+                        key={`${partIndex}-${wordIndex}`}
+                        style={{
+                          opacity: useTransform(
+                            scrollYProgress,
+                            [
+                              0,
+                              Math.min(wordProgress - 0.05, 0.85),
+                              Math.min(wordProgress + 0.05, 0.95),
+                              1,
+                            ],
+                            [0, 0, 1, 1],
+                          ),
+                        }}
+                        className="inline-block mr-2 transition-all duration-100"
+                      >
+                        {word}
+                      </motion.span>
+                    )
+                  })
                 })
-              })}
+              })()}
             </div>
           </div>
         </div>

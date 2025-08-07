@@ -9,6 +9,7 @@ import {
 
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { slugField } from '@/fields/slug'
+import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -19,6 +20,8 @@ export const Posts: CollectionConfig = {
     defaultColumns: ['title', 'updatedAt'],
   },
   hooks: {
+    afterChange: [revalidatePost],
+    afterDelete: [revalidateDelete],
     beforeChange: [populatePublishedAt],
   },
   fields: [

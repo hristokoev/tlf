@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 
 import { slugField } from '@/fields/slug'
+import { revalidateDelete, revalidateJob } from './hooks/revalidateJob'
 
 export const Jobs: CollectionConfig = {
   slug: 'jobs',
@@ -16,6 +17,10 @@ export const Jobs: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['title', 'updatedAt'],
+  },
+  hooks: {
+    afterChange: [revalidateJob],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {

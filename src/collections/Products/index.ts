@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 
 import { slugField } from '@/fields/slug'
+import { revalidateDelete, revalidateProduct } from './hooks/revalidateProduct'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -16,6 +17,10 @@ export const Products: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['title', 'updatedAt'],
+  },
+  hooks: {
+    afterChange: [revalidateProduct],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {

@@ -2,8 +2,37 @@
 
 import { Media } from '@/components/Media'
 import type { ScrollBlock as ScrollBlockProps } from '@/payload-types'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView, MotionValue } from 'framer-motion'
 import { useRef } from 'react'
+
+// Separate component for animated words
+const AnimatedWord: React.FC<{
+  word: string
+  scrollProgress: MotionValue<number>
+  wordProgress: number
+  className: string
+  isTitle?: boolean
+}> = ({ word, scrollProgress, wordProgress, className, isTitle = false }) => {
+  const opacity = useTransform(
+    scrollProgress,
+    [0, Math.min(wordProgress - 0.05, 0.85), Math.min(wordProgress + 0.05, 0.95), 1],
+    [0, 0, 1, 1],
+  )
+
+  if (isTitle) {
+    return (
+      <motion.h2 style={{ opacity }} className={className}>
+        {word}
+      </motion.h2>
+    )
+  }
+
+  return (
+    <motion.span style={{ opacity }} className={className}>
+      {word}
+    </motion.span>
+  )
+}
 
 export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
   const { heading, media, title, text } = props
@@ -16,7 +45,7 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
   // Scroll-based progress for the entire section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 0.8', 'end 0.6'],
+    offset: ['start 1.2', 'end 0.5'],
   })
 
   // View-based triggers for initial animations
@@ -90,19 +119,14 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
                 const wordProgress = wordIndex / totalWords
 
                 return (
-                  <motion.h2
+                  <AnimatedWord
                     key={wordIndex}
-                    style={{
-                      opacity: useTransform(
-                        scrollYProgress,
-                        [0, wordProgress - 0.05, wordProgress + 0.05, 1],
-                        [0, 0, 1, 1],
-                      ),
-                    }}
+                    word={word}
+                    scrollProgress={scrollYProgress}
+                    wordProgress={wordProgress}
                     className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white leading-none mr-4 mb-2"
-                  >
-                    {word}
-                  </motion.h2>
+                    isTitle={true}
+                  />
                 )
               })}
             </div>
@@ -127,24 +151,13 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
                     globalTextWordIndex++
 
                     return (
-                      <motion.span
+                      <AnimatedWord
                         key={`${partIndex}-${wordIndex}`}
-                        style={{
-                          opacity: useTransform(
-                            scrollYProgress,
-                            [
-                              0,
-                              Math.min(wordProgress - 0.05, 0.85),
-                              Math.min(wordProgress + 0.05, 0.95),
-                              1,
-                            ],
-                            [0, 0, 1, 1],
-                          ),
-                        }}
+                        word={word}
+                        scrollProgress={scrollYProgress}
+                        wordProgress={wordProgress}
                         className="inline-block mr-2 transition-all duration-100"
-                      >
-                        {word}
-                      </motion.span>
+                      />
                     )
                   })
                 })

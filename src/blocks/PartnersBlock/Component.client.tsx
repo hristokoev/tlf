@@ -57,7 +57,7 @@ export const PartnersBlockClient: React.FC<PartnersBlockClientProps> = ({ partne
             href={partner.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group flex items-center justify-center w-full h-20 opacity-60 hover:opacity-100 transition-all duration-500 transform ${
+            className={`group flex items-center justify-center w-full opacity-60 hover:opacity-100 transition-all duration-500 transform ${
               isVisible ? 'translate-y-0 opacity-60' : 'translate-y-8 opacity-0'
             }`}
             style={{
@@ -81,7 +81,7 @@ export const PartnersBlockClient: React.FC<PartnersBlockClientProps> = ({ partne
             href={partner.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group flex items-center justify-center w-full h-20 opacity-60 hover:opacity-100 transition-all duration-500 transform ${
+            className={`group flex items-center justify-center w-full opacity-60 hover:opacity-100 transition-all duration-500 transform ${
               isVisible ? 'translate-y-0 opacity-60' : 'translate-y-8 opacity-0'
             }`}
             style={{
@@ -105,7 +105,7 @@ export const PartnersBlockClient: React.FC<PartnersBlockClientProps> = ({ partne
             href={partner.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group flex items-center justify-center w-full h-16 opacity-60 hover:opacity-100 transition-all duration-500 transform ${
+            className={`group flex items-center justify-center w-full opacity-60 hover:opacity-100 transition-all duration-500 transform ${
               isVisible ? 'translate-y-0 opacity-60' : 'translate-y-8 opacity-0'
             }`}
             style={{

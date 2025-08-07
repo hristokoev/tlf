@@ -14,6 +14,14 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
     payload.logger.info(`Revalidating post at path: ${path}`)
 
     revalidatePath(path)
+
+    // Revalidate the main posts page
+    revalidatePath('/aktuality')
+
+    // Revalidate the home page
+    revalidatePath('/')
+
+    // Revalidate the posts sitemap
     revalidateTag('posts-sitemap')
   }
   return doc

@@ -14,6 +14,14 @@ export const revalidateProduct: CollectionAfterChangeHook<Product> = ({
     payload.logger.info(`Revalidating product at path: ${path}`)
 
     revalidatePath(path)
+
+    // Revalidate the main products page
+    revalidatePath('/produkty')
+
+    // Revalidate the home page
+    revalidatePath('/')
+
+    // Revalidate the products sitemap
     revalidateTag('products-sitemap')
   }
   return doc

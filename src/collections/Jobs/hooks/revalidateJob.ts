@@ -14,6 +14,14 @@ export const revalidateJob: CollectionAfterChangeHook<Job> = ({
     payload.logger.info(`Revalidating job at path: ${path}`)
 
     revalidatePath(path)
+
+    // Revalidate the main jobs page
+    revalidatePath('/nabidky')
+
+    // Revalidate the home page
+    revalidatePath('/')
+
+    // Revalidate the jobs sitemap
     revalidateTag('jobs-sitemap')
   }
   return doc

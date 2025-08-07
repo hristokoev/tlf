@@ -2,7 +2,7 @@
 
 import { Media } from '@/components/Media'
 import type { ScrollBlock as ScrollBlockProps } from '@/payload-types'
-import { AnimatePresence, motion, useInView } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
@@ -13,13 +13,18 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
   const titleRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
 
+  // Scroll-based progress for the entire section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 1', 'end 0.3'],
+  })
+
+  // View-based triggers for initial animations
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' })
   const isHeadingInView = useInView(headingRef, { once: true, margin: '-20%' })
-  const isTitleInView = useInView(titleRef, { once: true, margin: '-20%' })
-  const isTextInView = useInView(textRef, { once: true, margin: '-20%' })
 
-  // Split title into characters for gradual spacing effect
-  const titleChars = title.split('')
+  // Split title into words for word-by-word highlighting
+  const titleWords = title.split(' ').filter((word) => word.trim() !== '')
 
   // Split text into words while preserving line breaks
   type TextPart = { type: 'lineBreak' } | { type: 'words'; words: string[] }
@@ -37,6 +42,17 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
       (part): part is TextPart =>
         part.type === 'lineBreak' || (part.type === 'words' && part.words.length > 0),
     )
+
+  // Flatten text words for progress calculation
+  const flatTextWords: string[] = []
+  textParts.forEach((part) => {
+    if (part.type === 'words') {
+      flatTextWords.push(...part.words)
+    }
+  })
+
+  // Calculate total words for progress mapping
+  const totalWords = titleWords.length + flatTextWords.length
 
   return (
     <section ref={sectionRef} className="relative py-12 md:py-24 min-h-[60vh] md:min-h-[80vh]">
@@ -68,22 +84,30 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
               {heading}
             </motion.span>
 
-            {/* Title with Gradual Spacing Effect */}
+            {/* Title with Word-by-word Scroll Highlighting */}
             <div ref={titleRef} className="flex flex-wrap">
-              <AnimatePresence>
-                {titleChars.map((char, i) => (
+              {titleWords.map((word, wordIndex) => {
+                // Calculate when this word should be highlighted based on scroll progress
+                const wordProgress = wordIndex / totalWords
+                const nextWordProgress = (wordIndex + 1) / totalWords
+
+                // Transform scroll progress to word opacity (keep highlighted words at full opacity)
+                const opacity = useTransform(
+                  scrollYProgress,
+                  [0, wordProgress - 0.1, wordProgress + 0.1, 1],
+                  [0, 0, 1, 1],
+                )
+
+                return (
                   <motion.h2
-                    key={i}
-                    initial={{ opacity: 0, x: -18 }}
-                    animate={isTitleInView ? { opacity: 1, x: 0 } : {}}
-                    exit="hidden"
-                    transition={{ duration: 0.3, delay: i * 0.02 }}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white leading-none"
+                    key={wordIndex}
+                    style={{ opacity }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase text-white mr-4 mb-2"
                   >
-                    {char === ' ' ? <span>&nbsp;</span> : char}
+                    {word}
                   </motion.h2>
-                ))}
-              </AnimatePresence>
+                )
+              })}
             </div>
           </div>
 
@@ -93,50 +117,67 @@ export const ScrollBlockClient: React.FC<ScrollBlockProps> = (props) => {
               ref={textRef}
               className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl leading-relaxed text-white"
             >
-              <AnimatePresence>
-                {textParts.map((part, partIndex) => {
-                  if (part.type === 'lineBreak') {
-                    return <br key={`br-${partIndex}`} />
-                  }
+              {textParts.map((part, partIndex) => {
+                if (part.type === 'lineBreak') {
+                  return <br key={`br-${partIndex}`} />
+                }
 
-                  return part.words.map((word, wordIndex) => {
-                    // Calculate global word index for staggered delay
-                    let globalIndex = 0
-                    for (let i = 0; i < partIndex; i++) {
-                      const currentPart = textParts[i]
-                      if (currentPart && currentPart.type === 'words') {
-                        globalIndex += currentPart.words.length
-                      }
+                return part.words.map((word, wordIndex) => {
+                  // Calculate global word index for text words (after title words)
+                  let globalTextWordIndex = 0
+                  for (let i = 0; i < partIndex; i++) {
+                    const currentPart = textParts[i]
+                    if (currentPart && currentPart.type === 'words') {
+                      globalTextWordIndex += currentPart.words.length
                     }
-                    globalIndex += wordIndex
+                  }
+                  globalTextWordIndex += wordIndex
 
-                    return (
-                      <motion.span
-                        key={`${partIndex}-${wordIndex}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={isTextInView ? { opacity: 1, y: 0 } : {}}
-                        exit="hidden"
-                        transition={{ duration: 0.3, delay: globalIndex * 0.03 }}
-                        className="inline-block mr-2"
-                      >
-                        {word}
-                      </motion.span>
-                    )
-                  })
-                })}
-              </AnimatePresence>
+                  // Offset by title words length
+                  const totalWordIndex = titleWords.length + globalTextWordIndex
+
+                  // Calculate when this word should be highlighted
+                  const wordProgress = totalWordIndex / totalWords
+                  const nextWordProgress = (totalWordIndex + 1) / totalWords
+
+                  // Transform scroll progress to word opacity (keep highlighted words visible)
+                  const opacity = useTransform(
+                    scrollYProgress,
+                    [0, wordProgress - 0.05, wordProgress + 0.05, 1],
+                    [0, 0, 1, 1],
+                  )
+
+                  return (
+                    <motion.span
+                      key={`${partIndex}-${wordIndex}`}
+                      style={{ opacity }}
+                      className="inline-block mr-2 transition-all duration-100"
+                    >
+                      {word}
+                    </motion.span>
+                  )
+                })
+              })}
             </div>
           </div>
         </div>
 
-        {/* Decorative Line - Desktop Only */}
+        {/* Decorative Line - Desktop Only with Scroll Progress */}
         <motion.div
           className="hidden lg:flex absolute right-6 xl:right-12 top-0 h-full w-4 py-16 flex-col items-center justify-center space-y-6 z-20"
           initial={{ opacity: 0, scaleY: 0 }}
           animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <div className="bg-white w-[0.5px] h-full opacity-60"></div>
+          {/* Progress indicator */}
+          <motion.div className="bg-white w-[2px] h-full opacity-30" />
+          <motion.div
+            className="bg-white w-[2px] absolute top-16"
+            style={{
+              height: useTransform(scrollYProgress, [0, 1], ['0%', 'calc(100% - 8rem)']),
+              opacity: useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 0.8, 0.8, 0]),
+            }}
+          />
         </motion.div>
       </div>
     </section>

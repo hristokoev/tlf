@@ -1,82 +1,32 @@
-import type { FieldHook } from 'payload'
+import { customAlphabet } from 'nanoid'
 
-/**
- * Map of Czech diacritics to their Latin equivalents
- */
-const czechToLatinMap: Record<string, string> = {
-  // Lowercase letters
-  á: 'a',
-  č: 'c',
-  ď: 'd',
-  é: 'e',
-  ě: 'e',
-  í: 'i',
-  ň: 'n',
-  ó: 'o',
-  ř: 'r',
-  š: 's',
-  ť: 't',
-  ú: 'u',
-  ů: 'u',
-  ý: 'y',
-  ž: 'z',
-  // Uppercase letters
-  Á: 'A',
-  Č: 'C',
-  Ď: 'D',
-  É: 'E',
-  Ě: 'E',
-  Í: 'I',
-  Ň: 'N',
-  Ó: 'O',
-  Ř: 'R',
-  Š: 'S',
-  Ť: 'T',
-  Ú: 'U',
-  Ů: 'U',
-  Ý: 'Y',
-  Ž: 'Z',
-}
+const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 6)
 
-/**
- * Converts Czech diacritics to their Latin equivalents
- */
-export const removeCzechDiacritics = (str: string): string => {
-  return str.replace(
-    /[áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
-    (match) => czechToLatinMap[match] || match,
-  )
-}
-
-/**
- * Formats a string into a URL-friendly slug
- * Handles Czech diacritics by converting them to Latin equivalents
- */
-export const formatSlug = (val: string): string => {
-  const withoutDiacritics = removeCzechDiacritics(val)
-
-  return withoutDiacritics
-    .replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '')
-    .toLowerCase()
-}
-
-/**
- * A field hook that formats a value into a slug
- * Falls back to another field if no value is provided
- */
 export const formatSlugHook =
-  (fallback: string): FieldHook =>
-  ({ data, operation, value }) => {
-    if (typeof value === 'string') {
-      return formatSlug(value)
+  (fallback: string) =>
+  ({ data, operation, value }: any) => {
+    // If slug already has a value, clean it and return
+    if (typeof value === 'string' && value.length > 0) {
+      return value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '')
     }
 
-    if (operation === 'create' || !data?.slug) {
+    // For create operations, generate a shorter nanoid with only lowercase
+    if (operation === 'create') {
+      return nanoid()
+    }
+
+    // For update operations without a slug, fall back to title-based slug
+    if (operation === 'update') {
       const fallbackData = data?.[fallback]
 
       if (fallbackData && typeof fallbackData === 'string') {
-        return formatSlug(fallbackData)
+        return fallbackData
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)+/g, '')
       }
     }
 

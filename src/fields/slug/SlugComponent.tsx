@@ -1,71 +1,25 @@
 'use client'
-import React, { useCallback, useEffect } from 'react'
-import { TextFieldClientProps } from 'payload'
 
-import { useField, Button, TextInput, FieldLabel, useFormFields, useForm } from '@payloadcms/ui'
+import type { TextFieldClientComponent } from 'payload'
 
-import { formatSlug } from './formatSlug'
-import './index.scss'
+import { TextInput, useField } from '@payloadcms/ui'
+import React from 'react'
 
-type SlugComponentProps = {
-  fieldToUse: string
-  checkboxFieldPath: string
-} & TextFieldClientProps
-
-export const SlugComponent: React.FC<SlugComponentProps> = ({
-  field,
-  fieldToUse,
-  checkboxFieldPath: checkboxFieldPathFromProps,
-  path,
-  readOnly: readOnlyFromProps,
-}) => {
-  const { label } = field
-
-  const checkboxFieldPath = path?.includes('.')
-    ? `${path}.${checkboxFieldPathFromProps}`
-    : checkboxFieldPathFromProps
-
-  const { value, setValue } = useField<string>({ path: path || field.name })
-
-  const { dispatchFields } = useForm()
-
-  // The value of the checkbox
-  // We're using separate useFormFields to minimise re-renders
-  const checkboxValue = useFormFields(([fields]) => {
-    return fields[checkboxFieldPath]?.value as string
-  })
-
-  // The value of the field we're listening to for the slug
-  const targetFieldValue = useFormFields(([fields]) => {
-    return fields[fieldToUse]?.value as string
-  })
-
-  useEffect(() => {
-    if (checkboxValue) {
-      if (targetFieldValue) {
-        const formattedSlug = formatSlug(targetFieldValue)
-
-        if (value !== formattedSlug) setValue(formattedSlug)
-      } else {
-        if (value !== '') setValue('')
-      }
-    }
-  }, [targetFieldValue, checkboxValue, setValue, value])
-
-  const readOnly = readOnlyFromProps || checkboxValue
+export const SlugComponent: TextFieldClientComponent = (props) => {
+  const { field, path } = props
+  const { value, setValue } = useField({ path: path || field.name })
 
   return (
-    <div className="field-type slug-field-component">
-      <div className="label-wrapper">
-        <FieldLabel htmlFor={`field-${path}`} label={label} />
-      </div>
-
+    <div className="field-type text">
       <TextInput
-        value={value}
-        onChange={setValue}
-        path={path || field.name}
-        readOnly={Boolean(readOnly)}
+        {...props}
+        value={(value as string) || ''}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="Leave empty to auto-generate"
       />
+      <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+        Auto-generates a short, unique ID if left empty
+      </div>
     </div>
   )
 }

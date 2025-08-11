@@ -1,13 +1,16 @@
+// src/Footer/Component.tsx - Fix to pass lang to CMSLink properly
+
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
+import { generateLangUrl } from '@/utilities/generateLangUrl'
 
 import type { Footer } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 
-// Social Media Icons Component
+// Social Media Icons Component (keep existing)
 const SocialIcon: React.FC<{ platform: string; className?: string }> = ({
   platform,
   className = 'w-6 h-6',
@@ -56,25 +59,28 @@ export async function Footer({ lang }: { lang: string }) {
   return (
     <footer className="mt-auto border-t border-border bg-black text-white">
       <div className="container py-12">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-8">
-          {/* Logo Section */}
+          {/* Logo Section - Fixed */}
           <div className="md:col-span-2 lg:col-span-2">
-            <Link className="inline-block mb-6" href="/">
+            <Link className="inline-block mb-6" href={`/${lang}`}>
               <Logo />
             </Link>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Your company description goes here.
+            </p>
           </div>
 
-          {/* Dynamic Columns */}
+          {/* Dynamic Columns - Fixed to pass lang */}
           {columns &&
-            columns.map((column, columnIndex) => (
+            columns.map((column: any, columnIndex: number) => (
               <div key={columnIndex} className="lg:col-span-1">
                 <h4 className="font-semibold text-white mb-4 text-base">{column.title}</h4>
                 <nav className="space-y-3">
-                  {column.links?.map((linkItem, linkIndex) => (
+                  {column.links?.map((linkItem: any, linkIndex: number) => (
                     <CMSLink
                       key={linkIndex}
                       {...linkItem.link}
+                      lang={lang}
                       className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm"
                     />
                   ))}
@@ -103,26 +109,30 @@ export async function Footer({ lang }: { lang: string }) {
           )}
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Section - Fixed with lang parameter */}
         <div className="pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
               {bottomText || '© 2025 Your Company. All rights reserved.'}
             </p>
 
-            {/* Additional Bottom Links (optional) */}
+            {/* Additional Bottom Links with language support */}
             <div className="flex gap-6">
               <Link
-                href="/privacy-policy"
+                href={generateLangUrl(lang, 'privacy-policy')}
                 className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
               >
-                Zásady ochrany osobních údajů
+                {lang === 'cs' && 'Zásady ochrany osobních údajů'}
+                {lang === 'en' && 'Privacy Policy'}
+                {lang === 'de' && 'Datenschutzrichtlinie'}
               </Link>
               <Link
-                href="/terms"
+                href={generateLangUrl(lang, 'terms')}
                 className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
               >
-                Podmínky používání
+                {lang === 'cs' && 'Podmínky používání'}
+                {lang === 'en' && 'Terms of Use'}
+                {lang === 'de' && 'Nutzungsbedingungen'}
               </Link>
             </div>
           </div>

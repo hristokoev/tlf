@@ -27,16 +27,16 @@ export async function generateStaticParams() {
   })
 
   const supportedLanguages = ['cs', 'en', 'de']
-
   const params = []
 
-  // Generate params for each language and slug combination
   for (const lang of supportedLanguages) {
     for (const doc of products.docs || []) {
-      params.push({
-        lang: lang,
-        slug: doc.slug,
-      })
+      if (doc.slug && typeof doc.slug === 'string') {
+        params.push({
+          lang: lang,
+          slug: doc.slug,
+        })
+      }
     }
   }
 
@@ -56,6 +56,10 @@ export default async function Product({ params: paramsPromise }: Args) {
   const url = '/posts/' + slug
   const product = await queryProductBySlug({ slug, lang })
   const productsPage = (await queryProductsPage()) || {}
+
+  if (!product || !productsPage) {
+    return notFound()
+  }
 
   if (!product) {
     return notFound()

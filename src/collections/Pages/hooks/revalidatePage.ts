@@ -10,22 +10,41 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
+    const languages = ['cs', 'en', 'de']
+
     if (doc._status === 'published') {
-      const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
+      // Revalidate for all languages
+      languages.forEach((lang) => {
+        if (doc.slug === 'home') {
+          // For home page, revalidate the language root
+          const path = `/${lang}`
+          payload.logger.info(`Revalidating home page at path: ${path}`)
+          revalidatePath(path)
+        } else {
+          // For regular pages, revalidate the page path
+          const path = `/${lang}/${doc.slug}`
+          payload.logger.info(`Revalidating page at path: ${path}`)
+          revalidatePath(path)
+        }
+      })
 
-      payload.logger.info(`Revalidating page at path: ${path}`)
-
-      revalidatePath(path)
       revalidateTag('pages-sitemap')
     }
 
-    // If the page was previously published, we need to revalidate the old path
+    // If the page was previously published, we need to revalidate the old paths
     if (previousDoc?._status === 'published' && doc._status !== 'published') {
-      const oldPath = previousDoc.slug === 'home' ? '/' : `/${previousDoc.slug}`
+      languages.forEach((lang) => {
+        if (previousDoc.slug === 'home') {
+          const oldPath = `/${lang}`
+          payload.logger.info(`Revalidating old home page at path: ${oldPath}`)
+          revalidatePath(oldPath)
+        } else {
+          const oldPath = `/${lang}/${previousDoc.slug}`
+          payload.logger.info(`Revalidating old page at path: ${oldPath}`)
+          revalidatePath(oldPath)
+        }
+      })
 
-      payload.logger.info(`Revalidating old page at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
       revalidateTag('pages-sitemap')
     }
   }
@@ -34,8 +53,18 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = doc?.slug === 'home' ? '/' : `/${doc?.slug}`
-    revalidatePath(path)
+    const languages = ['cs', 'en', 'de']
+
+    languages.forEach((lang) => {
+      if (doc?.slug === 'home') {
+        const path = `/${lang}`
+        revalidatePath(path)
+      } else {
+        const path = `/${lang}/${doc?.slug}`
+        revalidatePath(path)
+      }
+    })
+
     revalidateTag('pages-sitemap')
   }
 

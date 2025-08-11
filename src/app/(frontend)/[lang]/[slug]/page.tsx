@@ -25,14 +25,14 @@ export async function generateStaticParams({ params: paramsPromise }: Args) {
     },
   })
 
-  const supportedLanguages = ['cs', 'en']
+  const supportedLanguages = ['cs', 'en', 'de']
 
   const params = []
 
   // Generate params for each language and slug combination
   for (const lang of supportedLanguages) {
     for (const doc of pages.docs || []) {
-      if (doc.slug !== 'home') {
+      if (doc.slug !== 'home' && doc.slug && typeof doc.slug === 'string') {
         params.push({
           lang: lang,
           slug: doc.slug,
@@ -61,6 +61,12 @@ export default async function Page({ params: paramsPromise }: Args) {
     lang,
   })
 
+  // If no page found AND it's not the home page request, return 404
+  if (!page && slug !== 'home') {
+    return notFound()
+  }
+
+  // If no page found and it IS the home page request, still 404 (home page doesn't exist in CMS)
   if (!page) {
     return notFound()
   }

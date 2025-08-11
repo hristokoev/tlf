@@ -9,19 +9,24 @@ export const revalidateJob: CollectionAfterChangeHook<Job> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/jobs/${doc.slug}`
+    const languages = ['cs', 'en', 'de']
 
-    payload.logger.info(`Revalidating job at path: ${path}`)
+    // Revalidate for all languages
+    languages.forEach((lang) => {
+      // Revalidate the specific job page
+      const jobPath = `/${lang}/jobs/${doc.slug}`
+      payload.logger.info(`Revalidating job at path: ${jobPath}`)
+      revalidatePath(jobPath)
 
-    revalidatePath(path)
+      // Revalidate the jobs listing page
+      const jobsPath = `/${lang}/jobs`
+      revalidatePath(jobsPath)
 
-    // Revalidate the main jobs page
-    revalidatePath('/jobs')
+      // Revalidate the home page (might show job openings)
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
 
-    // Revalidate the home page
-    revalidatePath('/')
-
-    // Revalidate the jobs sitemap
     revalidateTag('jobs-sitemap')
   }
   return doc
@@ -29,8 +34,22 @@ export const revalidateJob: CollectionAfterChangeHook<Job> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Job> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = doc?.slug === 'home' ? '/' : `/${doc?.slug}`
-    revalidatePath(path)
+    const languages = ['cs', 'en', 'de']
+
+    languages.forEach((lang) => {
+      // Revalidate the specific job page
+      const jobPath = `/${lang}/jobs/${doc?.slug}`
+      revalidatePath(jobPath)
+
+      // Revalidate the jobs listing page
+      const jobsPath = `/${lang}/jobs`
+      revalidatePath(jobsPath)
+
+      // Revalidate the home page
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
+
     revalidateTag('jobs-sitemap')
   }
 

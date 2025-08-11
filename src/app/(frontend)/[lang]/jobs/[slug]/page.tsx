@@ -11,6 +11,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 // Import the new animated client components
 import { AnimatedJobHero } from '@/components/AnimatedJobHero'
 import { AnimatedJobAccordion } from '@/components/AnimatedJobAccordion'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -25,17 +26,17 @@ export async function generateStaticParams() {
     },
   })
 
-  const supportedLanguages = ['cs', 'en']
-
+  const supportedLanguages = ['cs', 'en', 'de']
   const params = []
 
-  // Generate params for each language and slug combination
   for (const lang of supportedLanguages) {
     for (const doc of jobs.docs || []) {
-      params.push({
-        lang: lang,
-        slug: doc.slug,
-      })
+      if (doc.slug && typeof doc.slug === 'string') {
+        params.push({
+          lang: lang,
+          slug: doc.slug,
+        })
+      }
     }
   }
 
@@ -55,6 +56,10 @@ export default async function Job({ params: paramsPromise }: Args) {
   const url = '/posts/' + slug
   const job = await queryJobBySlug({ slug, lang })
   const jobsPage = (await queryJobsPage()) || {}
+
+  if (!job || !jobsPage) {
+    return notFound()
+  }
 
   const { layout } = jobsPage
   const layoutFiltered = layout?.filter((block) =>

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 
 import type { Page } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLinkClient as CMSLink } from '@/components/Link/CMSLink.client'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 

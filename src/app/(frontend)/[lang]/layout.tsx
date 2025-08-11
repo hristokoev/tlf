@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 import React from 'react'
 
@@ -17,12 +18,23 @@ interface LayoutProps {
   params: Promise<{ lang: string }>
 }
 
+const SUPPORTED_LANGUAGES = ['cs', 'en', 'de']
+
+export async function generateStaticParams() {
+  return [{ lang: 'cs' }, { lang: 'en' }, { lang: 'de' }]
+}
+
 export default async function RootLayout({ children, params }: LayoutProps) {
   // const { isEnabled } = await draftMode()
   const { lang } = await params
 
+  // Validate language - return 404 if invalid
+  if (!SUPPORTED_LANGUAGES.includes(lang)) {
+    notFound()
+  }
+
   return (
-    <html className={LexendMegaFont.className} lang="en" suppressHydrationWarning>
+    <html className={LexendMegaFont.className} lang={lang} suppressHydrationWarning>
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />

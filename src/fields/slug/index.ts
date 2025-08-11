@@ -11,8 +11,7 @@ type Slug = (fieldToUse?: string, overrides?: Overrides) => [TextField]
 export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
   const { slugOverrides } = overrides
 
-  // @ts-expect-error - ts mismatch Partial<TextField> with TextField
-  const slugField: TextField = {
+  const slugField: any = {
     name: 'slug',
     type: 'text',
     index: true,
@@ -23,11 +22,11 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
     },
     ...(slugOverrides || {}),
     hooks: {
-      // Kept this in for hook or API based updates
       beforeValidate: [formatSlugHook(fieldToUse)],
     },
     admin: {
       position: 'sidebar',
+      description: 'Auto-generated short URL slug. Leave empty to generate automatically.',
       ...(slugOverrides?.admin || {}),
       components: {
         Field: {

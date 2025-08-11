@@ -61,7 +61,6 @@ export const TeamBlock: Block = {
             de: 'Position',
           },
           type: 'text',
-          required: true,
         },
         {
           type: 'row',

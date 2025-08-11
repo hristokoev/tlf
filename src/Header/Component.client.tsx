@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useParams } from 'next/navigation'
 
 import type { Header } from '@/payload-types'
 
@@ -18,6 +18,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const params = useParams()
+  const { lang } = params as { lang: string }
 
   // Define parent paths that should have white background for their sub-pages
   const whiteBackgroundParents = [
@@ -87,8 +89,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     >
       <div className="container">
         <div className="py-4 sm:py-6 lg:py-8 flex justify-between items-center gap-4">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0 relative">
+          {/* Logo - Wrap with Link here */}
+          <Link href={`/${lang}`} className="flex-shrink-0 relative">
             <Logo loading="eager" priority="high" isWhiteBackgroundPage={isWhiteBackgroundPage} />
           </Link>
 

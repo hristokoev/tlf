@@ -24,7 +24,6 @@ export const Logo = (props: Props) => {
   const logoSrc = isWhiteBackgroundPage ? logoImgBlack : logoImg
 
   return (
-    /* eslint-disable @next/next/no-img-element */
     <img
       alt="TLF Logo"
       width={76}
@@ -51,7 +50,6 @@ export const Icon = (props: Props) => {
   const logoSrc = isWhiteBackgroundPage ? logoImgBlack : logoImg
 
   return (
-    /* eslint-disable @next/next/no-img-element */
     <img
       alt="TLF Logo"
       width={76}

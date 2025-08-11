@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation'
 
 import type { Header as HeaderType } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLinkClient as CMSLink } from '@/components/Link/CMSLink.client'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { cn } from '@/utilities/ui'
 
 export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: boolean }> = ({
@@ -59,19 +60,25 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
 
   return (
     <nav className="flex items-center relative">
-      {/* Desktop Navigation - Responsive gaps */}
-      <div className="hidden md:flex flex-wrap justify-end items-center gap-4 lg:gap-6 xl:gap-8">
-        {navItems.map(({ link }, i) => {
-          return (
-            <div key={i} className="whitespace-nowrap">
-              <CMSLink
-                {...link}
-                appearance="link"
-                className={`${isWhiteBackgroundPage && 'text-black'}`}
-              />
-            </div>
-          )
-        })}
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
+        {/* Navigation Links */}
+        <div className="flex flex-wrap justify-end items-center gap-4 lg:gap-6 xl:gap-8">
+          {navItems.map(({ link }, i) => {
+            return (
+              <div key={i} className="whitespace-nowrap">
+                <CMSLink
+                  {...link}
+                  appearance="link"
+                  className={`${isWhiteBackgroundPage && 'text-black'}`}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Language Switcher */}
+        <LanguageSwitcher isWhiteBackgroundPage={isWhiteBackgroundPage} />
       </div>
 
       {/* Mobile Menu Button */}
@@ -116,8 +123,9 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
             <div className="absolute h-screen inset-y-0 right-0 w-full bg-white">
               <div className="flex h-full flex-col">
                 {/* Menu Header */}
-                <div className="flex items-center px-6 py-10 border-b">
+                <div className="flex items-center justify-between px-6 py-10 border-b">
                   <h2 className="text-lg font-semibold">Menu</h2>
+                  <LanguageSwitcher isWhiteBackgroundPage={true} />
                 </div>
 
                 {/* Menu Items */}

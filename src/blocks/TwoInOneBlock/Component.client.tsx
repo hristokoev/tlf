@@ -1,6 +1,6 @@
 'use client'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLinkClient as CMSLink } from '@/components/Link/CMSLink.client'
 import { Media } from '@/components/Media'
 import type { TwoInOneBlock as TwoInOneBlockProps } from '@/payload-types'
 import { Fragment, useState, useEffect, useRef } from 'react'

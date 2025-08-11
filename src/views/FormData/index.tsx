@@ -5,7 +5,6 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { TFunction } from '@payloadcms/translations'
 
-import ClientComponent from './client'
 import { CustomTranslationsKeys } from '../../../custom-translations'
 
 const FormSubmissionView = async (props: DocumentViewServerProps) => {
@@ -117,9 +116,6 @@ const FormSubmissionView = async (props: DocumentViewServerProps) => {
                 </div>
               </div>
             </div>
-
-            {/* Button */}
-            {formDoc.title === 'ama' && <ClientComponent doc={doc} />}
           </div>
         </div>
       </Gutter>

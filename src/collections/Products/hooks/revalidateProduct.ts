@@ -9,19 +9,24 @@ export const revalidateProduct: CollectionAfterChangeHook<Product> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/products/${doc.slug}`
+    const languages = ['cs', 'en', 'de']
 
-    payload.logger.info(`Revalidating product at path: ${path}`)
+    // Revalidate for all languages
+    languages.forEach((lang) => {
+      // Revalidate the specific product page
+      const productPath = `/${lang}/products/${doc.slug}`
+      payload.logger.info(`Revalidating product at path: ${productPath}`)
+      revalidatePath(productPath)
 
-    revalidatePath(path)
+      // Revalidate the products listing page
+      const productsPath = `/${lang}/products`
+      revalidatePath(productsPath)
 
-    // Revalidate the main products page
-    revalidatePath('/products')
+      // Revalidate the home page (might show featured products)
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
 
-    // Revalidate the home page
-    revalidatePath('/')
-
-    // Revalidate the products sitemap
     revalidateTag('products-sitemap')
   }
   return doc
@@ -29,8 +34,22 @@ export const revalidateProduct: CollectionAfterChangeHook<Product> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Product> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = doc?.slug === 'home' ? '/' : `/${doc?.slug}`
-    revalidatePath(path)
+    const languages = ['cs', 'en', 'de']
+
+    languages.forEach((lang) => {
+      // Revalidate the specific product page
+      const productPath = `/${lang}/products/${doc?.slug}`
+      revalidatePath(productPath)
+
+      // Revalidate the products listing page
+      const productsPath = `/${lang}/products`
+      revalidatePath(productsPath)
+
+      // Revalidate the home page
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
+
     revalidateTag('products-sitemap')
   }
 

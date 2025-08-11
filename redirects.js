@@ -12,7 +12,14 @@ const redirects = async () => {
     source: '/:path((?!ie-incompatible.html$).*)', // all pages except the incompatibility page
   }
 
-  const redirects = [internetExplorerRedirect]
+  // Add home page redirect to default language
+  const homePageRedirect = {
+    source: '/',
+    destination: '/cs',
+    permanent: false,
+  }
+
+  const redirects = [internetExplorerRedirect, homePageRedirect]
 
   return redirects
 }

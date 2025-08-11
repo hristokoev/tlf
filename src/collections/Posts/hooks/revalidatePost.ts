@@ -9,19 +9,24 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/posts/${doc.slug}`
+    const languages = ['cs', 'en', 'de']
 
-    payload.logger.info(`Revalidating post at path: ${path}`)
+    // Revalidate for all languages
+    languages.forEach((lang) => {
+      // Revalidate the specific post page
+      const postPath = `/${lang}/posts/${doc.slug}`
+      payload.logger.info(`Revalidating post at path: ${postPath}`)
+      revalidatePath(postPath)
 
-    revalidatePath(path)
+      // Revalidate the posts listing page
+      const postsPath = `/${lang}/posts`
+      revalidatePath(postsPath)
 
-    // Revalidate the main posts page
-    revalidatePath('/posts')
+      // Revalidate the home page (might show recent posts)
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
 
-    // Revalidate the home page
-    revalidatePath('/')
-
-    // Revalidate the posts sitemap
     revalidateTag('posts-sitemap')
   }
   return doc
@@ -29,8 +34,22 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = doc?.slug === 'home' ? '/' : `/${doc?.slug}`
-    revalidatePath(path)
+    const languages = ['cs', 'en', 'de']
+
+    languages.forEach((lang) => {
+      // Revalidate the specific post page
+      const postPath = `/${lang}/posts/${doc?.slug}`
+      revalidatePath(postPath)
+
+      // Revalidate the posts listing page
+      const postsPath = `/${lang}/posts`
+      revalidatePath(postsPath)
+
+      // Revalidate the home page
+      const homePath = `/${lang}`
+      revalidatePath(homePath)
+    })
+
     revalidateTag('posts-sitemap')
   }
 

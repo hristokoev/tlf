@@ -9,6 +9,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { AnimatedPostHero } from '@/components/AnimatedPostHero'
 import { AnimatedPostContent } from '@/components/AnimatedPostContent'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -23,17 +24,19 @@ export async function generateStaticParams() {
     },
   })
 
-  const supportedLanguages = ['cs', 'en']
-
+  const supportedLanguages = ['cs', 'en', 'de']
   const params = []
 
   // Generate params for each language and slug combination
   for (const lang of supportedLanguages) {
     for (const doc of posts.docs || []) {
-      params.push({
-        lang: lang,
-        slug: doc.slug,
-      })
+      // Simple check - slug should now be a string
+      if (doc.slug && typeof doc.slug === 'string') {
+        params.push({
+          lang: lang,
+          slug: doc.slug,
+        })
+      }
     }
   }
 
@@ -52,9 +55,13 @@ export default async function Post({ params: paramsPromise }: Args) {
   const { slug = '', lang = 'cs' } = await paramsPromise
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug, lang })
-  const blogPage = (await queryBlogPage()) || {}
+  const postsPage = (await queryPostsPage()) || {}
 
-  const { layout } = blogPage
+  if (!post || !postsPage) {
+    return notFound()
+  }
+
+  const { layout } = postsPage
   const layoutFiltered = layout?.filter((block) =>
     ['contactBlock', 'mapInfoBlock'].includes(block.blockType),
   )
@@ -113,7 +120,7 @@ const queryPostBySlug = cache(async ({ slug, lang }: { slug: string; lang: strin
   return result.docs?.[0] || null
 })
 
-const queryBlogPage = cache(async () => {
+const queryPostsPage = cache(async () => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })

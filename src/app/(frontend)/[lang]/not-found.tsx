@@ -37,7 +37,7 @@ export default function NotFound() {
               size="lg"
               className="min-w-[140px] bg-gradient-to-r from-gray-800 to-black hover:from-gray-900 hover:to-gray-800 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
             >
-              <Link href="/" className="flex items-center gap-2">
+              <Link href="/cs" className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"

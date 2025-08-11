@@ -5,7 +5,7 @@ import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { CMSLink } from '@/components/Link'
+import { CMSLinkClient as CMSLink } from '@/components/Link/CMSLink.client'
 import { useParams } from 'next/navigation'
 
 interface BlogBlockClientProps extends BlogBlockProps {

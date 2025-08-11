@@ -9,6 +9,7 @@ import { cs } from 'payload/i18n/cs'
 import { de } from 'payload/i18n/de'
 import { customTranslations } from '../custom-translations'
 import { fileURLToPath } from 'url'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 import { Jobs } from './collections/Jobs'
 import { Media } from './collections/Media'
@@ -62,6 +63,11 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  email: resendAdapter({
+    defaultFromAddress: 'info@tlf-lbc.cz',
+    defaultFromName: 'TLF',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),

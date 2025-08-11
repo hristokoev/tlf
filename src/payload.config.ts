@@ -28,6 +28,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    theme: 'dark',
     components: {
       graphics: {
         Logo: 'src/components/Logo/Logo.tsx#Logo',

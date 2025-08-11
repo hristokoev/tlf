@@ -16,14 +16,26 @@ export const hero: Field = {
     {
       name: 'type',
       type: 'select',
-      label: 'Type',
+      label: {
+        en: 'Type',
+        de: 'Typ',
+        cs: 'Typ',
+      },
       options: [
         {
-          label: 'None',
+          label: {
+            en: 'None',
+            de: 'Keine',
+            cs: 'Žádný',
+          },
           value: 'none',
         },
         {
-          label: 'Default',
+          label: {
+            en: 'Default',
+            de: 'Standard',
+            cs: 'Výchozí',
+          },
           value: 'default',
         },
       ],
@@ -31,7 +43,13 @@ export const hero: Field = {
     },
     {
       name: 'richText',
+      label: {
+        en: 'Text',
+        de: 'Text',
+        cs: 'Text',
+      },
       type: 'richText',
+      localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
@@ -57,6 +75,11 @@ export const hero: Field = {
     }),
     {
       name: 'media',
+      label: {
+        en: 'Media',
+        de: 'Medien',
+        cs: 'Média',
+      },
       type: 'upload',
       admin: {
         condition: (_, { type } = {}) => ['default'].includes(type),

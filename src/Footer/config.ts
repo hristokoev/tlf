@@ -5,25 +5,50 @@ import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: {
+    en: 'Footer',
+    de: 'Fußzeile',
+    cs: 'Zápatí',
+  },
   access: {
     read: () => true,
+  },
+  admin: {
+    group: {
+      cs: 'Nastavení',
+      de: 'Kopfzeile',
+      en: 'Header',
+    },
   },
   fields: [
     {
       name: 'columns',
       type: 'array',
-      label: 'Footer Columns',
+      label: {
+        en: 'Footer Columns',
+        de: 'Fußzeilen Spalten',
+        cs: 'Sloupce zápatí',
+      },
       fields: [
         {
           name: 'title',
           type: 'text',
-          label: 'Column Title',
+          label: {
+            en: 'Column Title',
+            de: 'Spaltentitel',
+            cs: 'Název sloupce',
+          },
+          localized: true,
           required: true,
         },
         {
           name: 'links',
           type: 'array',
-          label: 'Column Links',
+          label: {
+            en: 'Column Links',
+            de: 'Spaltenlinks',
+            cs: 'Odkazy sloupce',
+          },
           fields: [
             link({
               appearances: false,
@@ -47,12 +72,20 @@ export const Footer: GlobalConfig = {
     {
       name: 'socialLinks',
       type: 'array',
-      label: 'Social Media Links',
+      label: {
+        en: 'Social Media Links',
+        de: 'Soziale Medien Links',
+        cs: 'Odkazy na sociální média',
+      },
       fields: [
         {
           name: 'platform',
           type: 'select',
-          label: 'Social Platform',
+          label: {
+            en: 'Social Platform',
+            de: 'Soziale Plattform',
+            cs: 'Sociální platforma',
+          },
           options: [
             { label: 'Facebook', value: 'facebook' },
             { label: 'Instagram', value: 'instagram' },
@@ -66,7 +99,11 @@ export const Footer: GlobalConfig = {
         {
           name: 'url',
           type: 'text',
-          label: 'Social Media URL',
+          label: {
+            en: 'URL',
+            de: 'URL',
+            cs: 'URL',
+          },
           required: true,
         },
       ],
@@ -78,7 +115,11 @@ export const Footer: GlobalConfig = {
     {
       name: 'bottomText',
       type: 'text',
-      label: 'Bottom Text (e.g., Copyright)',
+      label: {
+        en: 'Bottom Text (e.g., Copyright)',
+        de: 'Unterer Text (z. B. Copyright)',
+        cs: 'Dolní text (např. autorská práva)',
+      },
       defaultValue: '© 2025 Your Company. All rights reserved.',
     },
   ],

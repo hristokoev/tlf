@@ -52,29 +52,12 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
     }
   }, [targetFieldValue, checkboxValue, setValue, value])
 
-  const handleLock = useCallback(
-    (e: React.MouseEvent<Element>) => {
-      e.preventDefault()
-
-      dispatchFields({
-        type: 'UPDATE',
-        path: checkboxFieldPath,
-        value: !checkboxValue,
-      })
-    },
-    [checkboxValue, checkboxFieldPath, dispatchFields],
-  )
-
   const readOnly = readOnlyFromProps || checkboxValue
 
   return (
     <div className="field-type slug-field-component">
       <div className="label-wrapper">
         <FieldLabel htmlFor={`field-${path}`} label={label} />
-
-        <Button className="lock-button" buttonStyle="none" onClick={handleLock}>
-          {checkboxValue ? 'Unlock' : 'Lock'}
-        </Button>
       </div>
 
       <TextInput

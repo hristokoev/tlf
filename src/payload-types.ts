@@ -73,7 +73,6 @@ export interface Config {
     jobs: Job;
     media: Media;
     users: User;
-    redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-jobs': PayloadJob;
@@ -89,7 +88,6 @@ export interface Config {
     jobs: JobsSelect<false> | JobsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -108,7 +106,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: null;
+  locale: 'cs' | 'en' | 'de';
   user: User & {
     collection: 'users';
   };
@@ -175,7 +173,7 @@ export interface Page {
       url?: string | null;
       label: string;
       /**
-       * Choose how the link should be rendered.
+       * Select the appearance of the link.
        */
       appearance?: ('default' | 'outline') | null;
     };
@@ -206,7 +204,6 @@ export interface Page {
   };
   publishedAt?: string | null;
   slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -354,7 +351,7 @@ export interface BlogBlock {
     url?: string | null;
     label: string;
     /**
-     * Choose how the link should be rendered.
+     * Select the appearance of the link.
      */
     appearance?: ('default' | 'outline') | null;
   };
@@ -664,7 +661,7 @@ export interface TeamBlock {
   members: {
     media: string | Media;
     name: string;
-    position?: string | null;
+    position: string;
     phoneWork?: string | null;
     phoneMobile?: string | null;
     email?: string | null;
@@ -692,7 +689,7 @@ export interface TwoInOneBlock {
     url?: string | null;
     label: string;
     /**
-     * Choose how the link should be rendered.
+     * Select the appearance of the link.
      */
     appearance?: ('default' | 'outline') | null;
   };
@@ -746,7 +743,6 @@ export interface Post {
   };
   publishedAt?: string | null;
   slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -778,7 +774,6 @@ export interface Product {
     description?: string | null;
   };
   slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -810,7 +805,6 @@ export interface Job {
     description?: string | null;
   };
   slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -838,27 +832,6 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects".
- */
-export interface Redirect {
-  id: string;
-  /**
-   * You will need to rebuild the website when changing this field.
-   */
-  from: string;
-  to?: {
-    type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'pages';
-      value: string | Page;
-    } | null;
-    url?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1001,10 +974,6 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'redirects';
-        value: string | Redirect;
-      } | null)
-    | ({
         relationTo: 'forms';
         value: string | Form;
       } | null)
@@ -1107,7 +1076,6 @@ export interface PagesSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1356,7 +1324,6 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1390,7 +1357,6 @@ export interface ProductsSelect<T extends boolean = true> {
         description?: T;
       };
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1424,7 +1390,6 @@ export interface JobsSelect<T extends boolean = true> {
         description?: T;
       };
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1543,22 +1508,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects_select".
- */
-export interface RedirectsSelect<T extends boolean = true> {
-  from?: T;
-  to?:
-    | T
-    | {
-        type?: T;
-        reference?: T;
-        url?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

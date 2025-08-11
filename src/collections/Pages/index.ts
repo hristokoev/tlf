@@ -7,7 +7,6 @@ import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { ScrollBlock } from '@/blocks/ScrollBlock/config'
 import { TwoInOneBlock } from '@/blocks/TwoInOneBlock/config'
 import { hero } from '@/heros/config'
-import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
@@ -31,6 +30,18 @@ import { TeamBlock } from '@/blocks/TeamBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: {
+      cs: 'Stránka',
+      en: 'Page',
+      de: 'Seite',
+    },
+    plural: {
+      cs: 'Stránky',
+      en: 'Pages',
+      de: 'Seiten',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -46,6 +57,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'TLF',
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -68,7 +80,13 @@ export const Pages: CollectionConfig<'pages'> = {
   fields: [
     {
       name: 'title',
+      label: {
+        cs: 'Název',
+        en: 'Title',
+        de: 'Titel',
+      },
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -76,12 +94,33 @@ export const Pages: CollectionConfig<'pages'> = {
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: {
+            cs: 'Hlavní',
+            en: 'Hero',
+            de: 'Hero',
+          },
         },
         {
           fields: [
             {
               name: 'layout',
+              label: {
+                cs: 'Sekce',
+                en: 'Sections',
+                de: 'Sektionen',
+              },
+              labels: {
+                singular: {
+                  cs: 'Sekce',
+                  en: 'Section',
+                  de: 'Sektion',
+                },
+                plural: {
+                  cs: 'Sekce',
+                  en: 'Sections',
+                  de: 'Sektionen',
+                },
+              },
               type: 'blocks',
               blocks: [
                 AboutUsBlock,
@@ -104,11 +143,19 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
+          label: {
+            cs: 'Obsah',
+            en: 'Content',
+            de: 'Inhalt',
+          },
         },
         {
           name: 'meta',
-          label: 'SEO',
+          label: {
+            cs: 'SEO',
+            en: 'SEO',
+            de: 'SEO',
+          },
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -137,12 +184,23 @@ export const Pages: CollectionConfig<'pages'> = {
     },
     {
       name: 'publishedAt',
+      label: {
+        cs: 'Datum publikování',
+        en: 'Published at',
+        de: 'Veröffentlicht am',
+      },
       type: 'date',
       admin: {
         position: 'sidebar',
       },
     },
-    ...slugField(),
+    {
+      name: 'slug',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidatePage],

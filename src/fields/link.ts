@@ -1,16 +1,27 @@
 import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import { en } from 'payload/i18n/en'
 
 export type LinkAppearances = 'default' | 'outline'
 
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
+export type I18nLabel = { en: string; de: string; cs: string }
+
+export const appearanceOptions: Record<LinkAppearances, { label: I18nLabel; value: string }> = {
   default: {
-    label: 'Default',
+    label: {
+      en: 'Default',
+      de: 'Standard',
+      cs: 'Výchozí',
+    },
     value: 'default',
   },
   outline: {
-    label: 'Outline',
+    label: {
+      en: 'Outline',
+      de: 'Umriss',
+      cs: 'Obrys',
+    },
     value: 'outline',
   },
 }
@@ -42,11 +53,19 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
             defaultValue: 'reference',
             options: [
               {
-                label: 'Internal link',
+                label: {
+                  en: 'Internal link',
+                  de: 'Interner Link',
+                  cs: 'Interní odkaz',
+                },
                 value: 'reference',
               },
               {
-                label: 'Custom URL',
+                label: {
+                  en: 'Custom URL',
+                  de: 'Benutzerdefinierte URL',
+                  cs: 'Vlastní URL',
+                },
                 value: 'custom',
               },
             ],
@@ -60,7 +79,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
               },
               width: '50%',
             },
-            label: 'Open in new tab',
+            label: {
+              en: 'Open in new tab',
+              de: 'In neuem Tab öffnen',
+              cs: 'Otevřít v novém okně',
+            },
           },
         ],
       },
@@ -74,7 +97,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
-      label: 'Document to link to',
+      label: {
+        en: 'Internal Link',
+        de: 'Interner Link',
+        cs: 'Interní odkaz',
+      },
       relationTo: ['pages'],
       required: true,
     },
@@ -84,7 +111,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'custom',
       },
-      label: 'Custom URL',
+      label: {
+        en: 'Custom URL',
+        de: 'Benutzerdefinierte URL',
+        cs: 'Vlastní URL',
+      },
       required: true,
     },
   ]
@@ -108,7 +139,12 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           admin: {
             width: '50%',
           },
-          label: 'Label',
+          label: {
+            en: 'Label',
+            de: 'Bezeichnung',
+            cs: 'Štítek',
+          },
+          localized: true,
           required: true,
         },
       ],
@@ -126,9 +162,18 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 
     linkResult.fields.push({
       name: 'appearance',
+      label: {
+        en: 'Appearance',
+        de: 'Erscheinungsbild',
+        cs: 'Vzhled',
+      },
       type: 'select',
       admin: {
-        description: 'Choose how the link should be rendered.',
+        description: {
+          en: 'Select the appearance of the link.',
+          de: 'Wählen Sie das Erscheinungsbild des Links.',
+          cs: 'Vyberte vzhled odkazu.',
+        },
       },
       defaultValue: 'default',
       options: appearanceOptionsToUse,

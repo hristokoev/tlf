@@ -3,6 +3,7 @@
 import { motion, type Variants } from 'framer-motion'
 import type { Job } from '@/payload-types'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface JobsBlockClientProps {
   heading: string
@@ -53,6 +54,9 @@ const jobVariants: Variants = {
 }
 
 export const JobsBlockClient: React.FC<JobsBlockClientProps> = ({ heading, jobs }) => {
+  const params = useParams()
+  const { lang } = params
+
   return (
     <section
       className="bg-neutral-50 py-16 md:py-24 lg:py-32 overflow-hidden"
@@ -87,7 +91,7 @@ export const JobsBlockClient: React.FC<JobsBlockClientProps> = ({ heading, jobs 
                 whileTap={{ scale: 0.98 }}
                 className="group"
               >
-                <Link href={`/nabidky/${job.slug}`} className="block">
+                <Link href={`/${lang}/jobs/${job.slug}`} className="block">
                   <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 lg:p-10 border border-black/10 hover:border-neutral-300/60 transition-all duration-300">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                       {/* Job Info */}

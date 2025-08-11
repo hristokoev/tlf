@@ -26,15 +26,15 @@ importers:
       '@payloadcms/plugin-form-builder':
         specifier: 3.45.0
         version: 3.45.0(@types/react@19.1.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3)
-      '@payloadcms/plugin-redirects':
-        specifier: 3.45.0
-        version: 3.45.0(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))
       '@payloadcms/plugin-seo':
         specifier: 3.45.0
         version: 3.45.0(@types/react@19.1.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3)
       '@payloadcms/richtext-lexical':
         specifier: 3.45.0
         version: 3.45.0(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@payloadcms/next@3.45.0(@types/react@19.1.0)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3))(@types/react@19.1.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3)(yjs@13.6.27)
+      '@payloadcms/translations':
+        specifier: ^3.50.0
+        version: 3.50.0
       '@payloadcms/ui':
         specifier: 3.45.0
         version: 3.45.0(@types/react@19.1.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3)
@@ -74,6 +74,9 @@ importers:
       lucide-react:
         specifier: ^0.378.0
         version: 0.378.0(react@19.1.0)
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
       next:
         specifier: 15.3.3
         version: 15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4)
@@ -1234,11 +1237,6 @@ packages:
       react: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
       react-dom: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
 
-  '@payloadcms/plugin-redirects@3.45.0':
-    resolution: {integrity: sha512-F5IPX8eNWmp05vkg9BliuYN5d8HFxJa1RFYe0G/eUktknhO6A/h9af3RQRCFoh4RNg3EX/ZYD6TVBPyp8hCTqg==}
-    peerDependencies:
-      payload: 3.45.0
-
   '@payloadcms/plugin-seo@3.45.0':
     resolution: {integrity: sha512-8k8yR8eMihkgeQSkl7BL5pHS8/i2pmZQF61wXM9JEhxWyQz526K8XGeeuzAuS5NNRC3zQE45Tlm/TnKPxh9lHA==}
     peerDependencies:
@@ -1259,6 +1257,9 @@ packages:
 
   '@payloadcms/translations@3.45.0':
     resolution: {integrity: sha512-mqeg6laqoWGX7fSeAciiMITc40LoWhfuH6Qr5pCcff1SLM+IoP1HSipyYLwcgnFDQ1JOZ9WLKTjC11cWTC0FCg==}
+
+  '@payloadcms/translations@3.50.0':
+    resolution: {integrity: sha512-Po3dnuY+cchLessSB4+r3Al5MF5joWoh7RFuMnOB/mcpBgkoSCP2bV9Th/U3CTc67CmEBArCnRrDtfSdE7eDrA==}
 
   '@payloadcms/ui@3.45.0':
     resolution: {integrity: sha512-5LlxzrF31ySJBmuaeS4AyIkduwHD3JVSEWBW+9VSOm6NSIKOdgIJatJF87oQLkFyutmuGTh5vbReQxRsbHbEyQ==}
@@ -3625,6 +3626,11 @@ packages:
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@5.1.5:
+    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+    engines: {node: ^18 || >=20}
     hasBin: true
 
   napi-build-utils@2.0.0:
@@ -6138,10 +6144,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@payloadcms/plugin-redirects@3.45.0(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))':
-    dependencies:
-      payload: 3.45.0(graphql@16.11.0)(typescript@5.7.3)
-
   '@payloadcms/plugin-seo@3.45.0(@types/react@19.1.0)(monaco-editor@0.52.2)(next@15.3.3(@babel/core@7.28.0)(@playwright/test@1.50.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(payload@3.45.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.7.3)':
     dependencies:
       '@payloadcms/translations': 3.45.0
@@ -6200,6 +6202,10 @@ snapshots:
       - yjs
 
   '@payloadcms/translations@3.45.0':
+    dependencies:
+      date-fns: 4.1.0
+
+  '@payloadcms/translations@3.50.0':
     dependencies:
       date-fns: 4.1.0
 
@@ -8959,6 +8965,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.11: {}
+
+  nanoid@5.1.5: {}
 
   napi-build-utils@2.0.0: {}
 

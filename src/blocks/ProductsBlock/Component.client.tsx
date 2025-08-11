@@ -4,6 +4,7 @@ import { motion, type Variants } from 'framer-motion'
 import type { Product } from '@/payload-types'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface ProductsBlockClientProps {
   heading: string
@@ -54,6 +55,9 @@ const productVariants: Variants = {
 }
 
 export const ProductsBlockClient: React.FC<ProductsBlockClientProps> = ({ heading, products }) => {
+  const params = useParams()
+  const { lang } = params
+
   return (
     <section className="bg-neutral-50 py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="container">
@@ -87,7 +91,7 @@ export const ProductsBlockClient: React.FC<ProductsBlockClientProps> = ({ headin
                 }}
                 className="group"
               >
-                <Link href={`/produkty/${product.slug}`} className="block">
+                <Link href={`/${lang}/products/${product.slug}`} className="block">
                   <div className="w-full flex flex-col bg-white border border-black/10 overflow-hidden transition-all duration-500">
                     {/* Product Image */}
                     <div className="relative overflow-hidden">

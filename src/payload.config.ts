@@ -4,6 +4,10 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
+import { en } from 'payload/i18n/en'
+import { cs } from 'payload/i18n/cs'
+import { de } from 'payload/i18n/de'
+import { customTranslations } from '../custom-translations'
 import { fileURLToPath } from 'url'
 
 import { Jobs } from './collections/Jobs'
@@ -23,6 +27,12 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    components: {
+      graphics: {
+        Logo: 'src/components/Logo/Logo.tsx#Logo',
+        Icon: 'src/components/Logo/Logo.tsx#Icon',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -58,6 +68,15 @@ export default buildConfig({
   collections: [Pages, Posts, Products, Jobs, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
+  localization: {
+    locales: ['cs', 'en', 'de'],
+    defaultLocale: 'cs',
+  },
+  i18n: {
+    supportedLanguages: { cs, en, de },
+    fallbackLanguage: 'cs',
+    translations: customTranslations,
+  },
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

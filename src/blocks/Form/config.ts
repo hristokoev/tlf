@@ -10,9 +10,26 @@ import {
 export const FormBlock: Block = {
   slug: 'formBlock',
   interfaceName: 'FormBlock',
+  labels: {
+    singular: {
+      cs: 'Blok Formuláře',
+      en: 'Form Block',
+      de: 'Formular Block',
+    },
+    plural: {
+      cs: 'Bloky Formulářů',
+      en: 'Form Blocks',
+      de: 'Formular Blöcke',
+    },
+  },
   fields: [
     {
       name: 'form',
+      label: {
+        cs: 'Formulář',
+        en: 'Form',
+        de: 'Formular',
+      },
       type: 'relationship',
       relationTo: 'forms',
       required: true,
@@ -20,7 +37,11 @@ export const FormBlock: Block = {
     {
       name: 'enableIntro',
       type: 'checkbox',
-      label: 'Enable Intro Content',
+      label: {
+        cs: 'Povolit Úvodní Obsah',
+        en: 'Enable Intro Content',
+        de: 'Einführungsinhalt Aktivieren',
+      },
     },
     {
       name: 'introContent',
@@ -38,14 +59,14 @@ export const FormBlock: Block = {
           ]
         },
       }),
-      label: 'Intro Content',
+      label: {
+        cs: 'Úvodní Obsah',
+        en: 'Intro Content',
+        de: 'Einführungsinhalt',
+      },
     },
   ],
   graphQL: {
     singularName: 'FormBlock',
-  },
-  labels: {
-    plural: 'Form Blocks',
-    singular: 'Form Block',
   },
 }

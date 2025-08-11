@@ -9,14 +9,14 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/aktuality/${doc.slug}`
+    const path = `/posts/${doc.slug}`
 
     payload.logger.info(`Revalidating post at path: ${path}`)
 
     revalidatePath(path)
 
     // Revalidate the main posts page
-    revalidatePath('/aktuality')
+    revalidatePath('/posts')
 
     // Revalidate the home page
     revalidatePath('/')

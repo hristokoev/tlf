@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -11,6 +12,8 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
   data,
   isWhiteBackgroundPage,
 }) => {
+  const params = useParams()
+  const { lang } = params
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navItems = data?.navItems || []
 

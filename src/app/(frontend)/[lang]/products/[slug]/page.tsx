@@ -1,22 +1,22 @@
 import type { Metadata } from 'next'
-import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import type { Job } from '@/payload-types'
+import type { Product } from '@/payload-types'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 // Import the new animated client components
-import { AnimatedJobHero } from '@/components/AnimatedJobHero'
-import { AnimatedJobAccordion } from '@/components/AnimatedJobAccordion'
+import { AnimatedProductHero } from '@/components/AnimatedProductHero'
+import { AnimatedProductAccordion } from '@/components/AnimatedProductAccordion'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const jobs = await payload.find({
-    collection: 'jobs',
+  const products = await payload.find({
+    collection: 'products',
     draft: false,
     limit: 1000,
     overrideAccess: false,
@@ -26,9 +26,19 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = jobs.docs.map(({ slug }) => {
-    return { slug }
-  })
+  const supportedLanguages = ['cs', 'en', 'de']
+
+  const params = []
+
+  // Generate params for each language and slug combination
+  for (const lang of supportedLanguages) {
+    for (const doc of products.docs || []) {
+      params.push({
+        lang: lang,
+        slug: doc.slug,
+      })
+    }
+  }
 
   return params
 }
@@ -36,27 +46,28 @@ export async function generateStaticParams() {
 type Args = {
   params: Promise<{
     slug?: string
+    lang?: string
   }>
 }
 
-export default async function Job({ params: paramsPromise }: Args) {
+export default async function Product({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  const url = '/aktuality/' + slug
-  const job = await queryJobBySlug({ slug })
-  const jobsPage = (await queryJobsPage()) || {}
+  const { slug = '', lang = 'cs' } = await paramsPromise
+  const url = '/posts/' + slug
+  const product = await queryProductBySlug({ slug, lang })
+  const productsPage = (await queryProductsPage()) || {}
 
-  const { layout } = jobsPage
+  if (!product) {
+    return notFound()
+  }
+
+  const { layout } = productsPage
   const layoutFiltered = layout?.filter((block) =>
     ['contactBlock', 'mapInfoBlock'].includes(block.blockType),
   )
 
-  if (!job) return <PayloadRedirects url={url} />
-
   return (
     <>
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
       <article
@@ -68,37 +79,38 @@ export default async function Job({ params: paramsPromise }: Args) {
         }}
       >
         {/* Animated Hero Section */}
-        <AnimatedJobHero job={job} />
+        <AnimatedProductHero product={product} />
 
         {/* Animated Accordion Section */}
-        <AnimatedJobAccordion
-          variants={job.content.responsibilities || ''}
-          materials={job.content.requirements || ''}
-          technicalData={job.content.offer || ''}
+        <AnimatedProductAccordion
+          variants={product.content.variants || ''}
+          materials={product.content.materials || ''}
+          technicalData={product.content.technicalData || ''}
         />
       </article>
 
       {/* Blog Page Layout - Keep existing RenderBlocks with its animations */}
-      <RenderBlocks blocks={layoutFiltered} />
+      <RenderBlocks blocks={layoutFiltered} lang={lang} />
     </>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const job = await queryJobBySlug({ slug })
+  const product = await queryProductBySlug({ slug, lang: 'cs' })
 
-  return generateMeta({ doc: job })
+  return generateMeta({ doc: product })
 }
 
-const queryJobBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryProductBySlug = cache(async ({ slug, lang }: { slug: string; lang: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'jobs',
+    collection: 'products',
     draft,
+    locale: lang as 'cs',
     limit: 1,
     overrideAccess: draft,
     pagination: false,
@@ -112,7 +124,7 @@ const queryJobBySlug = cache(async ({ slug }: { slug: string }) => {
   return result.docs?.[0] || null
 })
 
-const queryJobsPage = cache(async () => {
+const queryProductsPage = cache(async () => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -125,7 +137,7 @@ const queryJobsPage = cache(async () => {
     pagination: false,
     where: {
       slug: {
-        equals: 'nabidky',
+        equals: 'products',
       },
     },
   })

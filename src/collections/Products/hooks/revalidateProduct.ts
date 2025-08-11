@@ -9,14 +9,14 @@ export const revalidateProduct: CollectionAfterChangeHook<Product> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/produkty/${doc.slug}`
+    const path = `/products/${doc.slug}`
 
     payload.logger.info(`Revalidating product at path: ${path}`)
 
     revalidatePath(path)
 
     // Revalidate the main products page
-    revalidatePath('/produkty')
+    revalidatePath('/products')
 
     // Revalidate the home page
     revalidatePath('/')

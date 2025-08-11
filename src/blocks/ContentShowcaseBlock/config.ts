@@ -3,18 +3,43 @@ import type { Block } from 'payload'
 export const ContentShowcaseBlock: Block = {
   slug: 'contentShowcaseBlock',
   interfaceName: 'ContentShowcaseBlock',
+  labels: {
+    singular: {
+      cs: 'Blok Ukázky Obsahu',
+      en: 'Content Showcase Block',
+      de: 'Inhaltspräsentationsblock',
+    },
+    plural: {
+      cs: 'Bloky Ukázky Obsahu',
+      en: 'Content Showcase Blocks',
+      de: 'Inhaltspräsentationsblöcke',
+    },
+  },
   fields: [
     {
       name: 'backgroundColor',
+      label: {
+        cs: 'Barva pozadí',
+        en: 'Background Color',
+        de: 'Hintergrundfarbe',
+      },
       type: 'select',
       defaultValue: 'white',
       options: [
         {
-          label: 'White',
+          label: {
+            cs: 'Bílá',
+            en: 'White',
+            de: 'Weiß',
+          },
           value: 'white',
         },
         {
-          label: 'Dark Gray',
+          label: {
+            cs: 'Tmavě šedá',
+            en: 'Dark Gray',
+            de: 'Dunkelgrau',
+          },
           value: 'darkGray',
         },
       ],
@@ -22,6 +47,11 @@ export const ContentShowcaseBlock: Block = {
     },
     {
       name: 'bottomSection',
+      label: {
+        cs: 'Spodní sekce',
+        en: 'Bottom Section',
+        de: 'Untere Sektion',
+      },
       type: 'checkbox',
       defaultValue: true,
     },
@@ -29,23 +59,51 @@ export const ContentShowcaseBlock: Block = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Top Section',
+          label: {
+            cs: 'Horní sekce',
+            en: 'Top Section',
+            de: 'Obere Sektion',
+          },
           fields: [
             {
               name: 'heading',
+              label: {
+                cs: 'Nadpis',
+                en: 'Heading',
+                de: 'Überschrift',
+              },
               type: 'text',
+              localized: true,
             },
             {
               name: 'subtitle',
+              label: {
+                cs: 'Podnadpis',
+                en: 'Subtitle',
+                de: 'Untertitel',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'title',
+              label: {
+                cs: 'Název',
+                en: 'Title',
+                de: 'Titel',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'description',
+              label: {
+                cs: 'Popis',
+                en: 'Description',
+                de: 'Beschreibung',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'media',
@@ -59,11 +117,19 @@ export const ContentShowcaseBlock: Block = {
               defaultValue: 'left',
               options: [
                 {
-                  label: 'Left',
+                  label: {
+                    cs: 'Vlevo',
+                    en: 'Left',
+                    de: 'Links',
+                  },
                   value: 'left',
                 },
                 {
-                  label: 'Right',
+                  label: {
+                    cs: 'Vpravo',
+                    en: 'Right',
+                    de: 'Rechts',
+                  },
                   value: 'right',
                 },
               ],
@@ -72,7 +138,11 @@ export const ContentShowcaseBlock: Block = {
           ],
         },
         {
-          label: 'Bottom Section',
+          label: {
+            cs: 'Spodní sekce',
+            en: 'Bottom Section',
+            de: 'Untere Sektion',
+          },
           // TODO: Turn this back on after fixing the big of conditional when there are many of the same blocks.
           // admin: {
           //   condition: (_, { bottomSection } = {}) => bottomSection,
@@ -87,11 +157,19 @@ export const ContentShowcaseBlock: Block = {
               defaultValue: 'cards',
               options: [
                 {
-                  label: 'Cards',
+                  label: {
+                    cs: 'Karty',
+                    en: 'Cards',
+                    de: 'Karten',
+                  },
                   value: 'cards',
                 },
                 {
-                  label: 'Media Items',
+                  label: {
+                    cs: 'Mediální položky',
+                    en: 'Media Items',
+                    de: 'Medienobjekte',
+                  },
                   value: 'mediaItems',
                 },
               ],
@@ -100,6 +178,18 @@ export const ContentShowcaseBlock: Block = {
             {
               type: 'array',
               name: 'cards',
+              labels: {
+                singular: {
+                  cs: 'Karta',
+                  en: 'Card',
+                  de: 'Karte',
+                },
+                plural: {
+                  cs: 'Karty',
+                  en: 'Cards',
+                  de: 'Karten',
+                },
+              },
               admin: {
                 condition: (_, { type, bottomSection } = {}) =>
                   ['cards'].includes(type) && bottomSection,
@@ -107,12 +197,24 @@ export const ContentShowcaseBlock: Block = {
               fields: [
                 {
                   name: 'title',
+                  label: {
+                    cs: 'Název',
+                    en: 'Title',
+                    de: 'Titel',
+                  },
                   type: 'text',
+                  localized: true,
                   required: true,
                 },
                 {
                   name: 'description',
+                  label: {
+                    cs: 'Popis',
+                    en: 'Description',
+                    de: 'Beschreibung',
+                  },
                   type: 'textarea',
+                  localized: true,
                   required: true,
                 },
                 {

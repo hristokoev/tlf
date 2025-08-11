@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -24,9 +23,19 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = posts.docs.map(({ slug }) => {
-    return { slug }
-  })
+  const supportedLanguages = ['cs', 'en']
+
+  const params = []
+
+  // Generate params for each language and slug combination
+  for (const lang of supportedLanguages) {
+    for (const doc of posts.docs || []) {
+      params.push({
+        lang: lang,
+        slug: doc.slug,
+      })
+    }
+  }
 
   return params
 }
@@ -34,22 +43,21 @@ export async function generateStaticParams() {
 type Args = {
   params: Promise<{
     slug?: string
+    lang?: string
   }>
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  const url = '/aktuality/' + slug
-  const post = await queryPostBySlug({ slug })
+  const { slug = '', lang = 'cs' } = await paramsPromise
+  const url = '/posts/' + slug
+  const post = await queryPostBySlug({ slug, lang })
   const blogPage = (await queryBlogPage()) || {}
 
   const { layout } = blogPage
   const layoutFiltered = layout?.filter((block) =>
     ['contactBlock', 'mapInfoBlock'].includes(block.blockType),
   )
-
-  if (!post) return <PayloadRedirects url={url} />
 
   return (
     <Fragment>
@@ -61,9 +69,6 @@ export default async function Post({ params: paramsPromise }: Args) {
           backgroundRepeat: 'no-repeat',
         }}
       >
-        {/* Allows redirects for valid pages too */}
-        <PayloadRedirects disableNotFound url={url} />
-
         {draft && <LivePreviewListener />}
 
         {/* Animated Hero Section */}
@@ -74,19 +79,19 @@ export default async function Post({ params: paramsPromise }: Args) {
       </article>
 
       {/* Blog Page Layout */}
-      <RenderBlocks blocks={layoutFiltered} />
+      <RenderBlocks blocks={layoutFiltered} lang={lang} />
     </Fragment>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
+  const post = await queryPostBySlug({ slug, lang: 'cs' })
 
   return generateMeta({ doc: post })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPostBySlug = cache(async ({ slug, lang }: { slug: string; lang: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -94,6 +99,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const result = await payload.find({
     collection: 'posts',
     draft,
+    locale: lang as 'cs',
     limit: 1,
     overrideAccess: draft,
     pagination: false,
@@ -120,7 +126,7 @@ const queryBlogPage = cache(async () => {
     pagination: false,
     where: {
       slug: {
-        equals: 'aktuality',
+        equals: 'posts',
       },
     },
   })

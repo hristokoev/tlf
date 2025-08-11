@@ -20,7 +20,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const pathname = usePathname()
 
   // Define parent paths that should have white background for their sub-pages
-  const whiteBackgroundParents = ['/aktuality', '/produkty', '/nabidky']
+  const whiteBackgroundParents = [
+    '/cs/posts',
+    '/cs/products',
+    '/cs/jobs',
+    '/en/posts',
+    '/en/products',
+    '/en/jobs',
+    '/de/posts',
+    '/de/products',
+    '/de/jobs',
+  ]
   const isWhiteBackgroundPage = whiteBackgroundParents.some(
     (parent) => pathname.startsWith(parent + '/') && pathname !== parent + '/',
   )

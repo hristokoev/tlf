@@ -13,11 +13,24 @@ import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: {
+    singular: {
+      en: 'Post',
+      de: 'Beitrag',
+      cs: 'Příspěvek',
+    },
+    plural: {
+      en: 'Posts',
+      de: 'Beiträge',
+      cs: 'Příspěvky',
+    },
+  },
   access: {
     read: () => true,
   },
   admin: {
     defaultColumns: ['title', 'updatedAt'],
+    group: 'TLF',
   },
   hooks: {
     afterChange: [revalidatePost],
@@ -27,7 +40,13 @@ export const Posts: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        en: 'Title',
+        de: 'Titel',
+        cs: 'Název',
+      },
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -35,15 +54,30 @@ export const Posts: CollectionConfig = {
       tabs: [
         {
           name: 'content',
-          label: 'Content',
+          label: {
+            en: 'Content',
+            de: 'Inhalt',
+            cs: 'Obsah',
+          },
           fields: [
             {
               name: 'description',
-              type: 'text',
+              label: {
+                en: 'Description',
+                de: 'Beschreibung',
+                cs: 'Popis',
+              },
+              type: 'textarea',
+              localized: true,
               required: true,
             },
             {
               name: 'media',
+              label: {
+                en: 'Media',
+                de: 'Medien',
+                cs: 'Média',
+              },
               type: 'upload',
               relationTo: 'media',
               hasMany: false,
@@ -51,7 +85,13 @@ export const Posts: CollectionConfig = {
             },
             {
               name: 'content',
+              label: {
+                en: 'Content',
+                de: 'Inhalt',
+                cs: 'Obsah',
+              },
               type: 'richText',
+              localized: true,
               required: true,
             },
           ],
@@ -87,6 +127,11 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'publishedAt',
+      label: {
+        en: 'Published at',
+        de: 'Veröffentlicht am',
+        cs: 'Datum publikování',
+      },
       type: 'date',
       admin: {
         position: 'sidebar',

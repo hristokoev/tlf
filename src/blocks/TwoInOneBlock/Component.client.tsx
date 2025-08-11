@@ -6,6 +6,7 @@ import type { TwoInOneBlock as TwoInOneBlockProps } from '@/payload-types'
 import { Fragment, useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
   const {
@@ -20,6 +21,8 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
     link,
     mediaItems,
   } = props
+  const params = useParams()
+  const { lang } = params
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [slideWidth, setSlideWidth] = useState(383)

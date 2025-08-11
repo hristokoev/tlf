@@ -9,14 +9,14 @@ export const revalidateJob: CollectionAfterChangeHook<Job> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    const path = `/nabidky/${doc.slug}`
+    const path = `/jobs/${doc.slug}`
 
     payload.logger.info(`Revalidating job at path: ${path}`)
 
     revalidatePath(path)
 
     // Revalidate the main jobs page
-    revalidatePath('/nabidky')
+    revalidatePath('/jobs')
 
     // Revalidate the home page
     revalidatePath('/')

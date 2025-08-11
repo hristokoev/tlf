@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion, type Variants } from 'framer-motion'
+import { useParams } from 'next/navigation'
 
 import type { Page } from '@/payload-types'
 
@@ -12,6 +13,9 @@ import RichText from '@/components/RichText'
 import HeroBg from '../../../public/hero-bg.png'
 
 export const DefaultHero: React.FC<Page['hero']> = ({ link, media, richText }) => {
+  const params = useParams()
+  const { lang } = params
+
   // Animation variants for the text content
   const containerVariants: Variants = {
     hidden: { opacity: 0 },

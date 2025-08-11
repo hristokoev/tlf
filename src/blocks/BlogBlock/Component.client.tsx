@@ -3,10 +3,10 @@
 import type { BlogBlock as BlogBlockProps } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
-import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { CMSLink } from '@/components/Link'
+import { useParams } from 'next/navigation'
 
 interface BlogBlockClientProps extends BlogBlockProps {
   postsDocs: any[]
@@ -14,7 +14,8 @@ interface BlogBlockClientProps extends BlogBlockProps {
 
 export const BlogBlockClient: React.FC<BlogBlockClientProps> = (props) => {
   const { type, heading, title, description, media, link, postsDocs } = props
-
+  const params = useParams()
+  const { lang } = params
   const sectionRef = useRef<HTMLElement>(null)
   const mediaRef = useRef<HTMLDivElement>(null)
 
@@ -219,7 +220,7 @@ export const BlogBlockClient: React.FC<BlogBlockClientProps> = (props) => {
               {postsDocs.map((post) => (
                 <motion.a
                   key={post.id}
-                  href={`/aktuality/${post.slug}`}
+                  href={`/${lang}/posts/${post.slug}`}
                   className="w-full bg-background text-white flex flex-col gap-3 md:gap-4 group relative overflow-hidden"
                   variants={cardVariants}
                   whileHover={{

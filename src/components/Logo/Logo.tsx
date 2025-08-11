@@ -37,3 +37,30 @@ export const Logo = (props: Props) => {
     />
   )
 }
+
+export const Icon = (props: Props) => {
+  const {
+    loading: loadingFromProps,
+    priority: priorityFromProps,
+    className,
+    isWhiteBackgroundPage,
+  } = props
+
+  const loading = loadingFromProps || 'lazy'
+  const priority = priorityFromProps || 'low'
+  const logoSrc = isWhiteBackgroundPage ? logoImgBlack : logoImg
+
+  return (
+    /* eslint-disable @next/next/no-img-element */
+    <img
+      alt="TLF Logo"
+      width={76}
+      height={64}
+      loading={loading}
+      fetchPriority={priority}
+      decoding="async"
+      className={clsx('h-[16px]', className)}
+      src={logoSrc.src}
+    />
+  )
+}

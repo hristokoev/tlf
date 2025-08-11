@@ -12,11 +12,24 @@ import { revalidateDelete, revalidateProduct } from './hooks/revalidateProduct'
 
 export const Products: CollectionConfig = {
   slug: 'products',
+  labels: {
+    singular: {
+      en: 'Product',
+      de: 'Produkt',
+      cs: 'Produkt',
+    },
+    plural: {
+      en: 'Products',
+      de: 'Produkte',
+      cs: 'Produkty',
+    },
+  },
   access: {
     read: () => true,
   },
   admin: {
     defaultColumns: ['title', 'updatedAt'],
+    group: 'TLF',
   },
   hooks: {
     afterChange: [revalidateProduct],
@@ -25,7 +38,13 @@ export const Products: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        en: 'Title',
+        de: 'Titel',
+        cs: 'Název',
+      },
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -33,11 +52,21 @@ export const Products: CollectionConfig = {
       tabs: [
         {
           name: 'content',
-          label: 'Content',
+          label: {
+            en: 'Content',
+            de: 'Inhalt',
+            cs: 'Obsah',
+          },
           fields: [
             {
               name: 'description',
+              label: {
+                en: 'Description',
+                de: 'Beschreibung',
+                cs: 'Popis',
+              },
               type: 'textarea',
+              localized: true,
               required: true,
             },
             {
@@ -46,11 +75,22 @@ export const Products: CollectionConfig = {
               fields: [
                 {
                   name: 'title',
+                  label: {
+                    en: 'Title',
+                    de: 'Titel',
+                    cs: 'Název',
+                  },
                   type: 'text',
+                  localized: true,
                   required: true,
                 },
                 {
                   name: 'icon',
+                  label: {
+                    en: 'Icon',
+                    de: 'Symbol',
+                    cs: 'Ikona',
+                  },
                   type: 'upload',
                   relationTo: 'media',
                   required: true,
@@ -61,18 +101,41 @@ export const Products: CollectionConfig = {
             },
             {
               name: 'variants',
+              label: {
+                en: 'Variants',
+                de: 'Varianten',
+                cs: 'Varianty',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'materials',
+              label: {
+                en: 'Materials',
+                de: 'Materialien',
+                cs: 'Materiály',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'technicalData',
+              label: {
+                en: 'Technical Data',
+                de: 'Technische Daten',
+                cs: 'Technické údaje',
+              },
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'media',
+              label: {
+                en: 'Media',
+                de: 'Medien',
+                cs: 'Média',
+              },
               type: 'upload',
               relationTo: 'media',
               hasMany: true,

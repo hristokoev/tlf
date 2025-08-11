@@ -48,8 +48,8 @@ const SocialIcon: React.FC<{ platform: string; className?: string }> = ({
   return icons[platform as keyof typeof icons] || null
 }
 
-export async function Footer() {
-  const footerData: Footer = await getCachedGlobal('footer', 1)()
+export async function Footer({ lang }: { lang: string }) {
+  const footerData: Footer = await getCachedGlobal('footer', 1, lang)()
 
   const { columns = [], socialLinks = [], bottomText } = footerData
 

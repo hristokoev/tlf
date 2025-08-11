@@ -12,8 +12,14 @@ import './globals.css'
 import { LexendMegaFont } from './fonts'
 import { getServerSideURL } from '@/utilities/getURL'
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  children: React.ReactNode
+  params: Promise<{ lang: string }>
+}
+
+export default async function RootLayout({ children, params }: LayoutProps) {
   // const { isEnabled } = await draftMode()
+  const { lang } = await params
 
   return (
     <html className={LexendMegaFont.className} lang="en" suppressHydrationWarning>
@@ -28,9 +34,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         /> */}
 
-        <Header />
+        <Header lang={lang} />
         {children}
-        <Footer />
+        <Footer lang={lang} />
       </body>
     </html>
   )

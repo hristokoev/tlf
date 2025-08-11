@@ -84,7 +84,6 @@ export const MapInfoBlock: Block = {
           },
           type: 'upload',
           relationTo: 'media',
-          required: true,
         },
         {
           name: 'title',

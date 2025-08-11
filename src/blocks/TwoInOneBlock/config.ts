@@ -159,7 +159,6 @@ export const TwoInOneBlock: Block = {
                   },
                   type: 'upload',
                   relationTo: 'media',
-                  required: true,
                 },
               ],
               required: true,

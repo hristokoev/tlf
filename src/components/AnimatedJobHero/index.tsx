@@ -260,13 +260,15 @@ export function AnimatedJobHero({ job }: AnimatedJobHeroProps) {
                   variants={benefitItemVariants}
                   className="flex items-center gap-4"
                 >
-                  <div className="flex items-center justify-center flex-shrink-0">
-                    <Media
-                      resource={benefit.icon}
-                      className="w-8 h-8"
-                      imgClassName="object-contain"
-                    />
-                  </div>
+                  {benefit.icon && (
+                    <div className="flex items-center justify-center flex-shrink-0">
+                      <Media
+                        resource={benefit.icon}
+                        className="w-8 h-8"
+                        imgClassName="object-contain"
+                      />
+                    </div>
+                  )}
                   <span className="text-base sm:text-lg text-gray-900 font-medium">
                     {benefit.title}
                   </span>

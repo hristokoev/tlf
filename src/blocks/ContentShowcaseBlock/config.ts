@@ -221,7 +221,6 @@ export const ContentShowcaseBlock: Block = {
                   name: 'icon',
                   type: 'upload',
                   relationTo: 'media',
-                  required: true,
                 },
               ],
               minRows: 4,

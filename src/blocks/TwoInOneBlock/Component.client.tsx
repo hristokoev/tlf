@@ -384,11 +384,13 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                     }}
                     viewport={{ once: true, amount: 0.3 }}
                   >
-                    <Media
-                      resource={card.icon}
-                      className="w-12 h-12 md:w-16 md:h-16"
-                      imgClassName="object-cover h-full w-full"
-                    />
+                    {card.icon && (
+                      <Media
+                        resource={card.icon}
+                        className="w-12 h-12 md:w-16 md:h-16"
+                        imgClassName="object-cover h-full w-full"
+                      />
+                    )}
                     <h3 className="text-lg font-semibold leading-tight">{card.title}</h3>
                   </motion.div>
                 ))}

@@ -93,7 +93,6 @@ export const Products: CollectionConfig = {
                   },
                   type: 'upload',
                   relationTo: 'media',
-                  required: true,
                 },
               ],
               minRows: 1,

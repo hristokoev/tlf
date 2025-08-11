@@ -132,15 +132,17 @@ export const MapInfoBlockClient: React.FC<MapInfoBlockProps> = (props) => {
               >
                 <div className="flex flex-col space-y-4 md:space-y-6 h-full">
                   {/* Icon Container */}
-                  <motion.div className="flex-shrink-0">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl p-3 md:p-4 transition-colors duration-300">
-                      <Media
-                        resource={item.icon}
-                        className="w-full h-full"
-                        imgClassName="object-contain w-full h-full filter transition-all duration-300 group-hover:brightness-110"
-                      />
-                    </div>
-                  </motion.div>
+                  {item.icon && (
+                    <motion.div className="flex-shrink-0">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl p-3 md:p-4 transition-colors duration-300">
+                        <Media
+                          resource={item.icon}
+                          className="w-full h-full"
+                          imgClassName="object-contain w-full h-full filter transition-all duration-300 group-hover:brightness-110"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
 
                   {/* Content */}
                   <div className="flex-1 space-y-3">

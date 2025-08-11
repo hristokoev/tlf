@@ -423,15 +423,17 @@ export const ContentShowcaseBlockClient: React.FC<ContentShowcaseBlockProps> = (
                     >
                       <div className="flex flex-col space-y-6 h-full p-8 bg-white border border-black/10 hover:transition-shadow duration-300">
                         {/* Icon */}
-                        <motion.div className="flex-shrink-0">
-                          <div className="w-16 h-16 md:w-20 md:h-20 p-4 transition-colors duration-300">
-                            <Media
-                              resource={card.icon}
-                              className="w-full h-full"
-                              imgClassName="object-contain w-full h-full filter transition-all duration-300 group-hover:brightness-110"
-                            />
-                          </div>
-                        </motion.div>
+                        {card.icon && (
+                          <motion.div className="flex-shrink-0">
+                            <div className="w-16 h-16 md:w-20 md:h-20 p-4 transition-colors duration-300">
+                              <Media
+                                resource={card.icon}
+                                className="w-full h-full"
+                                imgClassName="object-contain w-full h-full filter transition-all duration-300 group-hover:brightness-110"
+                              />
+                            </div>
+                          </motion.div>
+                        )}
 
                         {/* Content */}
                         <div className="flex-1 space-y-4">

@@ -261,13 +261,15 @@ export function AnimatedProductHero({ product }: AnimatedProductHeroProps) {
                   variants={parameterItemVariants}
                   className="flex items-center gap-4"
                 >
-                  <div className="flex items-center justify-center flex-shrink-0">
-                    <Media
-                      resource={param.icon}
-                      className="w-8 h-8"
-                      imgClassName="object-contain"
-                    />
-                  </div>
+                  {param.icon && (
+                    <div className="flex items-center justify-center flex-shrink-0">
+                      <Media
+                        resource={param.icon}
+                        className="w-8 h-8"
+                        imgClassName="object-contain"
+                      />
+                    </div>
+                  )}
                   <span className="text-base sm:text-lg text-gray-900 font-medium">
                     {param.title}
                   </span>

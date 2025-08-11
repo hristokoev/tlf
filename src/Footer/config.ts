@@ -120,7 +120,7 @@ export const Footer: GlobalConfig = {
         de: 'Unterer Text (z. B. Copyright)',
         cs: 'Dolní text (např. autorská práva)',
       },
-      defaultValue: '© 2025 Your Company. All rights reserved.',
+      defaultValue: '© 2025 TLF s.r.o.',
     },
   ],
   hooks: {

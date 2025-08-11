@@ -65,9 +65,6 @@ export async function Footer({ lang }: { lang: string }) {
             <Link className="inline-block mb-6" href={`/${lang}`}>
               <Logo />
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Your company description goes here.
-            </p>
           </div>
 
           {/* Dynamic Columns - Fixed to pass lang */}
@@ -112,9 +109,7 @@ export async function Footer({ lang }: { lang: string }) {
         {/* Bottom Section - Fixed with lang parameter */}
         <div className="pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              {bottomText || '© 2025 Your Company. All rights reserved.'}
-            </p>
+            <p className="text-gray-400 text-sm">{bottomText || '© 2025 TLF s.r.o.'}</p>
 
             {/* Additional Bottom Links with language support */}
             <div className="flex gap-6">

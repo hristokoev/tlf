@@ -742,9 +742,6 @@ export interface Post {
     description?: string | null;
   };
   publishedAt?: string | null;
-  /**
-   * Auto-generated short URL slug. Leave empty to generate automatically.
-   */
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -776,9 +773,6 @@ export interface Product {
     image?: (string | null) | Media;
     description?: string | null;
   };
-  /**
-   * Auto-generated short URL slug. Leave empty to generate automatically.
-   */
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -810,9 +804,6 @@ export interface Job {
     image?: (string | null) | Media;
     description?: string | null;
   };
-  /**
-   * Auto-generated short URL slug. Leave empty to generate automatically.
-   */
   slug?: string | null;
   updatedAt: string;
   createdAt: string;

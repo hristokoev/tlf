@@ -123,7 +123,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
             <div className="absolute h-screen inset-y-0 right-0 w-full bg-white">
               <div className="flex h-full flex-col">
                 {/* Menu Header */}
-                <div className="flex items-center justify-between px-6 py-10 border-b">
+                <div className="flex items-center gap-4 px-6 py-10 border-b">
                   <h2 className="text-lg font-semibold">Menu</h2>
                   <LanguageSwitcher isWhiteBackgroundPage={true} />
                 </div>

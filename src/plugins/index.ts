@@ -70,9 +70,6 @@ export const plugins: Plugin[] = [
       },
     },
     formSubmissionOverrides: {
-      access: {
-        create: () => false,
-      },
       labels: {
         singular: {
           en: 'Form Submissions',

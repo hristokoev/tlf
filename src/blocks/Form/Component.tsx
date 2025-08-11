@@ -115,19 +115,20 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="">
+    <div className="flex flex-col">
       {enableIntro && introContent && !hasSubmitted && (
         <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
       )}
+      {!isLoading && hasSubmitted && confirmationType === 'message' && (
+        <RichText
+          data={confirmationMessage}
+          enableGutter={false}
+          enableProse={false}
+          className="text-white"
+        />
+      )}
       <div className="">
         <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <div className="h-96 flex items-center justify-center">
-              <RichText data={confirmationMessage} enableGutter={false} className="text-white" />
-            </div>
-          )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
@@ -152,10 +153,22 @@ export const FormBlock: React.FC<
                     }
                     return null
                   })}
+                {isLoading && !hasSubmitted && (
+                  <p className="text-white">Loading, please wait...</p>
+                )}
+                {error && (
+                  <div className="text-white">{`${error.status || '500'}: ${error.message || ''}`}</div>
+                )}
               </div>
 
               <div className="mt-8">
-                <Button form={formID} type="submit" variant="default" size="lg">
+                <Button
+                  form={formID}
+                  type="submit"
+                  variant="default"
+                  size="lg"
+                  disabled={isLoading}
+                >
                   {submitButtonLabel}
                 </Button>
               </div>

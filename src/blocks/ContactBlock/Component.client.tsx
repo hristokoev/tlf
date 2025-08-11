@@ -98,7 +98,7 @@ export const ContactBlockClient: React.FC<ContactBlockProps> = (props) => {
         <div className="container">
           <div className="flex flex-col lg:flex-row justify-between gap-8 md:gap-12 lg:gap-16">
             {/* Content Section */}
-            <div className="flex flex-col justify-between gap-8 md:gap-12 lg:gap-16 w-full lg:max-w-2xl lg:flex-1">
+            <div className="flex flex-col gap-8 md:gap-12 lg:gap-16 w-full lg:max-w-2xl lg:flex-1">
               {/* Header */}
               <div className="space-y-6 md:space-y-8">
                 <span className="uppercase text-white text-sm md:text-base tracking-wider">
@@ -171,7 +171,7 @@ export const ContactBlockClient: React.FC<ContactBlockProps> = (props) => {
         <div className="flex flex-col lg:flex-row justify-between gap-8 md:gap-12 lg:gap-16">
           {/* Content Section */}
           <motion.div
-            className="flex flex-col justify-between gap-8 md:gap-12 lg:gap-16 w-full lg:max-w-2xl lg:flex-1"
+            className="flex flex-col gap-8 md:gap-12 lg:gap-16 w-full lg:max-w-2xl lg:flex-1"
             variants={slideInFromLeft}
           >
             {/* Header */}

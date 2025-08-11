@@ -26,7 +26,6 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
     },
     admin: {
       position: 'sidebar',
-      description: 'Auto-generated short URL slug. Leave empty to generate automatically.',
       ...(slugOverrides?.admin || {}),
       components: {
         Field: {

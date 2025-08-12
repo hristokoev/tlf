@@ -70,8 +70,25 @@ export const Products: CollectionConfig = {
               required: true,
             },
             {
-              type: 'array',
               name: 'parameters',
+              label: {
+                cs: 'Parametry',
+                de: 'Parameters',
+                en: 'Parameter',
+              },
+              labels: {
+                singular: {
+                  cs: 'Parametr',
+                  de: 'Parameter',
+                  en: 'Parameter',
+                },
+                plural: {
+                  cs: 'Parametry',
+                  de: 'Parameters',
+                  en: 'Parameter',
+                },
+              },
+              type: 'array',
               fields: [
                 {
                   name: 'title',
@@ -99,34 +116,49 @@ export const Products: CollectionConfig = {
               required: true,
             },
             {
-              name: 'variants',
+              name: 'accordionItems',
               label: {
-                en: 'Variants',
-                de: 'Varianten',
-                cs: 'Varianty',
+                cs: 'Položky',
+                de: 'Akkordeon-Elemente',
+                en: 'Accordion Items',
               },
-              type: 'textarea',
-              localized: true,
-            },
-            {
-              name: 'materials',
-              label: {
-                en: 'Materials',
-                de: 'Materialien',
-                cs: 'Materiály',
+              labels: {
+                singular: {
+                  cs: 'Položka',
+                  de: 'Akkordeon-Element',
+                  en: 'Accordion Item',
+                },
+                plural: {
+                  cs: 'Položky',
+                  de: 'Akkordeon-Elemente',
+                  en: 'Accordion Items',
+                },
               },
-              type: 'textarea',
-              localized: true,
-            },
-            {
-              name: 'technicalData',
-              label: {
-                en: 'Technical Data',
-                de: 'Technische Daten',
-                cs: 'Technické údaje',
-              },
-              type: 'textarea',
-              localized: true,
+              type: 'array',
+              fields: [
+                {
+                  name: 'title',
+                  label: {
+                    cs: 'Nadpis',
+                    en: 'Title',
+                    de: 'Titel',
+                  },
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  label: {
+                    cs: 'Popis',
+                    en: 'Description',
+                    de: 'Beschreibung',
+                  },
+                  type: 'textarea',
+                  localized: true,
+                  required: true,
+                },
+              ],
             },
             {
               name: 'media',

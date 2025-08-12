@@ -78,7 +78,7 @@ export const TeamBlockClient: React.FC<TeamBlockProps> = (props) => {
             custom={index}
           >
             {/* Member Photo */}
-            <motion.div className="relative overflow-hidden">
+            <motion.div className="relative overflow-hidden shadow-md">
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}

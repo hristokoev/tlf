@@ -29,6 +29,11 @@ export const PartnersBlock: Block = {
     },
     {
       name: 'partners',
+      label: {
+        cs: 'Partneři',
+        en: 'Partners',
+        de: 'Partner',
+      },
       labels: {
         singular: {
           cs: 'Partner',

@@ -60,8 +60,12 @@ export const MapInfoBlock: Block = {
       required: true,
     },
     {
-      type: 'array',
       name: 'infoItems',
+      label: {
+        cs: 'Položky Informací',
+        en: 'Info Items',
+        de: 'Info Elemente',
+      },
       labels: {
         singular: {
           cs: 'Položka Informace',
@@ -74,6 +78,7 @@ export const MapInfoBlock: Block = {
           de: 'Info Elemente',
         },
       },
+      type: 'array',
       fields: [
         {
           name: 'icon',

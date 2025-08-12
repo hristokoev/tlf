@@ -18,6 +18,11 @@ export const TeamBlock: Block = {
   fields: [
     {
       name: 'members',
+      label: {
+        cs: 'Členové Týmu',
+        en: 'Team Members',
+        de: 'Team Mitglieder',
+      },
       labels: {
         singular: {
           cs: 'Člen Týmu',

@@ -18,6 +18,8 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
     certificationTitle,
     certificationDescription,
     certificationLink,
+    certificationLinkDescription,
+    certificationLinkText,
     link,
     mediaItems,
   } = props
@@ -574,7 +576,9 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
                       >
-                        <h5 className="font-semibold text-gray-900">Zobrazit certifikát</h5>
+                        <h5 className="font-semibold text-gray-900">
+                          {certificationLinkDescription}
+                        </h5>
                         <Link
                           href={
                             typeof certificationLink === 'string'
@@ -589,7 +593,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Zobrazit
+                            {certificationLinkText}
                           </motion.button>
                         </Link>
                       </motion.div>

@@ -134,7 +134,46 @@ export const TwoInOneBlock: Block = {
               required: true,
             },
             {
+              name: 'certificationLinkDescription',
+              label: {
+                cs: 'Odkaz na certifikaci - popis',
+                en: 'Certification Link Description',
+                de: 'Zertifizierungslink Beschreibung',
+              },
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
+              name: 'certificationLinkText',
+              label: {
+                cs: 'Odkaz na certifikaci - tlačítko',
+                en: 'Certification Link Text',
+                de: 'Zertifizierungslink Text',
+              },
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
               name: 'cards',
+              label: {
+                cs: 'Karty',
+                en: 'Cars',
+                de: 'Karten',
+              },
+              labels: {
+                singular: {
+                  cs: 'Karta',
+                  en: 'Card',
+                  de: 'Karte',
+                },
+                plural: {
+                  cs: 'Karty',
+                  en: 'Cards',
+                  de: 'Karten',
+                },
+              },
               type: 'array',
               minRows: 3,
               maxRows: 3,

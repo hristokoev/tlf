@@ -5,17 +5,16 @@ import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Accordion } from '@/components/Accordion'
 
-interface AnimatedJobAccordionProps {
-  variants: string
-  materials: string
-  technicalData: string
+interface AccordionItem {
+  title: string
+  description: string
 }
 
-export function AnimatedJobAccordion({
-  variants,
-  materials,
-  technicalData,
-}: AnimatedJobAccordionProps) {
+interface AnimatedAccordionProps {
+  accordionItems: AccordionItem[]
+}
+
+export function AnimatedAccordion({ accordionItems }: AnimatedAccordionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -65,15 +64,7 @@ export function AnimatedJobAccordion({
         >
           {/* Left - Accordion */}
           <motion.div variants={accordionVariants}>
-            <Accordion variants={variants} materials={materials} technicalData={technicalData} />
-          </motion.div>
-
-          {/* Right - Additional Info */}
-          <motion.div variants={sideContentVariants}>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 uppercase tracking-wide mb-8">
-              Proč právě my?
-            </h2>
-            {/* Add any additional content here */}
+            <Accordion accordionItems={accordionItems} />
           </motion.div>
         </motion.div>
       </div>

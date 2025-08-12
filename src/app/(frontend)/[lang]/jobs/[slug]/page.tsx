@@ -10,7 +10,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 // Import the new animated client components
 import { AnimatedJobHero } from '@/components/AnimatedJobHero'
-import { AnimatedJobAccordion } from '@/components/AnimatedJobAccordion'
+import { AnimatedAccordion } from '@/components/AnimatedAccordion'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
@@ -55,7 +55,7 @@ export default async function Job({ params: paramsPromise }: Args) {
   const { slug = '', lang = 'cs' } = await paramsPromise
   const url = '/posts/' + slug
   const job = await queryJobBySlug({ slug, lang })
-  const jobsPage = (await queryJobsPage()) || {}
+  const jobsPage = (await queryJobsPage(lang)) || {}
 
   if (!job || !jobsPage) {
     return notFound()
@@ -82,11 +82,9 @@ export default async function Job({ params: paramsPromise }: Args) {
         <AnimatedJobHero job={job} />
 
         {/* Animated Accordion Section */}
-        <AnimatedJobAccordion
-          variants={job.content.responsibilities || ''}
-          materials={job.content.requirements || ''}
-          technicalData={job.content.offer || ''}
-        />
+        {job.content.accordionItems && (
+          <AnimatedAccordion accordionItems={job.content.accordionItems} />
+        )}
       </article>
 
       {/* Blog Page Layout - Keep existing RenderBlocks with its animations */}
@@ -124,7 +122,7 @@ const queryJobBySlug = cache(async ({ slug, lang }: { slug: string; lang: string
   return result.docs?.[0] || null
 })
 
-const queryJobsPage = cache(async () => {
+const queryJobsPage = cache(async (lang: string) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -135,6 +133,7 @@ const queryJobsPage = cache(async () => {
     limit: 1,
     overrideAccess: draft,
     pagination: false,
+    locale: lang as 'cs',
     where: {
       slug: {
         equals: 'jobs',

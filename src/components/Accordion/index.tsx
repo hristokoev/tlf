@@ -1,8 +1,12 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+
+interface AccordionItem {
+  title: string
+  description: string
+}
 
 // Enhanced Accordion Item Component with Framer Motion
 const AccordionItem = ({
@@ -85,36 +89,22 @@ const AccordionItem = ({
   )
 }
 
-export const Accordion = ({
-  variants,
-  materials,
-  technicalData,
-}: {
-  variants: string
-  materials: string
-  technicalData: string
-}) => {
-  const [openItem, setOpenItem] = useState<string | null>(null)
+export const Accordion = ({ accordionItems }: { accordionItems: AccordionItem[] }) => {
+  const [openItem, setOpenItem] = useState<number | null>(null)
 
-  const toggleItem = (item: string) => {
-    setOpenItem(openItem === item ? null : item)
+  const toggleItem = (index: number) => {
+    setOpenItem(openItem === index ? null : index)
   }
-
-  const accordionItems = [
-    { key: 'variants', title: 'Varianty a provedení', content: variants },
-    { key: 'materials', title: 'Materiály a konstrukce', content: materials },
-    { key: 'technical', title: 'Technické informace', content: technicalData },
-  ]
 
   return (
     <div className="divide-y divide-gray-300">
-      {accordionItems.map((item) => (
+      {accordionItems.map((item, index) => (
         <AccordionItem
-          key={item.key}
+          key={index}
           title={item.title}
-          content={item.content}
-          isOpen={openItem === item.key}
-          onToggle={() => toggleItem(item.key)}
+          content={item.description}
+          isOpen={openItem === index}
+          onToggle={() => toggleItem(index)}
         />
       ))}
     </div>

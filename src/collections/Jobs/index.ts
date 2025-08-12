@@ -70,13 +70,25 @@ export const Jobs: CollectionConfig = {
               required: true,
             },
             {
-              type: 'array',
               name: 'benefits',
               label: {
                 cs: 'Výhody',
                 en: 'Benefits',
                 de: 'Vorteile',
               },
+              labels: {
+                singular: {
+                  cs: 'Výhoda',
+                  en: 'Benefit',
+                  de: 'Vorteile',
+                },
+                plural: {
+                  cs: 'Výhody',
+                  en: 'Benefits',
+                  de: 'Vorteil',
+                },
+              },
+              type: 'array',
               fields: [
                 {
                   name: 'title',
@@ -104,34 +116,49 @@ export const Jobs: CollectionConfig = {
               required: true,
             },
             {
-              name: 'responsibilities',
+              name: 'accordionItems',
               label: {
-                cs: 'Odpovědnosti',
-                en: 'Responsibilities',
-                de: 'Verantwortlichkeiten',
+                cs: 'Položky',
+                de: 'Akkordeon-Elemente',
+                en: 'Accordion Items',
               },
-              type: 'textarea',
-              localized: true,
-            },
-            {
-              name: 'requirements',
-              label: {
-                cs: 'Požadavky',
-                en: 'Requirements',
-                de: 'Anforderungen',
+              labels: {
+                singular: {
+                  cs: 'Položka',
+                  de: 'Akkordeon-Element',
+                  en: 'Accordion Item',
+                },
+                plural: {
+                  cs: 'Položky',
+                  de: 'Akkordeon-Elemente',
+                  en: 'Accordion Items',
+                },
               },
-              type: 'textarea',
-              localized: true,
-            },
-            {
-              name: 'offer',
-              label: {
-                cs: 'Nabídka',
-                en: 'Offer',
-                de: 'Angebot',
-              },
-              type: 'textarea',
-              localized: true,
+              type: 'array',
+              fields: [
+                {
+                  name: 'title',
+                  label: {
+                    cs: 'Nadpis',
+                    en: 'Title',
+                    de: 'Titel',
+                  },
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  label: {
+                    cs: 'Popis',
+                    en: 'Description',
+                    de: 'Beschreibung',
+                  },
+                  type: 'textarea',
+                  localized: true,
+                  required: true,
+                },
+              ],
             },
             {
               name: 'media',

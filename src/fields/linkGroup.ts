@@ -18,6 +18,18 @@ export const linkGroup: LinkGroupType = ({ appearances, overrides = {} } = {}) =
       de: 'Links',
       cs: 'Odkazy',
     },
+    labels: {
+      singular: {
+        en: 'Link',
+        de: 'Link',
+        cs: 'Odkaz',
+      },
+      plural: {
+        en: 'Links',
+        de: 'Links',
+        cs: 'Odkazy',
+      },
+    },
     type: 'array',
     fields: [
       link({

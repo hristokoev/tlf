@@ -176,8 +176,12 @@ export const ContentShowcaseBlock: Block = {
               required: true,
             },
             {
-              type: 'array',
               name: 'cards',
+              label: {
+                cs: 'Karty',
+                en: 'Cards',
+                de: 'Karten',
+              },
               labels: {
                 singular: {
                   cs: 'Karta',
@@ -190,6 +194,7 @@ export const ContentShowcaseBlock: Block = {
                   de: 'Karten',
                 },
               },
+              type: 'array',
               admin: {
                 condition: (_, { type, bottomSection } = {}) =>
                   ['cards'].includes(type) && bottomSection,

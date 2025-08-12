@@ -23,12 +23,24 @@ export const Footer: GlobalConfig = {
   fields: [
     {
       name: 'columns',
-      type: 'array',
       label: {
         en: 'Footer Columns',
         de: 'Fußzeilen Spalten',
         cs: 'Sloupce zápatí',
       },
+      labels: {
+        singular: {
+          en: 'Footer Column',
+          de: 'Fußzeilenspalte',
+          cs: 'Sloupec zápatí',
+        },
+        plural: {
+          en: 'Footer Columns',
+          de: 'Fußzeilen Spalten',
+          cs: 'Sloupce zápatí',
+        },
+      },
+      type: 'array',
       fields: [
         {
           name: 'title',
@@ -43,12 +55,24 @@ export const Footer: GlobalConfig = {
         },
         {
           name: 'links',
-          type: 'array',
           label: {
             en: 'Column Links',
             de: 'Spaltenlinks',
             cs: 'Odkazy sloupce',
           },
+          labels: {
+            singular: {
+              en: 'Column Link',
+              de: 'Spaltenverknüpfung',
+              cs: 'Odkaz sloupce',
+            },
+            plural: {
+              en: 'Column Links',
+              de: 'Spaltenlinks',
+              cs: 'Odkazy sloupce',
+            },
+          },
+          type: 'array',
           fields: [
             link({
               appearances: false,
@@ -71,12 +95,12 @@ export const Footer: GlobalConfig = {
     },
     {
       name: 'socialLinks',
-      type: 'array',
       label: {
         en: 'Social Media Links',
         de: 'Soziale Medien Links',
         cs: 'Odkazy na sociální média',
       },
+      type: 'array',
       fields: [
         {
           name: 'platform',

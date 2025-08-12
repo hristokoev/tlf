@@ -10,7 +10,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 // Import the new animated client components
 import { AnimatedProductHero } from '@/components/AnimatedProductHero'
-import { AnimatedProductAccordion } from '@/components/AnimatedProductAccordion'
+import { AnimatedAccordion } from '@/components/AnimatedAccordion'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
@@ -55,7 +55,7 @@ export default async function Product({ params: paramsPromise }: Args) {
   const { slug = '', lang = 'cs' } = await paramsPromise
   const url = '/posts/' + slug
   const product = await queryProductBySlug({ slug, lang })
-  const productsPage = (await queryProductsPage()) || {}
+  const productsPage = (await queryProductsPage(lang)) || {}
 
   if (!product || !productsPage) {
     return notFound()
@@ -86,11 +86,9 @@ export default async function Product({ params: paramsPromise }: Args) {
         <AnimatedProductHero product={product} />
 
         {/* Animated Accordion Section */}
-        <AnimatedProductAccordion
-          variants={product.content.variants || ''}
-          materials={product.content.materials || ''}
-          technicalData={product.content.technicalData || ''}
-        />
+        {product.content.accordionItems && (
+          <AnimatedAccordion accordionItems={product.content.accordionItems} />
+        )}
       </article>
 
       {/* Blog Page Layout - Keep existing RenderBlocks with its animations */}
@@ -128,7 +126,7 @@ const queryProductBySlug = cache(async ({ slug, lang }: { slug: string; lang: st
   return result.docs?.[0] || null
 })
 
-const queryProductsPage = cache(async () => {
+const queryProductsPage = cache(async (lang: string) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -139,6 +137,7 @@ const queryProductsPage = cache(async () => {
     limit: 1,
     overrideAccess: draft,
     pagination: false,
+    locale: lang as 'cs',
     where: {
       slug: {
         equals: 'products',

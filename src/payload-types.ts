@@ -566,7 +566,7 @@ export interface ContentShowcaseBlock {
     | {
         title: string;
         description: string;
-        icon: string | Media;
+        icon?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -595,7 +595,7 @@ export interface MapInfoBlock {
   title: string;
   description: string;
   infoItems: {
-    icon: string | Media;
+    icon?: (string | null) | Media;
     title: string;
     description: string;
     id?: string | null;
@@ -698,9 +698,11 @@ export interface TwoInOneBlock {
   certification: string;
   certificationDescription: string;
   certificationLink: string | Media;
+  certificationLinkDescription: string;
+  certificationLinkText: string;
   cards: {
     title: string;
-    icon: string | Media;
+    icon?: (string | null) | Media;
     id?: string | null;
   }[];
   id?: string | null;
@@ -757,12 +759,16 @@ export interface Product {
     description: string;
     parameters: {
       title: string;
-      icon: string | Media;
+      icon?: (string | null) | Media;
       id?: string | null;
     }[];
-    variants?: string | null;
-    materials?: string | null;
-    technicalData?: string | null;
+    accordionItems?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
     media: (string | Media)[];
   };
   meta?: {
@@ -788,12 +794,16 @@ export interface Job {
     description: string;
     benefits: {
       title: string;
-      icon: string | Media;
+      icon?: (string | null) | Media;
       id?: string | null;
     }[];
-    responsibilities?: string | null;
-    requirements?: string | null;
-    offer?: string | null;
+    accordionItems?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
     media: (string | Media)[];
   };
   meta?: {
@@ -1292,6 +1302,8 @@ export interface TwoInOneBlockSelect<T extends boolean = true> {
   certification?: T;
   certificationDescription?: T;
   certificationLink?: T;
+  certificationLinkDescription?: T;
+  certificationLinkText?: T;
   cards?:
     | T
     | {
@@ -1344,9 +1356,13 @@ export interface ProductsSelect<T extends boolean = true> {
               icon?: T;
               id?: T;
             };
-        variants?: T;
-        materials?: T;
-        technicalData?: T;
+        accordionItems?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
         media?: T;
       };
   meta?:
@@ -1377,9 +1393,13 @@ export interface JobsSelect<T extends boolean = true> {
               icon?: T;
               id?: T;
             };
-        responsibilities?: T;
-        requirements?: T;
-        offer?: T;
+        accordionItems?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
         media?: T;
       };
   meta?:

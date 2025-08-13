@@ -153,12 +153,14 @@ export const BlogBlockClient: React.FC<BlogBlockClientProps> = (props) => {
                   ))}
                 </motion.h2>
 
-                <motion.p
-                  className="text-base md:text-lg line-clamp-3 leading-relaxed max-w-3xl"
-                  variants={itemVariants}
-                >
-                  {description}
-                </motion.p>
+                {description && (
+                  <motion.p
+                    className="text-base md:text-lg line-clamp-3 leading-relaxed max-w-3xl"
+                    variants={itemVariants}
+                  >
+                    {description}
+                  </motion.p>
+                )}
               </motion.div>
 
               {/* Media Section - Enhanced with Parallax */}

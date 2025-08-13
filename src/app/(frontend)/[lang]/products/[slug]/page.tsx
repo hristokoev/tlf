@@ -53,7 +53,6 @@ type Args = {
 export default async function Product({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '', lang = 'cs' } = await paramsPromise
-  const url = '/posts/' + slug
   const product = await queryProductBySlug({ slug, lang })
   const productsPage = (await queryProductsPage(lang)) || {}
 

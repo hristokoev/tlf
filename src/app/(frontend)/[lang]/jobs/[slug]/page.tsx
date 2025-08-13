@@ -53,7 +53,6 @@ type Args = {
 export default async function Job({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '', lang = 'cs' } = await paramsPromise
-  const url = '/posts/' + slug
   const job = await queryJobBySlug({ slug, lang })
   const jobsPage = (await queryJobsPage(lang)) || {}
 

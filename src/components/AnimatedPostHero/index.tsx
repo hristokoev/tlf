@@ -86,11 +86,13 @@ export function AnimatedPostHero({ post }: AnimatedPostHeroProps) {
             </motion.h1>
 
             {/* Description */}
-            <motion.div variants={itemVariants} className="prose prose-lg prose-gray max-w-none">
-              <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-                {post.content.description}
-              </p>
-            </motion.div>
+            {post.content.description && (
+              <motion.div variants={itemVariants} className="prose prose-lg prose-gray max-w-none">
+                <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
+                  {post.content.description}
+                </p>
+              </motion.div>
+            )}
           </div>
 
           {/* Image Column */}

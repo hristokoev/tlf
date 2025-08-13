@@ -22,7 +22,7 @@ export const Posts: CollectionConfig = {
     plural: {
       en: 'Posts',
       de: 'Beiträge',
-      cs: 'Příspěvky',
+      cs: 'Aktuality',
     },
   },
   access: {
@@ -69,7 +69,6 @@ export const Posts: CollectionConfig = {
               },
               type: 'textarea',
               localized: true,
-              required: true,
             },
             {
               name: 'media',

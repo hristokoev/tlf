@@ -717,7 +717,7 @@ export interface Post {
   id: string;
   title: string;
   content: {
-    description: string;
+    description?: string | null;
     media: string | Media;
     content: {
       root: {

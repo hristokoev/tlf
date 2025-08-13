@@ -254,28 +254,30 @@ export function AnimatedProductHero({ product }: AnimatedProductHeroProps) {
             </motion.h1>
 
             {/* Parameters */}
-            <motion.div variants={parametersVariants} className="space-y-6 pt-8">
-              {product.content.parameters?.map((param, index) => (
-                <motion.div
-                  key={index}
-                  variants={parameterItemVariants}
-                  className="flex items-center gap-4"
-                >
-                  {param.icon && (
-                    <div className="flex items-center justify-center flex-shrink-0">
-                      <Media
-                        resource={param.icon}
-                        className="w-8 h-8"
-                        imgClassName="object-contain"
-                      />
-                    </div>
-                  )}
-                  <span className="text-base sm:text-lg text-gray-900 font-medium">
-                    {param.title}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
+            {product.content.parameters && (
+              <motion.div variants={parametersVariants} className="space-y-6 pt-8">
+                {product.content.parameters?.map((param, index) => (
+                  <motion.div
+                    key={index}
+                    variants={parameterItemVariants}
+                    className="flex items-center gap-4"
+                  >
+                    {param.icon && (
+                      <div className="flex items-center justify-center flex-shrink-0">
+                        <Media
+                          resource={param.icon}
+                          className="w-8 h-8"
+                          imgClassName="object-contain"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base sm:text-lg text-gray-900 font-medium">
+                      {param.title}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </div>
 
           {/* Right Column - Dynamic Image Layout */}

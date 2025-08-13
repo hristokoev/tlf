@@ -757,11 +757,13 @@ export interface Product {
   title: string;
   content: {
     description: string;
-    parameters: {
-      title: string;
-      icon?: (string | null) | Media;
-      id?: string | null;
-    }[];
+    parameters?:
+      | {
+          title: string;
+          icon?: (string | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
     accordionItems?:
       | {
           title: string;

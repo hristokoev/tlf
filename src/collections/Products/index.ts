@@ -113,7 +113,6 @@ export const Products: CollectionConfig = {
                 },
               ],
               minRows: 1,
-              required: true,
             },
             {
               name: 'accordionItems',

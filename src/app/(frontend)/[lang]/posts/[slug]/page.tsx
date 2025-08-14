@@ -53,9 +53,8 @@ type Args = {
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '', lang = 'cs' } = await paramsPromise
-  const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug, lang })
-  const postsPage = (await queryPostsPage()) || {}
+  const postsPage = (await queryPostsPage(lang)) || {}
 
   if (!post || !postsPage) {
     return notFound()
@@ -120,7 +119,7 @@ const queryPostBySlug = cache(async ({ slug, lang }: { slug: string; lang: strin
   return result.docs?.[0] || null
 })
 
-const queryPostsPage = cache(async () => {
+const queryPostsPage = cache(async (lang: string) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -129,6 +128,7 @@ const queryPostsPage = cache(async () => {
     collection: 'pages',
     draft,
     limit: 1,
+    locale: lang as 'cs',
     overrideAccess: draft,
     pagination: false,
     where: {

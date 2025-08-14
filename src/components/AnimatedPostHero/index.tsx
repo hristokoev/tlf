@@ -80,7 +80,7 @@ export function AnimatedPostHero({ post }: AnimatedPostHeroProps) {
             {/* Title */}
             <motion.h1
               variants={itemVariants}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tight"
             >
               {post.title}
             </motion.h1>
@@ -98,12 +98,11 @@ export function AnimatedPostHero({ post }: AnimatedPostHeroProps) {
           {/* Image Column */}
           <motion.div variants={imageVariants} className="order-1 lg:order-2">
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-gray-400 to-neutral-400 blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-              <div className="relative bg-white overflow-hidden">
+              <div className="relative overflow-hidden">
                 <Media
                   resource={post.content.media}
-                  className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] xl:h-[500px]"
-                  imgClassName="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
+                  className="w-full"
+                  imgClassName="h-full w-full transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             </div>

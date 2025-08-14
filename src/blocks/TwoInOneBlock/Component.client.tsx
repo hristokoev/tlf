@@ -393,7 +393,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         imgClassName="object-cover h-full w-full"
                       />
                     )}
-                    <h3 className="text-lg font-semibold leading-tight">{card.title}</h3>
+                    <h3 className="text-lg font-semibold leading-tight break-all">{card.title}</h3>
                   </motion.div>
                 ))}
               </div>
@@ -550,8 +550,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         </svg>
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-900">Naše certifikace</h3>
-                        <p className="text-gray-600">Zajištění kvality a normy</p>
+                        <h3 className="text-xl font-semibold text-gray-900">{certification}</h3>
                       </div>
                     </motion.div>
 
@@ -563,7 +562,6 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                       transition={{ delay: 0.2 }}
                     >
                       <div className="p-2">
-                        <h4 className="font-semibold mb-3 text-gray-900">{certification}</h4>
                         <p className="text-gray-700 leading-relaxed text-sm">
                           {certificationDescription}
                         </p>

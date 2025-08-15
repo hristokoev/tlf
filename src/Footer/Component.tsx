@@ -4,6 +4,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 import { generateLangUrl } from '@/utilities/generateLangUrl'
+import Image from 'next/image'
 
 import type { Footer } from '@/payload-types'
 
@@ -106,12 +107,40 @@ export async function Footer({ lang }: { lang: string }) {
           )}
         </div>
 
-        {/* Bottom Section - Fixed with lang parameter */}
+        {/* Bottom Section - Fixed with lang parameter and Occamy attribution */}
         <div className="pt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">{bottomText || '© 2025 TLF s.r.o.'}</p>
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+            {/* Left side - Copyright and Occamy attribution */}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <p className="text-gray-400 text-sm">{bottomText || '© 2025 TLF s.r.o.'}</p>
 
-            {/* Additional Bottom Links with language support */}
+              {/* Vertical line */}
+              <div className="bg-white w-[1px] h-4" />
+
+              {/* Occamy attribution */}
+              <div className="flex items-center gap-2 text-gray-400 text-sm">
+                {lang === 'cs' && 'Web svařilo'}
+                {lang === 'en' && 'Web by'}
+                {lang === 'de' && 'Web von'}
+                <a
+                  href="https://occamy.cz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-white transition-colors duration-200 group"
+                >
+                  <Image
+                    src="/occamy.webp"
+                    alt="Occamy"
+                    width={20}
+                    height={20}
+                    className="opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+                  />
+                  <span>occamy</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right side - Additional Bottom Links with language support */}
             <div className="flex gap-6">
               <Link
                 href={generateLangUrl(lang, 'privacy-policy')}

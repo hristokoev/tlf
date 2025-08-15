@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useFormTranslation } from '@/hooks/useFormTranslation'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -19,6 +20,7 @@ export const Text: React.FC<
     watch,
     formState: { errors: formErrors },
   } = useFormContext()
+  const { tv } = useFormTranslation()
   const fieldValue = watch(name) || ''
   const hasError = !!formErrors[name]
   const hasValue = fieldValue.length > 0
@@ -95,7 +97,7 @@ export const Text: React.FC<
             {required && (
               <span className="required">
                 {' '}
-                * <span className="sr-only">(required)</span>
+                * <span className="sr-only">({tv('required')})</span>
               </span>
             )}
           </Label>
@@ -104,10 +106,12 @@ export const Text: React.FC<
             id={name}
             type="text"
             {...register(name, {
-              required: required ? `${label} je povinné` : false,
+              required: required ? tv('required') : false,
               minLength: {
                 value: 2,
-                message: `${label} musí mít alespoň 2 znaky`,
+                message: tv('minLength', {
+                  min: 2,
+                }),
               },
             })}
           />

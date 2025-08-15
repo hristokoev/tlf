@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
 import React, { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useFormTranslation } from '@/hooks/useFormTranslation'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -17,6 +18,7 @@ export const Textarea: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
   const { watch } = useFormContext()
+  const { tv } = useFormTranslation()
   const [charCount, setCharCount] = useState(defaultValue?.length || 0)
   const maxLength = 500
 
@@ -36,7 +38,7 @@ export const Textarea: React.FC<
           {required && (
             <span className="required">
               {' '}
-              * <span className="sr-only">(required)</span>
+              * <span className="sr-only">({tv('required')})</span>
             </span>
           )}
         </Label>
@@ -49,10 +51,12 @@ export const Textarea: React.FC<
             style={{ resize: 'none' }} // Prevent resizing
             className="pr-16" // Add padding for character count
             {...register(name, {
-              required: required ? `${label} je povinné` : false,
+              required: required ? tv('required') : false,
               maxLength: {
                 value: maxLength,
-                message: `${label} nesmí překročit ${maxLength} znaků`,
+                message: tv('maxLength', {
+                  max: maxLength,
+                }),
               },
             })}
           />

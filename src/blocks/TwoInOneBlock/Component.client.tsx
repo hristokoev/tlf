@@ -393,7 +393,7 @@ export const TwoInOneBlockClient: React.FC<TwoInOneBlockProps> = (props) => {
                         imgClassName="object-cover h-full w-full"
                       />
                     )}
-                    <h3 className="text-lg font-semibold leading-tight break-all">{card.title}</h3>
+                    <h3 className="text-lg font-semibold leading-tight">{card.title}</h3>
                   </motion.div>
                 ))}
               </div>

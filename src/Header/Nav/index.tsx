@@ -61,7 +61,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
   return (
     <nav className="flex items-center relative">
       {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
+      <div className="hidden xl:flex items-center gap-4 lg:gap-6 xl:gap-8">
         {/* Navigation Links */}
         <div className="flex flex-wrap justify-end items-center gap-4 lg:gap-6 xl:gap-8">
           {navItems.map(({ link }, i) => {
@@ -85,7 +85,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
       <button
         onClick={toggleMobileMenu}
         className={cn(
-          'md:hidden relative z-50 flex flex-col gap-1 p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded',
+          'xl:hidden relative z-50 flex flex-col gap-1 p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded',
           isWhiteBackgroundPage ? 'text-black' : 'text-white',
         )}
         aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -113,13 +113,13 @@ export const HeaderNav: React.FC<{ data: HeaderType; isWhiteBackgroundPage: bool
         <>
           {/* Dark Overlay */}
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 xl:hidden"
             onClick={closeMobileMenu}
             aria-hidden="true"
           />
 
           {/* Mobile Menu */}
-          <div className="fixed inset-0 z-40 md:hidden">
+          <div className="fixed inset-0 z-40 xl:hidden">
             <div className="absolute h-screen inset-y-0 right-0 w-full bg-white">
               <div className="flex h-full flex-col">
                 {/* Menu Header */}

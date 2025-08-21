@@ -38,6 +38,11 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <script
+          defer
+          src="https://umami.koev.cz/script.js"
+          data-website-id="6f0608b9-4156-43c5-8bf9-d1f29414f1ac"
+        ></script>
       </head>
       <body>
         {/* <AdminBar

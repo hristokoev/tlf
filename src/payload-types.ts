@@ -190,6 +190,7 @@ export interface Page {
     | MediaBlock
     | PartnersBlock
     | ProductsBlock
+    | RichTextBlock
     | ScrollBlock
     | TeamBlock
     | TwoInOneBlock
@@ -642,6 +643,30 @@ export interface ProductsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richTextBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ScrollBlock".
  */
 export interface ScrollBlock {
@@ -1075,6 +1100,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         partnersBlock?: T | PartnersBlockSelect<T>;
         productsBlock?: T | ProductsBlockSelect<T>;
+        richTextBlock?: T | RichTextBlockSelect<T>;
         scrollBlock?: T | ScrollBlockSelect<T>;
         teamBlock?: T | TeamBlockSelect<T>;
         twoInOneBlock?: T | TwoInOneBlockSelect<T>;
@@ -1247,6 +1273,15 @@ export interface PartnersBlockSelect<T extends boolean = true> {
  */
 export interface ProductsBlockSelect<T extends boolean = true> {
   heading?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  richText?: T;
   id?: T;
   blockName?: T;
 }

@@ -4,6 +4,7 @@ import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { AboutUsBlock } from '@/blocks/AboutUsBlock/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { ScrollBlock } from '@/blocks/ScrollBlock/config'
 import { TwoInOneBlock } from '@/blocks/TwoInOneBlock/config'
 import { hero } from '@/heros/config'
@@ -133,6 +134,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaBlock,
                 PartnersBlock,
                 ProductsBlock,
+                RichTextBlock,
                 ScrollBlock,
                 TeamBlock,
                 TwoInOneBlock,

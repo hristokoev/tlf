@@ -12,6 +12,7 @@ import { MapInfoBlock } from './MapInfoBlock/Component'
 import { MediaBlock } from './MediaBlock/Component'
 import { PartnersBlock } from './PartnersBlock/Component'
 import { ProductsBlock } from './ProductsBlock/Component'
+import { RichTextBlock } from './RichTextBlock/Component'
 import { ScrollBlock } from './ScrollBlock/Component'
 import { TeamBlock } from './TeamBlock/Component'
 import { TwoInOneBlock } from './TwoInOneBlock/Component'
@@ -27,6 +28,7 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   partnersBlock: PartnersBlock,
   productsBlock: ProductsBlock,
+  richTextBlock: RichTextBlock,
   scrollBlock: ScrollBlock,
   teamBlock: TeamBlock,
   twoInOneBlock: TwoInOneBlock,
